@@ -1,0 +1,17 @@
+{
+  "name": "platform-control",
+  "version": "1.0.0",
+  "description": "Desktop control application for the General-Purpose 3-Axis CNC Machine",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Graduation Project Team",
+  "license": "MIT",
+  "dependencies": {
+    "serialport": "^12.0.0"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0"
+  }
+}
