@@ -1,0 +1,25 @@
+; --- XY Stage Test Pattern: 50mm Square (2D Only) ---
+
+; 1. Setup Phase
+G21            ; Set units to millimeters
+G90            ; Set to absolute positioning
+
+; 2. Define Starting Point
+; We use G92 instead of G28 so the Arduino doesn't look for limit switches.
+; Manually position your stage to a safe starting point before running this.
+G92 X0.0 Y0.0  ; Tell the Arduino: "Your current physical position is exactly X:0, Y:0"
+
+; 3. Move to the Start of the Shape
+G0 X10.0 Y10.0 F1500 ; Rapid move to the starting corner at (10, 10)
+
+; 4. Execute the Shape (The 50x50mm Square)
+G1 X60.0 Y10.0 F1000 ; Move Right to X:60
+G1 X60.0 Y60.0 F1000 ; Move Up to Y:60
+G1 X10.0 Y60.0 F1000 ; Move Left to X:10
+G1 X10.0 Y10.0 F1000 ; Move Down to Y:10 (Back to start of square)
+
+; 5. Return to Origin
+G0 X0.0 Y0.0 F1500   ; Rapid move back to the absolute 0,0 point
+
+; 6. End
+M2             ; End of program
