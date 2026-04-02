@@ -10,6 +10,11 @@ contextBridge.exposeInMainWorld('platform', {
 
   // File operations
   loadGCodeFile: () => ipcRenderer.invoke('file:load-gcode'),
+  saveLog: (content) => ipcRenderer.invoke('file:save-log', content),
+
+  // Settings persistence
+  loadSettings: () => ipcRenderer.invoke('settings:load'),
+  saveSettings: (settings) => ipcRenderer.invoke('settings:save', settings),
 
   // Receive data and status events from main process
   onData: (callback) => {

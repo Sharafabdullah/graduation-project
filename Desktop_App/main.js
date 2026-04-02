@@ -15,10 +15,13 @@ try {
   console.warn('serialport module not found. Serial features will be simulated.');
 }
 
+// Settings file path
+const settingsPath = path.join(app.getPath('userData'), 'machine-settings.json');
+
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 1280,
-    height: 780,
+    width: 1360,
+    height: 820,
     minWidth: 1100,
     minHeight: 700,
     title: 'Platform Control',
@@ -32,7 +35,13 @@ function createWindow() {
     autoHideMenuBar: true,
   });
 
-  mainWindow.loadFile('index.html');
+  // In dev mode, load the Vite dev server; in production load the dist build
+  const isDev = !app.isPackaged;
+  if (isDev) {
+    mainWindow.loadURL('http://localhost:5173');
+  } else {
+    mainWindow.loadFile(path.join(__dirname, 'dist', 'index.html'));
+  }
 }
 
 app.whenReady().then(createWindow);
@@ -170,4 +179,47 @@ ipcMain.handle('file:load-gcode', async () => {
     size: stats.size,
     lines: content.split('\n').filter(l => l.trim() && !l.trim().startsWith(';')).length,
   };
+});
+
+// ── IPC: Save console log to file ─────────────────────────────────────────────
+ipcMain.handle('file:save-log', async (_event, content) => {
+  const result = await dialog.showSaveDialog(mainWindow, {
+    title: 'Export Console Log',
+    defaultPath: `console-log-${Date.now()}.txt`,
+    filters: [
+      { name: 'Text Files', extensions: ['txt'] },
+      { name: 'All Files', extensions: ['*'] },
+    ],
+  });
+
+  if (result.canceled) return { success: false };
+
+  try {
+    fs.writeFileSync(result.filePath, content, 'utf-8');
+    return { success: true, path: result.filePath };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+});
+
+// ── IPC: Settings persistence ─────────────────────────────────────────────────
+ipcMain.handle('settings:load', async () => {
+  try {
+    if (fs.existsSync(settingsPath)) {
+      const data = fs.readFileSync(settingsPath, 'utf-8');
+      return JSON.parse(data);
+    }
+  } catch (err) {
+    console.error('Error loading settings:', err);
+  }
+  return null;
+});
+
+ipcMain.handle('settings:save', async (_event, settings) => {
+  try {
+    fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8');
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
 });

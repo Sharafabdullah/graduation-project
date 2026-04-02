@@ -1,0 +1,64 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 16px;
+}
+
+.dashboard-connection {
+  grid-row: 1 / 2;
+}
+
+.dashboard-position {
+  grid-row: 1 / 2;
+}
+
+.dashboard-actions {
+  grid-row: 2 / 3;
+}
+
+.dashboard-navigate {
+  grid-row: 2 / 3;
+}
+
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.quick-action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.quick-action-btn svg {
+  opacity: 0.9;
+}
+
+.quick-action-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.quick-nav-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.state-idle { color: var(--text-primary); }
+.state-streaming { color: var(--accent); }
+.state-paused { color: var(--warning); }
+.state-homing { color: var(--success); }
+
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}

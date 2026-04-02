@@ -63,34 +63,39 @@
 #define Y_MIN_PIN      19
 
 // ---------------------------------------------------------------------------
-//  MACHINE CONFIGURATION
+//  MACHINE CONFIGURATION (Runtime-mutable via $ commands from Desktop App)
 // ---------------------------------------------------------------------------
-// Define physical hardware properties here:
-#define MOTOR_STEPS_PER_REV  200.0   // 1.8 degree NEMA 17 is 200
-#define MICROSTEPS           16.0     // TB6600 driver microstepping 
-#define LEAD_SCREW_PITCH_MM  8.0     // T8 lead screw moves 8mm per revolution
+// Motor hardware defaults (mutable at runtime)
+float motorStepsPerRev  = 200.0;   // 1.8 degree NEMA 17
+float microsteps        = 16.0;    // TB6600 driver microstepping
+float leadScrewPitchMm  = 8.0;     // T8 lead screw: 8mm per revolution
 
-// Advanced Hardware Timings (Microseconds)
-#define MIN_STEP_PULSE_US    5      // TB6600 requires > 2.2us, 5us is very safe for NEMA 17 drivers
-#define DIR_SETUP_DELAY_US   5       // Time for the driver to register a direction change physically
-#define MIN_LOOP_DELAY_US    50      // Absolute minimum delay between steps to prevent Arduino lockup
+// Advanced Hardware Timings (Microseconds) — mutable
+int minStepPulseUs   = 5;       // TB6600 requires > 2.2us
+int dirSetupDelayUs  = 5;       // Direction change settle time
+int minLoopDelayUs   = 50;      // Min delay between steps
 
-// Automatically calculate Steps per mm based on the constants above
-float stepsPerMmX = (MOTOR_STEPS_PER_REV * MICROSTEPS) / LEAD_SCREW_PITCH_MM; 
-float stepsPerMmY = (MOTOR_STEPS_PER_REV * MICROSTEPS) / LEAD_SCREW_PITCH_MM;
+// Automatically calculate Steps per mm
+float stepsPerMmX;
+float stepsPerMmY;
 
-// Speeds
-float currentFeedRate = 1200.0; // mm per minute default
-#define MAX_FEEDRATE 3000.0
-#define MIN_FEEDRATE 10.0
-#define HOMING_FEEDRATE 600.0   // mm per minute
-#define HOMING_BACKOFF_MM 2.0
+void recalcStepsPerMm() {
+  stepsPerMmX = (motorStepsPerRev * microsteps) / leadScrewPitchMm;
+  stepsPerMmY = (motorStepsPerRev * microsteps) / leadScrewPitchMm;
+}
 
-// Servo Settings
-#define SERVO_PEN_UP      75      // degrees (safe height)
-#define SERVO_PEN_DOWN    30      // degrees (drawing height)
-#define SERVO_HOME        90      // safe retract
-#define SERVO_SETTLE_MS   150     // Ms to wait after servo move
+// Speeds — mutable
+float currentFeedRate = 1200.0;
+float maxFeedrate     = 3000.0;
+float minFeedrate     = 10.0;
+float homingFeedrate  = 600.0;
+float homingBackoffMm = 2.0;
+
+// Servo Settings — mutable
+int servoPenUp    = 75;   // degrees (safe height)
+int servoPenDown  = 30;   // degrees (drawing height)
+int servoHome     = 90;   // safe retract
+int servoSettleMs = 150;  // ms to wait after servo move
 
 // State
 Servo penServo;
@@ -100,7 +105,7 @@ long currentStepsX = 0;
 long currentStepsY = 0;
 bool isAbsoluteMode = true;
 
-int currentServoAngle = SERVO_HOME;
+int currentServoAngle = 90;
 
 // ---------------------------------------------------------------------------
 //  SETUP
@@ -108,6 +113,10 @@ int currentServoAngle = SERVO_HOME;
 void setup() {
   Serial.begin(115200);
   delay(100); 
+
+  // Calculate steps/mm from defaults
+  recalcStepsPerMm();
+  currentServoAngle = servoHome;
 
   // Pin modes
   pinMode(X_STEP_PIN, OUTPUT);
@@ -123,14 +132,14 @@ void setup() {
 
   // Servo init
   penServo.attach(Z_SERVO_PIN);
-  setServoAngle(SERVO_HOME);
+  setServoAngle(servoHome);
 
   // Enable stepper drivers (TB6600 enabled when pin is LOW)
   digitalWrite(X_ENABLE_PIN, LOW);
   digitalWrite(Y_ENABLE_PIN, LOW);
 
   // Greet host app
-  Serial.println("Mega 2560 CNC Controller v1.0 Ready.");
+  Serial.println("Mega 2560 CNC Controller v2.0 Ready.");
   reportPosition(); // Send initial 0,0
 }
 
@@ -185,7 +194,7 @@ void processGCode(String cmd) {
     
     // Parse Feedrate
     float f = parseValue(cmd, 'F', currentFeedRate);
-    if (f > 0) currentFeedRate = constrain(f, MIN_FEEDRATE, MAX_FEEDRATE);
+    if (f > 0) currentFeedRate = constrain(f, minFeedrate, maxFeedrate);
     
     // Parse Coordinate Targets
     float valX = parseValue(cmd, 'X', -999999.0);
@@ -233,34 +242,58 @@ void processGCode(String cmd) {
     return;
   }
 
+  // --- G92: Set Work Origin ---
+  if (cmd.startsWith("G92")) {
+    float valX = parseValue(cmd, 'X', -999999.0);
+    float valY = parseValue(cmd, 'Y', -999999.0);
+    if (valX != -999999.0) { currentX = valX; currentStepsX = round(valX * stepsPerMmX); }
+    if (valY != -999999.0) { currentY = valY; currentStepsY = round(valY * stepsPerMmY); }
+    // If no axes specified, zero both
+    if (valX == -999999.0 && valY == -999999.0) {
+      currentX = 0; currentY = 0; currentStepsX = 0; currentStepsY = 0;
+    }
+    reportPosition();
+    Serial.println("ok");
+    return;
+  }
+
   // --- M Commands ---
   if (cmd.startsWith("M3")) {
-    // Spindle On / Pen down (or to specific angle)
-    int angle = (int)parseValue(cmd, 'S', SERVO_PEN_DOWN);
+    int angle = (int)parseValue(cmd, 'S', servoPenDown);
     setServoAngle(angle);
     Serial.println("ok");
     return;
   }
   
   if (cmd.startsWith("M5")) {
-    // Spindle Off / Pen up
-    setServoAngle(SERVO_PEN_UP);
+    setServoAngle(servoPenUp);
     Serial.println("ok");
     return;
   }
   
   if (cmd.startsWith("M280")) {
-    // Direct Servo
     int angle = (int)parseValue(cmd, 'S', currentServoAngle);
     setServoAngle(angle);
     Serial.println("ok");
     return;
   }
-  
-  // Settings / Settings Check
-  if (cmd.startsWith("$")) {
-    // Ignore internal GRBL config commands from Desktop app
+
+  // --- ? Quick Status Query ---
+  if (cmd == "?") {
+    reportPosition();
+    Serial.print("State:");
+    Serial.print(isAbsoluteMode ? "Abs" : "Rel");
+    Serial.print(" F:");
+    Serial.print(currentFeedRate, 0);
+    Serial.print(" Servo:");
+    Serial.println(currentServoAngle);
     Serial.println("ok");
+    return;
+  }
+
+  // --- $ Runtime Configuration Commands ---
+  if (cmd.startsWith("$")) {
+    processConfigCommand(cmd);
     return;
   }
 
@@ -300,7 +333,7 @@ void setServoAngle(int angle) {
   angle = constrain(angle, 0, 180);
   penServo.write(angle);
   currentServoAngle = angle;
-  delay(SERVO_SETTLE_MS);
+  delay(servoSettleMs);
 }
 
 void reportPosition() {
@@ -308,6 +341,80 @@ void reportPosition() {
   Serial.print(currentX, 2);
   Serial.print(" Y:");
   Serial.println(currentY, 2);
+}
+
+// ---------------------------------------------------------------------------
+//  RUNTIME CONFIGURATION PARSER ($ commands from Desktop App)
+// ---------------------------------------------------------------------------
+void processConfigCommand(String cmd) {
+  if (cmd == "$?") {
+    // Report all current settings as key-value pairs
+    Serial.print("$SPR="); Serial.println(motorStepsPerRev, 0);
+    Serial.print("$MS="); Serial.println(microsteps, 0);
+    Serial.print("$LP="); Serial.println(leadScrewPitchMm, 1);
+    Serial.print("$STEPS_MM="); Serial.println(stepsPerMmX, 1);
+    Serial.print("$MF="); Serial.println(maxFeedrate, 0);
+    Serial.print("$HF="); Serial.println(homingFeedrate, 0);
+    Serial.print("$HB="); Serial.println(homingBackoffMm, 1);
+    Serial.print("$SU="); Serial.println(servoPenUp);
+    Serial.print("$SD="); Serial.println(servoPenDown);
+    Serial.print("$SH="); Serial.println(servoHome);
+    Serial.print("$ST="); Serial.println(servoSettleMs);
+    Serial.println("ok");
+    return;
+  }
+
+  // Parse $KEY=VALUE format
+  int eqIdx = cmd.indexOf('=');
+  if (eqIdx == -1) {
+    Serial.println("error:Invalid config syntax. Use $KEY=VALUE");
+    return;
+  }
+
+  String key = cmd.substring(1, eqIdx);  // Strip leading $
+  float val = cmd.substring(eqIdx + 1).toFloat();
+
+  if (key == "MS") {
+    microsteps = val;
+    recalcStepsPerMm();
+    Serial.print("Debug: Microsteps="); Serial.print(microsteps, 0);
+    Serial.print(" StepsPerMm="); Serial.println(stepsPerMmX, 1);
+  } else if (key == "SPR") {
+    motorStepsPerRev = val;
+    recalcStepsPerMm();
+    Serial.print("Debug: StepsPerRev="); Serial.println(motorStepsPerRev, 0);
+  } else if (key == "LP") {
+    leadScrewPitchMm = val;
+    recalcStepsPerMm();
+    Serial.print("Debug: LeadScrewPitch="); Serial.println(leadScrewPitchMm, 1);
+  } else if (key == "MF") {
+    maxFeedrate = val;
+    Serial.print("Debug: MaxFeedrate="); Serial.println(maxFeedrate, 0);
+  } else if (key == "HF") {
+    homingFeedrate = val;
+    Serial.print("Debug: HomingFeedrate="); Serial.println(homingFeedrate, 0);
+  } else if (key == "HB") {
+    homingBackoffMm = val;
+    Serial.print("Debug: HomingBackoff="); Serial.println(homingBackoffMm, 1);
+  } else if (key == "SU") {
+    servoPenUp = (int)val;
+    Serial.print("Debug: ServoPenUp="); Serial.println(servoPenUp);
+  } else if (key == "SD") {
+    servoPenDown = (int)val;
+    Serial.print("Debug: ServoPenDown="); Serial.println(servoPenDown);
+  } else if (key == "SH") {
+    servoHome = (int)val;
+    Serial.print("Debug: ServoHome="); Serial.println(servoHome);
+  } else if (key == "ST") {
+    servoSettleMs = (int)val;
+    Serial.print("Debug: ServoSettleMs="); Serial.println(servoSettleMs);
+  } else {
+    Serial.print("error:Unknown config key: ");
+    Serial.println(key);
+    return;
+  }
+
+  Serial.println("ok");
 }
 
 // ---------------------------------------------------------------------------
@@ -329,7 +436,7 @@ void moveLinear(float targetX, float targetY, float feedRate) {
   
   digitalWrite(X_DIR_PIN, dirX);
   digitalWrite(Y_DIR_PIN, dirY);
-  delayMicroseconds(DIR_SETUP_DELAY_US); // Direction setup time
+  delayMicroseconds(dirSetupDelayUs); // Direction setup time
   
   long over = 0;
   
@@ -346,7 +453,7 @@ void moveLinear(float targetX, float targetY, float feedRate) {
   
   // Calculate microseconds per step
   unsigned long delayUs = 1000000.0 / targetSPS;
-  if(delayUs < MIN_LOOP_DELAY_US) delayUs = MIN_LOOP_DELAY_US; // Hard hardware limit to prevent locking up
+  if(delayUs < (unsigned long)minLoopDelayUs) delayUs = minLoopDelayUs; // Hard hardware limit
   
   if (dx > dy) {
     over = dx / 2;
@@ -384,7 +491,7 @@ void moveLinear(float targetX, float targetY, float feedRate) {
 
 void triggerStep(int pin) {
   digitalWrite(pin, HIGH);
-  delayMicroseconds(MIN_STEP_PULSE_US); // Minimum pulse width for TB6600
+  delayMicroseconds(minStepPulseUs); // Minimum pulse width for TB6600
   digitalWrite(pin, LOW);
   // Remainder of delay is handled in moveLinear
 }
@@ -394,19 +501,17 @@ void triggerStep(int pin) {
 // ---------------------------------------------------------------------------
 void homeAxis() {
   // Lift pen
-  setServoAngle(SERVO_HOME);
+  setServoAngle(servoHome);
   
   // Home speeds
-  float sps = (HOMING_FEEDRATE / 60.0) * stepsPerMmX;
+  float sps = (homingFeedrate / 60.0) * stepsPerMmX;
   unsigned long delayUs = 1000000.0 / sps;
   
   // --- Home X Axis ---
-  // Move Negative X until switch goes LOW
-  digitalWrite(X_DIR_PIN, LOW); // Assume LOW goes toward minimum
-  delayMicroseconds(DIR_SETUP_DELAY_US);
+  digitalWrite(X_DIR_PIN, LOW);
+  delayMicroseconds(dirSetupDelayUs);
   
   bool xHit = false;
-  // Timeout safeguard, assume max travel 500mm
   long maxSearchSteps = (long)(500.0 * stepsPerMmX);
   
   for(long i=0; i<maxSearchSteps; i++) {
@@ -416,10 +521,9 @@ void homeAxis() {
   }
   
   if (xHit) {
-    // Backoff positively
     digitalWrite(X_DIR_PIN, HIGH);
-    delayMicroseconds(DIR_SETUP_DELAY_US);
-    long backoffSteps = (long)(HOMING_BACKOFF_MM * stepsPerMmX);
+    delayMicroseconds(dirSetupDelayUs);
+    long backoffSteps = (long)(homingBackoffMm * stepsPerMmX);
     for(long i=0; i<backoffSteps; i++) {
       triggerStep(X_STEP_PIN);
       delayMicroseconds(delayUs);
@@ -428,7 +532,7 @@ void homeAxis() {
   
   // --- Home Y Axis ---
   digitalWrite(Y_DIR_PIN, LOW);
-  delayMicroseconds(DIR_SETUP_DELAY_US);
+  delayMicroseconds(dirSetupDelayUs);
   
   bool yHit = false;
   long maxSearchStepsY = (long)(500.0 * stepsPerMmY);
@@ -440,10 +544,9 @@ void homeAxis() {
   }
   
   if (yHit) {
-    // Backoff positively
     digitalWrite(Y_DIR_PIN, HIGH);
-    delayMicroseconds(DIR_SETUP_DELAY_US);
-    long backoffSteps = (long)(HOMING_BACKOFF_MM * stepsPerMmY);
+    delayMicroseconds(dirSetupDelayUs);
+    long backoffSteps = (long)(homingBackoffMm * stepsPerMmY);
     for(long i=0; i<backoffSteps; i++) {
       triggerStep(Y_STEP_PIN);
       delayMicroseconds(delayUs);

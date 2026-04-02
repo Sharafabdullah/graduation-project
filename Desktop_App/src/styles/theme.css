@@ -1,0 +1,83 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   Platform Control — Design System
+   Dark Theme · Colors · Typography · Reset
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Reset & Base ──────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-primary: #1E1E1E;
+  --bg-secondary: #252526;
+  --bg-card: #252526;
+  --bg-input: #2D2D2D;
+  --bg-hover: #2A2D2E;
+  --bg-sidebar: #1B1B1B;
+  --border: #3F3F3F;
+  --border-focus: #007ACC;
+  --accent: #007ACC;
+  --accent-hover: #005F99;
+  --accent-active: #004A7F;
+  --accent-glow: rgba(0, 122, 204, 0.25);
+  --accent-subtle: rgba(0, 122, 204, 0.08);
+  --text-primary: #E0E0E0;
+  --text-secondary: #A0A0A0;
+  --text-muted: #6A6A6A;
+  --success: #4EC9B0;
+  --success-glow: rgba(78, 201, 176, 0.3);
+  --danger: #F14C4C;
+  --danger-glow: rgba(241, 76, 76, 0.3);
+  --warning: #CCA700;
+  --btn-secondary: #3F3F3F;
+  --btn-secondary-hover: #505050;
+  --btn-secondary-active: #606060;
+  --radius: 8px;
+  --radius-sm: 5px;
+  --radius-lg: 12px;
+  --transition: 150ms ease;
+  --transition-slow: 300ms ease;
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  --sidebar-width: 240px;
+  --sidebar-collapsed: 64px;
+}
+
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: #4A4A4A;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: #5A5A5A; }
+
+/* ── Animations ────────────────────────────────────────────────────────────── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}

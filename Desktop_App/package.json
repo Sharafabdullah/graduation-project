@@ -1,17 +1,28 @@
 {
   "name": "platform-control",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Desktop control application for the General-Purpose 3-Axis CNC Machine",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "dev": "vite",
+    "build": "vite build",
+    "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "start": "vite build && electron .",
+    "electron": "electron ."
   },
   "author": "Graduation Project Team",
   "license": "MIT",
   "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
     "serialport": "^12.0.0"
   },
   "devDependencies": {
-    "electron": "^28.0.0"
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.0",
+    "electron": "^28.0.0",
+    "vite": "^6.0.0",
+    "wait-on": "^8.0.0"
   }
 }
