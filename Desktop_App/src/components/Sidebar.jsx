@@ -32,6 +32,15 @@ const NAV_ITEMS = [
     ),
   },
   {
+    path: '/image2gcode',
+    label: 'Image to G-Code',
+    icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20">
+        <path fill="currentColor" d="M19 3H5C3.89 3 3 3.89 3 5V19C3 20.11 3.89 21 5 21H19C20.11 21 21 20.11 21 19V5C21 3.89 20.11 3 19 3M19 19H5V5H19V19M13.96 12.29L11.21 15.83L9.25 13.47L6.5 17H17.5L13.96 12.29Z" />
+      </svg>
+    ),
+  },
+  {
     path: '/settings',
     label: 'Settings',
     icon: (

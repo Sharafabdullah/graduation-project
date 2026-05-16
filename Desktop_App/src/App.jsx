@@ -5,6 +5,7 @@ import ConsoleDrawer from './components/ConsoleDrawer';
 import DashboardPage from './pages/DashboardPage';
 import ManualControlPage from './pages/ManualControlPage';
 import GCodeJobsPage from './pages/GCodeJobsPage';
+import Image2GCodePage from './pages/Image2GCodePage';
 import SettingsPage from './pages/SettingsPage';
 import ConsolePage from './pages/ConsolePage';
 import './App.css';
@@ -20,6 +21,7 @@ function AppContent() {
         <Route path="/" element={<DashboardPage />} />
         <Route path="/manual" element={<ManualControlPage />} />
         <Route path="/gcode" element={<GCodeJobsPage />} />
+        <Route path="/image2gcode" element={<Image2GCodePage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/console" element={<ConsolePage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
