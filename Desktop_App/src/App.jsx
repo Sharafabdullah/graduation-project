@@ -17,15 +17,17 @@ function AppContent() {
 
   return (
     <main className="app-content">
-      <Routes>
-        <Route path="/" element={<DashboardPage />} />
-        <Route path="/manual" element={<ManualControlPage />} />
-        <Route path="/gcode" element={<GCodeJobsPage />} />
-        <Route path="/image2gcode" element={<Image2GCodePage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/console" element={<ConsolePage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <div className="page-wrapper" style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <Routes>
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="/manual" element={<ManualControlPage />} />
+          <Route path="/gcode" element={<GCodeJobsPage />} />
+          <Route path="/image2gcode" element={<Image2GCodePage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/console" element={<ConsolePage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
       {showDrawer && <ConsoleDrawer />}
     </main>
   );

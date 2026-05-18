@@ -25,7 +25,7 @@ export default function ManualControlPage() {
     <div className="page">
       <div className="page-header">
         <h1 className="page-title">Manual Control</h1>
-        <p className="page-subtitle">Jog the machine, set positions, and control the pen</p>
+        <p className="page-subtitle">Jog the machine, set positions, and control the head</p>
       </div>
 
       <div className="manual-grid">
@@ -118,15 +118,15 @@ export default function ManualControlPage() {
 
         {/* Pen Control */}
         <div className="card">
-          <h2 className="section-header">Pen / Servo Control</h2>
+          <h2 className="section-header">Head / Servo Control</h2>
           <div className="button-group" style={{ flexDirection: 'column' }}>
             <button className="btn btn-primary full-width" onClick={penUp} disabled={!connected}>
               <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z" /></svg>
-              Pen Up (M5)
+              Head Up (M5)
             </button>
             <button className="btn btn-primary full-width" onClick={penDown} disabled={!connected}>
               <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" /></svg>
-              Pen Down (M3)
+              Head Down (M3)
             </button>
           </div>
           <div className="form-row" style={{ marginTop: '8px' }}>

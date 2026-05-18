@@ -119,7 +119,7 @@ export default function SettingsPage() {
         <div className="card">
           <h2 className="section-header">Servo Configuration</h2>
           <div className="form-row">
-            <label>Pen Up Angle (°)</label>
+            <label>Head Up Angle (°)</label>
             <input
               type="number"
               value={settings.servoPenUp}
@@ -128,7 +128,7 @@ export default function SettingsPage() {
             />
           </div>
           <div className="form-row">
-            <label>Pen Down Angle (°)</label>
+            <label>Head Down Angle (°)</label>
             <input
               type="number"
               value={settings.servoPenDown}

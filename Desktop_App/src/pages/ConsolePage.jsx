@@ -4,8 +4,8 @@ import './ConsolePage.css';
 
 const QUICK_COMMANDS = [
   { label: 'G28 Home', cmd: 'G28' },
-  { label: 'M3 Pen Down', cmd: 'M3' },
-  { label: 'M5 Pen Up', cmd: 'M5' },
+  { label: 'M3 Head Down', cmd: 'M3' },
+  { label: 'M5 Head Up', cmd: 'M5' },
   { label: 'G90 Abs', cmd: 'G90' },
   { label: 'G91 Rel', cmd: 'G91' },
   { label: '? Status', cmd: '?' },

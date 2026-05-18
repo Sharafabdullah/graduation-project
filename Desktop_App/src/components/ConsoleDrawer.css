@@ -1,20 +1,17 @@
-/* ── Wrapper — slides up from the bottom ────────────────────────────────────── */
+/* ── Wrapper — normal flow, animates height ────────────────────────────────────── */
 .console-drawer-wrapper {
-  position: fixed;
-  bottom: 0;
-  left: var(--sidebar-width);
-  right: 0;
   z-index: 150;
   display: flex;
   flex-direction: column;
-  /* The body height + tab height */
-  transform: translateY(calc(100% - 36px)); /* Only tab visible when closed */
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform;
+  height: 36px; /* Only tab visible when closed */
+  transition: height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: height;
+  flex-shrink: 0;
+  overflow: hidden;
 }
 
 .console-drawer-wrapper.is-open {
-  transform: translateY(0);
+  height: 276px;
 }
 
 /* ── Tab bar — always visible ───────────────────────────────────────────────── */

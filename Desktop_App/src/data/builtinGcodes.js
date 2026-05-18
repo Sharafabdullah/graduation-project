@@ -246,8 +246,8 @@ G0 X0 Y0 F2000
   },
   {
     id: 'pen-test',
-    name: 'Pen Lift Test',
-    description: 'Alternating dots to verify servo pen up/down is working correctly',
+    name: 'Head Lift Test',
+    description: 'Alternating dots to verify servo head up/down is working correctly',
     category: 'calibration',
     content: `; ==========================================
 ; Pen Lift / Servo Test
