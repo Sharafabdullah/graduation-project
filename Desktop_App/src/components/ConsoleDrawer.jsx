@@ -23,6 +23,14 @@ export default function ConsoleDrawer() {
     }
   }, [open]);
 
+  // Set CSS variable for app layout dynamic resizing
+  useEffect(() => {
+    document.documentElement.style.setProperty('--console-height', open ? '276px' : '36px');
+    return () => {
+      document.documentElement.style.setProperty('--console-height', '0px');
+    };
+  }, [open]);
+
   const handleSend = () => {
     const cmd = input.trim();
     if (!cmd || !connected) return;

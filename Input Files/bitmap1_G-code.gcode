@@ -1,0 +1,9038 @@
+; Image to G-Code Generated
+G21 ; Set units to millimeters
+G90 ; Absolute positioning
+F1000 ; Set default feed rate
+M5 ; Pen up
+G0 X0.000 Y0.000
+M3 ; Pen down
+G1 X0.000 Y0.000
+M5 ; Pen up
+G0 X5.500 Y0.000
+M3 ; Pen down
+G1 X6.500 Y0.000
+M5 ; Pen up
+G0 X12.000 Y0.000
+M3 ; Pen down
+G1 X12.500 Y0.000
+M5 ; Pen up
+G0 X18.000 Y0.000
+M3 ; Pen down
+G1 X19.000 Y0.000
+M5 ; Pen up
+G0 X24.500 Y0.000
+M3 ; Pen down
+G1 X25.000 Y0.000
+M5 ; Pen up
+G0 X30.500 Y0.000
+M3 ; Pen down
+G1 X31.500 Y0.000
+M5 ; Pen up
+G0 X37.000 Y0.000
+M3 ; Pen down
+G1 X37.500 Y0.000
+M5 ; Pen up
+G0 X43.500 Y0.000
+M3 ; Pen down
+G1 X44.000 Y0.000
+M5 ; Pen up
+G0 X49.500 Y0.000
+M3 ; Pen down
+G1 X50.000 Y0.000
+M5 ; Pen up
+G0 X55.500 Y0.000
+M3 ; Pen down
+G1 X56.500 Y0.000
+M5 ; Pen up
+G0 X62.000 Y0.000
+M3 ; Pen down
+G1 X62.500 Y0.000
+M5 ; Pen up
+G0 X68.500 Y0.000
+M3 ; Pen down
+G1 X69.000 Y0.000
+M5 ; Pen up
+G0 X74.500 Y0.000
+M3 ; Pen down
+G1 X75.000 Y0.000
+M5 ; Pen up
+G0 X80.500 Y0.000
+M3 ; Pen down
+G1 X81.500 Y0.000
+M5 ; Pen up
+G0 X87.000 Y0.000
+M3 ; Pen down
+G1 X87.500 Y0.000
+M5 ; Pen up
+G0 X93.000 Y0.000
+M3 ; Pen down
+G1 X94.000 Y0.000
+M5 ; Pen up
+G0 X99.500 Y0.000
+M3 ; Pen down
+G1 X99.500 Y0.000
+M5 ; Pen up
+G0 X93.500 Y0.500
+M3 ; Pen down
+G1 X93.500 Y0.500
+M5 ; Pen up
+G0 X87.500 Y0.500
+M3 ; Pen down
+G1 X87.000 Y0.500
+M5 ; Pen up
+G0 X81.000 Y0.500
+M3 ; Pen down
+G1 X81.000 Y0.500
+M5 ; Pen up
+G0 X74.500 Y0.500
+M3 ; Pen down
+G1 X74.500 Y0.500
+M5 ; Pen up
+G0 X68.500 Y0.500
+M3 ; Pen down
+G1 X68.500 Y0.500
+M5 ; Pen up
+G0 X62.000 Y0.500
+M3 ; Pen down
+G1 X62.000 Y0.500
+M5 ; Pen up
+G0 X56.000 Y0.500
+M3 ; Pen down
+G1 X56.000 Y0.500
+M5 ; Pen up
+G0 X43.500 Y0.500
+M3 ; Pen down
+G1 X43.500 Y0.500
+M5 ; Pen up
+G0 X37.500 Y0.500
+M3 ; Pen down
+G1 X37.500 Y0.500
+M5 ; Pen up
+G0 X31.000 Y0.500
+M3 ; Pen down
+G1 X31.000 Y0.500
+M5 ; Pen up
+G0 X25.000 Y0.500
+M3 ; Pen down
+G1 X25.000 Y0.500
+M5 ; Pen up
+G0 X18.500 Y0.500
+M3 ; Pen down
+G1 X18.500 Y0.500
+M5 ; Pen up
+G0 X12.500 Y0.500
+M3 ; Pen down
+G1 X12.000 Y0.500
+M5 ; Pen up
+G0 X6.000 Y0.500
+M3 ; Pen down
+G1 X6.000 Y0.500
+M5 ; Pen up
+G0 X0.000 Y0.500
+M3 ; Pen down
+G1 X0.000 Y0.500
+M5 ; Pen up
+G0 X0.000 Y1.000
+M3 ; Pen down
+G1 X0.000 Y1.000
+M5 ; Pen up
+G0 X6.000 Y1.000
+M3 ; Pen down
+G1 X6.000 Y1.000
+M5 ; Pen up
+G0 X12.000 Y1.000
+M3 ; Pen down
+G1 X12.500 Y1.000
+M5 ; Pen up
+G0 X18.500 Y1.000
+M3 ; Pen down
+G1 X18.500 Y1.000
+M5 ; Pen up
+G0 X25.000 Y1.000
+M3 ; Pen down
+G1 X25.000 Y1.000
+M5 ; Pen up
+G0 X31.000 Y1.000
+M3 ; Pen down
+G1 X31.000 Y1.000
+M5 ; Pen up
+G0 X37.000 Y1.000
+M3 ; Pen down
+G1 X37.500 Y1.000
+M5 ; Pen up
+G0 X43.500 Y1.000
+M3 ; Pen down
+G1 X43.500 Y1.000
+M5 ; Pen up
+G0 X56.000 Y1.000
+M3 ; Pen down
+G1 X56.000 Y1.000
+M5 ; Pen up
+G0 X62.000 Y1.000
+M3 ; Pen down
+G1 X62.500 Y1.000
+M5 ; Pen up
+G0 X68.500 Y1.000
+M3 ; Pen down
+G1 X68.500 Y1.000
+M5 ; Pen up
+G0 X74.500 Y1.000
+M3 ; Pen down
+G1 X74.500 Y1.000
+M5 ; Pen up
+G0 X81.000 Y1.000
+M3 ; Pen down
+G1 X81.000 Y1.000
+M5 ; Pen up
+G0 X87.000 Y1.000
+M3 ; Pen down
+G1 X87.500 Y1.000
+M5 ; Pen up
+G0 X93.500 Y1.000
+M3 ; Pen down
+G1 X93.500 Y1.000
+M5 ; Pen up
+G0 X93.500 Y1.500
+M3 ; Pen down
+G1 X93.500 Y1.500
+M5 ; Pen up
+G0 X87.500 Y1.500
+M3 ; Pen down
+G1 X87.000 Y1.500
+M5 ; Pen up
+G0 X81.000 Y1.500
+M3 ; Pen down
+G1 X81.000 Y1.500
+M5 ; Pen up
+G0 X74.500 Y1.500
+M3 ; Pen down
+G1 X74.500 Y1.500
+M5 ; Pen up
+G0 X68.500 Y1.500
+M3 ; Pen down
+G1 X68.500 Y1.500
+M5 ; Pen up
+G0 X62.500 Y1.500
+M3 ; Pen down
+G1 X62.000 Y1.500
+M5 ; Pen up
+G0 X56.000 Y1.500
+M3 ; Pen down
+G1 X56.000 Y1.500
+M5 ; Pen up
+G0 X43.500 Y1.500
+M3 ; Pen down
+G1 X43.500 Y1.500
+M5 ; Pen up
+G0 X37.500 Y1.500
+M3 ; Pen down
+G1 X37.000 Y1.500
+M5 ; Pen up
+G0 X31.000 Y1.500
+M3 ; Pen down
+G1 X31.000 Y1.500
+M5 ; Pen up
+G0 X25.000 Y1.500
+M3 ; Pen down
+G1 X25.000 Y1.500
+M5 ; Pen up
+G0 X18.500 Y1.500
+M3 ; Pen down
+G1 X18.500 Y1.500
+M5 ; Pen up
+G0 X12.500 Y1.500
+M3 ; Pen down
+G1 X12.000 Y1.500
+M5 ; Pen up
+G0 X6.000 Y1.500
+M3 ; Pen down
+G1 X6.000 Y1.500
+M5 ; Pen up
+G0 X0.000 Y1.500
+M3 ; Pen down
+G1 X0.000 Y1.500
+M5 ; Pen up
+G0 X0.000 Y2.000
+M3 ; Pen down
+G1 X0.000 Y2.000
+M5 ; Pen up
+G0 X6.000 Y2.000
+M3 ; Pen down
+G1 X6.000 Y2.000
+M5 ; Pen up
+G0 X12.000 Y2.000
+M3 ; Pen down
+G1 X12.500 Y2.000
+M5 ; Pen up
+G0 X18.500 Y2.000
+M3 ; Pen down
+G1 X18.500 Y2.000
+M5 ; Pen up
+G0 X25.000 Y2.000
+M3 ; Pen down
+G1 X25.000 Y2.000
+M5 ; Pen up
+G0 X31.000 Y2.000
+M3 ; Pen down
+G1 X31.000 Y2.000
+M5 ; Pen up
+G0 X37.000 Y2.000
+M3 ; Pen down
+G1 X37.500 Y2.000
+M5 ; Pen up
+G0 X43.500 Y2.000
+M3 ; Pen down
+G1 X43.500 Y2.000
+M5 ; Pen up
+G0 X56.000 Y2.000
+M3 ; Pen down
+G1 X56.000 Y2.000
+M5 ; Pen up
+G0 X62.000 Y2.000
+M3 ; Pen down
+G1 X62.500 Y2.000
+M5 ; Pen up
+G0 X68.500 Y2.000
+M3 ; Pen down
+G1 X68.500 Y2.000
+M5 ; Pen up
+G0 X74.500 Y2.000
+M3 ; Pen down
+G1 X74.500 Y2.000
+M5 ; Pen up
+G0 X81.000 Y2.000
+M3 ; Pen down
+G1 X81.000 Y2.000
+M5 ; Pen up
+G0 X87.000 Y2.000
+M3 ; Pen down
+G1 X87.500 Y2.000
+M5 ; Pen up
+G0 X93.500 Y2.000
+M3 ; Pen down
+G1 X93.500 Y2.000
+M5 ; Pen up
+G0 X93.500 Y2.500
+M3 ; Pen down
+G1 X93.500 Y2.500
+M5 ; Pen up
+G0 X87.500 Y2.500
+M3 ; Pen down
+G1 X87.000 Y2.500
+M5 ; Pen up
+G0 X81.000 Y2.500
+M3 ; Pen down
+G1 X81.000 Y2.500
+M5 ; Pen up
+G0 X74.500 Y2.500
+M3 ; Pen down
+G1 X74.500 Y2.500
+M5 ; Pen up
+G0 X68.500 Y2.500
+M3 ; Pen down
+G1 X68.500 Y2.500
+M5 ; Pen up
+G0 X62.500 Y2.500
+M3 ; Pen down
+G1 X62.000 Y2.500
+M5 ; Pen up
+G0 X56.000 Y2.500
+M3 ; Pen down
+G1 X56.000 Y2.500
+M5 ; Pen up
+G0 X43.500 Y2.500
+M3 ; Pen down
+G1 X43.500 Y2.500
+M5 ; Pen up
+G0 X37.500 Y2.500
+M3 ; Pen down
+G1 X37.000 Y2.500
+M5 ; Pen up
+G0 X31.000 Y2.500
+M3 ; Pen down
+G1 X31.000 Y2.500
+M5 ; Pen up
+G0 X25.000 Y2.500
+M3 ; Pen down
+G1 X25.000 Y2.500
+M5 ; Pen up
+G0 X18.500 Y2.500
+M3 ; Pen down
+G1 X18.500 Y2.500
+M5 ; Pen up
+G0 X12.500 Y2.500
+M3 ; Pen down
+G1 X12.000 Y2.500
+M5 ; Pen up
+G0 X6.000 Y2.500
+M3 ; Pen down
+G1 X6.000 Y2.500
+M5 ; Pen up
+G0 X0.000 Y2.500
+M3 ; Pen down
+G1 X0.000 Y2.500
+M5 ; Pen up
+G0 X0.000 Y3.000
+M3 ; Pen down
+G1 X0.000 Y3.000
+M5 ; Pen up
+G0 X6.000 Y3.000
+M3 ; Pen down
+G1 X6.000 Y3.000
+M5 ; Pen up
+G0 X12.000 Y3.000
+M3 ; Pen down
+G1 X12.500 Y3.000
+M5 ; Pen up
+G0 X18.500 Y3.000
+M3 ; Pen down
+G1 X18.500 Y3.000
+M5 ; Pen up
+G0 X25.000 Y3.000
+M3 ; Pen down
+G1 X25.000 Y3.000
+M5 ; Pen up
+G0 X31.000 Y3.000
+M3 ; Pen down
+G1 X31.000 Y3.000
+M5 ; Pen up
+G0 X37.000 Y3.000
+M3 ; Pen down
+G1 X37.500 Y3.000
+M5 ; Pen up
+G0 X43.500 Y3.000
+M3 ; Pen down
+G1 X43.500 Y3.000
+M5 ; Pen up
+G0 X56.000 Y3.000
+M3 ; Pen down
+G1 X56.000 Y3.000
+M5 ; Pen up
+G0 X62.000 Y3.000
+M3 ; Pen down
+G1 X62.500 Y3.000
+M5 ; Pen up
+G0 X68.500 Y3.000
+M3 ; Pen down
+G1 X68.500 Y3.000
+M5 ; Pen up
+G0 X74.500 Y3.000
+M3 ; Pen down
+G1 X74.500 Y3.000
+M5 ; Pen up
+G0 X81.000 Y3.000
+M3 ; Pen down
+G1 X81.000 Y3.000
+M5 ; Pen up
+G0 X87.000 Y3.000
+M3 ; Pen down
+G1 X87.500 Y3.000
+M5 ; Pen up
+G0 X93.500 Y3.000
+M3 ; Pen down
+G1 X93.500 Y3.000
+M5 ; Pen up
+G0 X93.500 Y3.500
+M3 ; Pen down
+G1 X93.500 Y3.500
+M5 ; Pen up
+G0 X87.500 Y3.500
+M3 ; Pen down
+G1 X87.000 Y3.500
+M5 ; Pen up
+G0 X81.000 Y3.500
+M3 ; Pen down
+G1 X81.000 Y3.500
+M5 ; Pen up
+G0 X74.500 Y3.500
+M3 ; Pen down
+G1 X74.500 Y3.500
+M5 ; Pen up
+G0 X68.500 Y3.500
+M3 ; Pen down
+G1 X68.500 Y3.500
+M5 ; Pen up
+G0 X62.500 Y3.500
+M3 ; Pen down
+G1 X62.000 Y3.500
+M5 ; Pen up
+G0 X56.000 Y3.500
+M3 ; Pen down
+G1 X56.000 Y3.500
+M5 ; Pen up
+G0 X43.500 Y3.500
+M3 ; Pen down
+G1 X43.500 Y3.500
+M5 ; Pen up
+G0 X37.500 Y3.500
+M3 ; Pen down
+G1 X37.000 Y3.500
+M5 ; Pen up
+G0 X31.000 Y3.500
+M3 ; Pen down
+G1 X31.000 Y3.500
+M5 ; Pen up
+G0 X25.000 Y3.500
+M3 ; Pen down
+G1 X25.000 Y3.500
+M5 ; Pen up
+G0 X18.500 Y3.500
+M3 ; Pen down
+G1 X18.500 Y3.500
+M5 ; Pen up
+G0 X12.500 Y3.500
+M3 ; Pen down
+G1 X12.000 Y3.500
+M5 ; Pen up
+G0 X6.000 Y3.500
+M3 ; Pen down
+G1 X6.000 Y3.500
+M5 ; Pen up
+G0 X0.000 Y3.500
+M3 ; Pen down
+G1 X0.000 Y3.500
+M5 ; Pen up
+G0 X0.000 Y4.000
+M3 ; Pen down
+G1 X0.000 Y4.000
+M5 ; Pen up
+G0 X6.000 Y4.000
+M3 ; Pen down
+G1 X6.000 Y4.000
+M5 ; Pen up
+G0 X12.000 Y4.000
+M3 ; Pen down
+G1 X12.500 Y4.000
+M5 ; Pen up
+G0 X18.500 Y4.000
+M3 ; Pen down
+G1 X18.500 Y4.000
+M5 ; Pen up
+G0 X25.000 Y4.000
+M3 ; Pen down
+G1 X25.000 Y4.000
+M5 ; Pen up
+G0 X31.000 Y4.000
+M3 ; Pen down
+G1 X31.000 Y4.000
+M5 ; Pen up
+G0 X37.000 Y4.000
+M3 ; Pen down
+G1 X37.500 Y4.000
+M5 ; Pen up
+G0 X43.500 Y4.000
+M3 ; Pen down
+G1 X43.500 Y4.000
+M5 ; Pen up
+G0 X56.000 Y4.000
+M3 ; Pen down
+G1 X56.000 Y4.000
+M5 ; Pen up
+G0 X62.000 Y4.000
+M3 ; Pen down
+G1 X62.500 Y4.000
+M5 ; Pen up
+G0 X68.500 Y4.000
+M3 ; Pen down
+G1 X68.500 Y4.000
+M5 ; Pen up
+G0 X74.500 Y4.000
+M3 ; Pen down
+G1 X74.500 Y4.000
+M5 ; Pen up
+G0 X81.000 Y4.000
+M3 ; Pen down
+G1 X81.000 Y4.000
+M5 ; Pen up
+G0 X87.000 Y4.000
+M3 ; Pen down
+G1 X87.500 Y4.000
+M5 ; Pen up
+G0 X93.500 Y4.000
+M3 ; Pen down
+G1 X93.500 Y4.000
+M5 ; Pen up
+G0 X93.500 Y4.500
+M3 ; Pen down
+G1 X93.500 Y4.500
+M5 ; Pen up
+G0 X87.500 Y4.500
+M3 ; Pen down
+G1 X87.000 Y4.500
+M5 ; Pen up
+G0 X81.000 Y4.500
+M3 ; Pen down
+G1 X81.000 Y4.500
+M5 ; Pen up
+G0 X74.500 Y4.500
+M3 ; Pen down
+G1 X74.500 Y4.500
+M5 ; Pen up
+G0 X68.500 Y4.500
+M3 ; Pen down
+G1 X68.500 Y4.500
+M5 ; Pen up
+G0 X62.500 Y4.500
+M3 ; Pen down
+G1 X62.000 Y4.500
+M5 ; Pen up
+G0 X56.000 Y4.500
+M3 ; Pen down
+G1 X56.000 Y4.500
+M5 ; Pen up
+G0 X43.500 Y4.500
+M3 ; Pen down
+G1 X43.500 Y4.500
+M5 ; Pen up
+G0 X37.500 Y4.500
+M3 ; Pen down
+G1 X37.000 Y4.500
+M5 ; Pen up
+G0 X31.000 Y4.500
+M3 ; Pen down
+G1 X31.000 Y4.500
+M5 ; Pen up
+G0 X25.000 Y4.500
+M3 ; Pen down
+G1 X25.000 Y4.500
+M5 ; Pen up
+G0 X18.500 Y4.500
+M3 ; Pen down
+G1 X18.500 Y4.500
+M5 ; Pen up
+G0 X12.500 Y4.500
+M3 ; Pen down
+G1 X12.000 Y4.500
+M5 ; Pen up
+G0 X6.000 Y4.500
+M3 ; Pen down
+G1 X6.000 Y4.500
+M5 ; Pen up
+G0 X0.000 Y4.500
+M3 ; Pen down
+G1 X0.000 Y4.500
+M5 ; Pen up
+G0 X0.000 Y5.000
+M3 ; Pen down
+G1 X0.000 Y5.000
+M5 ; Pen up
+G0 X6.000 Y5.000
+M3 ; Pen down
+G1 X6.000 Y5.000
+M5 ; Pen up
+G0 X12.000 Y5.000
+M3 ; Pen down
+G1 X12.500 Y5.000
+M5 ; Pen up
+G0 X18.500 Y5.000
+M3 ; Pen down
+G1 X18.500 Y5.000
+M5 ; Pen up
+G0 X25.000 Y5.000
+M3 ; Pen down
+G1 X25.000 Y5.000
+M5 ; Pen up
+G0 X31.000 Y5.000
+M3 ; Pen down
+G1 X31.000 Y5.000
+M5 ; Pen up
+G0 X37.500 Y5.000
+M3 ; Pen down
+G1 X37.500 Y5.000
+M5 ; Pen up
+G0 X43.500 Y5.000
+M3 ; Pen down
+G1 X43.500 Y5.000
+M5 ; Pen up
+G0 X56.000 Y5.000
+M3 ; Pen down
+G1 X56.000 Y5.000
+M5 ; Pen up
+G0 X62.000 Y5.000
+M3 ; Pen down
+G1 X62.000 Y5.000
+M5 ; Pen up
+G0 X68.500 Y5.000
+M3 ; Pen down
+G1 X68.500 Y5.000
+M5 ; Pen up
+G0 X74.500 Y5.000
+M3 ; Pen down
+G1 X74.500 Y5.000
+M5 ; Pen up
+G0 X81.000 Y5.000
+M3 ; Pen down
+G1 X81.000 Y5.000
+M5 ; Pen up
+G0 X87.000 Y5.000
+M3 ; Pen down
+G1 X87.500 Y5.000
+M5 ; Pen up
+G0 X93.500 Y5.000
+M3 ; Pen down
+G1 X93.500 Y5.000
+M5 ; Pen up
+G0 X99.500 Y5.500
+M3 ; Pen down
+G1 X99.500 Y5.500
+M5 ; Pen up
+G0 X94.000 Y5.500
+M3 ; Pen down
+G1 X93.500 Y5.500
+M5 ; Pen up
+G0 X87.500 Y5.500
+M3 ; Pen down
+G1 X87.000 Y5.500
+M5 ; Pen up
+G0 X81.000 Y5.500
+M3 ; Pen down
+G1 X81.000 Y5.500
+M5 ; Pen up
+G0 X75.000 Y5.500
+M3 ; Pen down
+G1 X74.500 Y5.500
+M5 ; Pen up
+G0 X68.500 Y5.500
+M3 ; Pen down
+G1 X68.500 Y5.500
+M5 ; Pen up
+G0 X62.500 Y5.500
+M3 ; Pen down
+G1 X62.000 Y5.500
+M5 ; Pen up
+G0 X56.000 Y5.500
+M3 ; Pen down
+G1 X56.000 Y5.500
+M5 ; Pen up
+G0 X50.000 Y5.500
+M3 ; Pen down
+G1 X49.500 Y5.500
+M5 ; Pen up
+G0 X43.500 Y5.500
+M3 ; Pen down
+G1 X43.500 Y5.500
+M5 ; Pen up
+G0 X37.500 Y5.500
+M3 ; Pen down
+G1 X37.000 Y5.500
+M5 ; Pen up
+G0 X31.000 Y5.500
+M3 ; Pen down
+G1 X31.000 Y5.500
+M5 ; Pen up
+G0 X25.000 Y5.500
+M3 ; Pen down
+G1 X24.500 Y5.500
+M5 ; Pen up
+G0 X18.500 Y5.500
+M3 ; Pen down
+G1 X18.500 Y5.500
+M5 ; Pen up
+G0 X12.500 Y5.500
+M3 ; Pen down
+G1 X12.000 Y5.500
+M5 ; Pen up
+G0 X6.000 Y5.500
+M3 ; Pen down
+G1 X5.500 Y5.500
+M5 ; Pen up
+G0 X0.000 Y5.500
+M3 ; Pen down
+G1 X0.000 Y5.500
+M5 ; Pen up
+G0 X0.000 Y6.000
+M3 ; Pen down
+G1 X99.500 Y6.000
+M5 ; Pen up
+G0 X99.500 Y6.500
+M3 ; Pen down
+G1 X99.500 Y6.500
+M5 ; Pen up
+G0 X93.500 Y6.500
+M3 ; Pen down
+G1 X93.500 Y6.500
+M5 ; Pen up
+G0 X87.500 Y6.500
+M3 ; Pen down
+G1 X87.000 Y6.500
+M5 ; Pen up
+G0 X81.000 Y6.500
+M3 ; Pen down
+G1 X81.000 Y6.500
+M5 ; Pen up
+G0 X75.000 Y6.500
+M3 ; Pen down
+G1 X56.000 Y6.500
+M5 ; Pen up
+G0 X50.000 Y6.500
+M3 ; Pen down
+G1 X49.500 Y6.500
+M5 ; Pen up
+G0 X43.500 Y6.500
+M3 ; Pen down
+G1 X43.500 Y6.500
+M5 ; Pen up
+G0 X37.500 Y6.500
+M3 ; Pen down
+G1 X31.000 Y6.500
+M5 ; Pen up
+G0 X25.000 Y6.500
+M3 ; Pen down
+G1 X25.000 Y6.500
+M5 ; Pen up
+G0 X18.500 Y6.500
+M3 ; Pen down
+G1 X18.500 Y6.500
+M5 ; Pen up
+G0 X12.500 Y6.500
+M3 ; Pen down
+G1 X12.000 Y6.500
+M5 ; Pen up
+G0 X6.000 Y6.500
+M3 ; Pen down
+G1 X6.000 Y6.500
+M5 ; Pen up
+G0 X0.000 Y6.500
+M3 ; Pen down
+G1 X0.000 Y6.500
+M5 ; Pen up
+G0 X0.000 Y7.000
+M3 ; Pen down
+G1 X0.000 Y7.000
+M5 ; Pen up
+G0 X6.000 Y7.000
+M3 ; Pen down
+G1 X6.000 Y7.000
+M5 ; Pen up
+G0 X12.000 Y7.000
+M3 ; Pen down
+G1 X12.500 Y7.000
+M5 ; Pen up
+G0 X18.500 Y7.000
+M3 ; Pen down
+G1 X18.500 Y7.000
+M5 ; Pen up
+G0 X25.000 Y7.000
+M3 ; Pen down
+G1 X25.000 Y7.000
+M5 ; Pen up
+G0 X31.000 Y7.000
+M3 ; Pen down
+G1 X37.500 Y7.000
+M5 ; Pen up
+G0 X43.500 Y7.000
+M3 ; Pen down
+G1 X43.500 Y7.000
+M5 ; Pen up
+G0 X56.000 Y7.000
+M3 ; Pen down
+G1 X74.500 Y7.000
+M5 ; Pen up
+G0 X81.000 Y7.000
+M3 ; Pen down
+G1 X81.000 Y7.000
+M5 ; Pen up
+G0 X87.000 Y7.000
+M3 ; Pen down
+G1 X87.500 Y7.000
+M5 ; Pen up
+G0 X93.500 Y7.000
+M3 ; Pen down
+G1 X93.500 Y7.000
+M5 ; Pen up
+G0 X93.500 Y7.500
+M3 ; Pen down
+G1 X93.500 Y7.500
+M5 ; Pen up
+G0 X87.500 Y7.500
+M3 ; Pen down
+G1 X87.000 Y7.500
+M5 ; Pen up
+G0 X81.000 Y7.500
+M3 ; Pen down
+G1 X81.000 Y7.500
+M5 ; Pen up
+G0 X74.500 Y7.500
+M3 ; Pen down
+G1 X56.000 Y7.500
+M5 ; Pen up
+G0 X43.500 Y7.500
+M3 ; Pen down
+G1 X43.500 Y7.500
+M5 ; Pen up
+G0 X37.500 Y7.500
+M3 ; Pen down
+G1 X31.000 Y7.500
+M5 ; Pen up
+G0 X25.000 Y7.500
+M3 ; Pen down
+G1 X25.000 Y7.500
+M5 ; Pen up
+G0 X18.500 Y7.500
+M3 ; Pen down
+G1 X18.500 Y7.500
+M5 ; Pen up
+G0 X12.500 Y7.500
+M3 ; Pen down
+G1 X12.000 Y7.500
+M5 ; Pen up
+G0 X6.000 Y7.500
+M3 ; Pen down
+G1 X6.000 Y7.500
+M5 ; Pen up
+G0 X0.000 Y7.500
+M3 ; Pen down
+G1 X0.000 Y7.500
+M5 ; Pen up
+G0 X0.000 Y8.000
+M3 ; Pen down
+G1 X0.000 Y8.000
+M5 ; Pen up
+G0 X6.000 Y8.000
+M3 ; Pen down
+G1 X6.000 Y8.000
+M5 ; Pen up
+G0 X12.000 Y8.000
+M3 ; Pen down
+G1 X12.500 Y8.000
+M5 ; Pen up
+G0 X18.500 Y8.000
+M3 ; Pen down
+G1 X18.500 Y8.000
+M5 ; Pen up
+G0 X25.000 Y8.000
+M3 ; Pen down
+G1 X25.000 Y8.000
+M5 ; Pen up
+G0 X31.000 Y8.000
+M3 ; Pen down
+G1 X37.500 Y8.000
+M5 ; Pen up
+G0 X43.500 Y8.000
+M3 ; Pen down
+G1 X43.500 Y8.000
+M5 ; Pen up
+G0 X56.000 Y8.000
+M3 ; Pen down
+G1 X74.500 Y8.000
+M5 ; Pen up
+G0 X81.000 Y8.000
+M3 ; Pen down
+G1 X81.000 Y8.000
+M5 ; Pen up
+G0 X87.000 Y8.000
+M3 ; Pen down
+G1 X87.500 Y8.000
+M5 ; Pen up
+G0 X93.500 Y8.000
+M3 ; Pen down
+G1 X93.500 Y8.000
+M5 ; Pen up
+G0 X93.500 Y8.500
+M3 ; Pen down
+G1 X93.500 Y8.500
+M5 ; Pen up
+G0 X87.500 Y8.500
+M3 ; Pen down
+G1 X87.000 Y8.500
+M5 ; Pen up
+G0 X81.000 Y8.500
+M3 ; Pen down
+G1 X81.000 Y8.500
+M5 ; Pen up
+G0 X74.500 Y8.500
+M3 ; Pen down
+G1 X56.000 Y8.500
+M5 ; Pen up
+G0 X43.500 Y8.500
+M3 ; Pen down
+G1 X43.500 Y8.500
+M5 ; Pen up
+G0 X37.500 Y8.500
+M3 ; Pen down
+G1 X31.000 Y8.500
+M5 ; Pen up
+G0 X25.000 Y8.500
+M3 ; Pen down
+G1 X25.000 Y8.500
+M5 ; Pen up
+G0 X18.500 Y8.500
+M3 ; Pen down
+G1 X18.500 Y8.500
+M5 ; Pen up
+G0 X12.500 Y8.500
+M3 ; Pen down
+G1 X12.000 Y8.500
+M5 ; Pen up
+G0 X6.000 Y8.500
+M3 ; Pen down
+G1 X6.000 Y8.500
+M5 ; Pen up
+G0 X0.000 Y8.500
+M3 ; Pen down
+G1 X0.000 Y8.500
+M5 ; Pen up
+G0 X0.000 Y9.000
+M3 ; Pen down
+G1 X0.000 Y9.000
+M5 ; Pen up
+G0 X6.000 Y9.000
+M3 ; Pen down
+G1 X6.000 Y9.000
+M5 ; Pen up
+G0 X12.000 Y9.000
+M3 ; Pen down
+G1 X12.500 Y9.000
+M5 ; Pen up
+G0 X18.500 Y9.000
+M3 ; Pen down
+G1 X18.500 Y9.000
+M5 ; Pen up
+G0 X25.000 Y9.000
+M3 ; Pen down
+G1 X25.000 Y9.000
+M5 ; Pen up
+G0 X31.000 Y9.000
+M3 ; Pen down
+G1 X37.500 Y9.000
+M5 ; Pen up
+G0 X43.500 Y9.000
+M3 ; Pen down
+G1 X43.500 Y9.000
+M5 ; Pen up
+G0 X56.000 Y9.000
+M3 ; Pen down
+G1 X74.500 Y9.000
+M5 ; Pen up
+G0 X81.000 Y9.000
+M3 ; Pen down
+G1 X81.000 Y9.000
+M5 ; Pen up
+G0 X87.000 Y9.000
+M3 ; Pen down
+G1 X87.500 Y9.000
+M5 ; Pen up
+G0 X93.500 Y9.000
+M3 ; Pen down
+G1 X93.500 Y9.000
+M5 ; Pen up
+G0 X93.500 Y9.500
+M3 ; Pen down
+G1 X93.500 Y9.500
+M5 ; Pen up
+G0 X87.500 Y9.500
+M3 ; Pen down
+G1 X87.000 Y9.500
+M5 ; Pen up
+G0 X81.000 Y9.500
+M3 ; Pen down
+G1 X81.000 Y9.500
+M5 ; Pen up
+G0 X74.500 Y9.500
+M3 ; Pen down
+G1 X56.000 Y9.500
+M5 ; Pen up
+G0 X43.500 Y9.500
+M3 ; Pen down
+G1 X43.500 Y9.500
+M5 ; Pen up
+G0 X37.500 Y9.500
+M3 ; Pen down
+G1 X31.000 Y9.500
+M5 ; Pen up
+G0 X25.000 Y9.500
+M3 ; Pen down
+G1 X25.000 Y9.500
+M5 ; Pen up
+G0 X18.500 Y9.500
+M3 ; Pen down
+G1 X18.500 Y9.500
+M5 ; Pen up
+G0 X12.500 Y9.500
+M3 ; Pen down
+G1 X12.000 Y9.500
+M5 ; Pen up
+G0 X6.000 Y9.500
+M3 ; Pen down
+G1 X6.000 Y9.500
+M5 ; Pen up
+G0 X0.000 Y9.500
+M3 ; Pen down
+G1 X0.000 Y9.500
+M5 ; Pen up
+G0 X0.000 Y10.000
+M3 ; Pen down
+G1 X0.000 Y10.000
+M5 ; Pen up
+G0 X6.000 Y10.000
+M3 ; Pen down
+G1 X6.000 Y10.000
+M5 ; Pen up
+G0 X12.000 Y10.000
+M3 ; Pen down
+G1 X12.500 Y10.000
+M5 ; Pen up
+G0 X18.500 Y10.000
+M3 ; Pen down
+G1 X18.500 Y10.000
+M5 ; Pen up
+G0 X25.000 Y10.000
+M3 ; Pen down
+G1 X25.000 Y10.000
+M5 ; Pen up
+G0 X31.000 Y10.000
+M3 ; Pen down
+G1 X37.500 Y10.000
+M5 ; Pen up
+G0 X43.500 Y10.000
+M3 ; Pen down
+G1 X43.500 Y10.000
+M5 ; Pen up
+G0 X56.000 Y10.000
+M3 ; Pen down
+G1 X74.500 Y10.000
+M5 ; Pen up
+G0 X81.000 Y10.000
+M3 ; Pen down
+G1 X81.000 Y10.000
+M5 ; Pen up
+G0 X87.000 Y10.000
+M3 ; Pen down
+G1 X87.500 Y10.000
+M5 ; Pen up
+G0 X93.500 Y10.000
+M3 ; Pen down
+G1 X93.500 Y10.000
+M5 ; Pen up
+G0 X93.500 Y10.500
+M3 ; Pen down
+G1 X93.500 Y10.500
+M5 ; Pen up
+G0 X87.500 Y10.500
+M3 ; Pen down
+G1 X87.000 Y10.500
+M5 ; Pen up
+G0 X81.000 Y10.500
+M3 ; Pen down
+G1 X81.000 Y10.500
+M5 ; Pen up
+G0 X74.500 Y10.500
+M3 ; Pen down
+G1 X56.000 Y10.500
+M5 ; Pen up
+G0 X43.500 Y10.500
+M3 ; Pen down
+G1 X43.500 Y10.500
+M5 ; Pen up
+G0 X37.500 Y10.500
+M3 ; Pen down
+G1 X31.000 Y10.500
+M5 ; Pen up
+G0 X25.000 Y10.500
+M3 ; Pen down
+G1 X25.000 Y10.500
+M5 ; Pen up
+G0 X18.500 Y10.500
+M3 ; Pen down
+G1 X18.500 Y10.500
+M5 ; Pen up
+G0 X12.500 Y10.500
+M3 ; Pen down
+G1 X12.000 Y10.500
+M5 ; Pen up
+G0 X6.000 Y10.500
+M3 ; Pen down
+G1 X6.000 Y10.500
+M5 ; Pen up
+G0 X0.000 Y10.500
+M3 ; Pen down
+G1 X0.000 Y10.500
+M5 ; Pen up
+G0 X0.000 Y11.000
+M3 ; Pen down
+G1 X0.000 Y11.000
+M5 ; Pen up
+G0 X6.000 Y11.000
+M3 ; Pen down
+G1 X6.000 Y11.000
+M5 ; Pen up
+G0 X12.000 Y11.000
+M3 ; Pen down
+G1 X12.500 Y11.000
+M5 ; Pen up
+G0 X18.500 Y11.000
+M3 ; Pen down
+G1 X18.500 Y11.000
+M5 ; Pen up
+G0 X25.000 Y11.000
+M3 ; Pen down
+G1 X25.000 Y11.000
+M5 ; Pen up
+G0 X31.000 Y11.000
+M3 ; Pen down
+G1 X37.500 Y11.000
+M5 ; Pen up
+G0 X43.500 Y11.000
+M3 ; Pen down
+G1 X43.500 Y11.000
+M5 ; Pen up
+G0 X56.000 Y11.000
+M3 ; Pen down
+G1 X74.500 Y11.000
+M5 ; Pen up
+G0 X81.000 Y11.000
+M3 ; Pen down
+G1 X81.000 Y11.000
+M5 ; Pen up
+G0 X87.000 Y11.000
+M3 ; Pen down
+G1 X87.500 Y11.000
+M5 ; Pen up
+G0 X93.500 Y11.000
+M3 ; Pen down
+G1 X93.500 Y11.000
+M5 ; Pen up
+G0 X93.500 Y11.500
+M3 ; Pen down
+G1 X93.500 Y11.500
+M5 ; Pen up
+G0 X87.500 Y11.500
+M3 ; Pen down
+G1 X87.000 Y11.500
+M5 ; Pen up
+G0 X81.000 Y11.500
+M3 ; Pen down
+G1 X81.000 Y11.500
+M5 ; Pen up
+G0 X74.500 Y11.500
+M3 ; Pen down
+G1 X56.000 Y11.500
+M5 ; Pen up
+G0 X43.500 Y11.500
+M3 ; Pen down
+G1 X43.500 Y11.500
+M5 ; Pen up
+G0 X37.500 Y11.500
+M3 ; Pen down
+G1 X31.000 Y11.500
+M5 ; Pen up
+G0 X25.000 Y11.500
+M3 ; Pen down
+G1 X25.000 Y11.500
+M5 ; Pen up
+G0 X18.500 Y11.500
+M3 ; Pen down
+G1 X18.500 Y11.500
+M5 ; Pen up
+G0 X12.500 Y11.500
+M3 ; Pen down
+G1 X12.000 Y11.500
+M5 ; Pen up
+G0 X6.000 Y11.500
+M3 ; Pen down
+G1 X6.000 Y11.500
+M5 ; Pen up
+G0 X0.000 Y11.500
+M3 ; Pen down
+G1 X0.000 Y11.500
+M5 ; Pen up
+G0 X0.000 Y12.000
+M3 ; Pen down
+G1 X99.500 Y12.000
+M5 ; Pen up
+G0 X99.500 Y12.500
+M3 ; Pen down
+G1 X99.500 Y12.500
+M5 ; Pen up
+G0 X94.000 Y12.500
+M3 ; Pen down
+G1 X93.000 Y12.500
+M5 ; Pen up
+G0 X87.500 Y12.500
+M3 ; Pen down
+G1 X87.000 Y12.500
+M5 ; Pen up
+G0 X81.500 Y12.500
+M3 ; Pen down
+G1 X80.500 Y12.500
+M5 ; Pen up
+G0 X75.000 Y12.500
+M3 ; Pen down
+G1 X74.500 Y12.500
+M5 ; Pen up
+G0 X69.000 Y12.500
+M3 ; Pen down
+G1 X68.500 Y12.500
+M5 ; Pen up
+G0 X62.500 Y12.500
+M3 ; Pen down
+G1 X62.000 Y12.500
+M5 ; Pen up
+G0 X56.500 Y12.500
+M3 ; Pen down
+G1 X12.000 Y12.500
+M5 ; Pen up
+G0 X6.500 Y12.500
+M3 ; Pen down
+G1 X5.500 Y12.500
+M5 ; Pen up
+G0 X0.000 Y12.500
+M3 ; Pen down
+G1 X0.000 Y12.500
+M5 ; Pen up
+G0 X0.000 Y13.000
+M3 ; Pen down
+G1 X0.000 Y13.000
+M5 ; Pen up
+G0 X6.000 Y13.000
+M3 ; Pen down
+G1 X6.000 Y13.000
+M5 ; Pen up
+G0 X12.000 Y13.000
+M3 ; Pen down
+G1 X56.000 Y13.000
+M5 ; Pen up
+G0 X62.000 Y13.000
+M3 ; Pen down
+G1 X62.500 Y13.000
+M5 ; Pen up
+G0 X68.500 Y13.000
+M3 ; Pen down
+G1 X68.500 Y13.000
+M5 ; Pen up
+G0 X74.500 Y13.000
+M3 ; Pen down
+G1 X74.500 Y13.000
+M5 ; Pen up
+G0 X81.000 Y13.000
+M3 ; Pen down
+G1 X81.000 Y13.000
+M5 ; Pen up
+G0 X87.000 Y13.000
+M3 ; Pen down
+G1 X87.500 Y13.000
+M5 ; Pen up
+G0 X93.500 Y13.000
+M3 ; Pen down
+G1 X93.500 Y13.000
+M5 ; Pen up
+G0 X93.500 Y13.500
+M3 ; Pen down
+G1 X93.500 Y13.500
+M5 ; Pen up
+G0 X87.500 Y13.500
+M3 ; Pen down
+G1 X87.000 Y13.500
+M5 ; Pen up
+G0 X81.000 Y13.500
+M3 ; Pen down
+G1 X81.000 Y13.500
+M5 ; Pen up
+G0 X74.500 Y13.500
+M3 ; Pen down
+G1 X74.500 Y13.500
+M5 ; Pen up
+G0 X68.500 Y13.500
+M3 ; Pen down
+G1 X68.500 Y13.500
+M5 ; Pen up
+G0 X62.500 Y13.500
+M3 ; Pen down
+G1 X62.000 Y13.500
+M5 ; Pen up
+G0 X56.000 Y13.500
+M3 ; Pen down
+G1 X12.000 Y13.500
+M5 ; Pen up
+G0 X6.000 Y13.500
+M3 ; Pen down
+G1 X6.000 Y13.500
+M5 ; Pen up
+G0 X0.000 Y13.500
+M3 ; Pen down
+G1 X0.000 Y13.500
+M5 ; Pen up
+G0 X0.000 Y14.000
+M3 ; Pen down
+G1 X0.000 Y14.000
+M5 ; Pen up
+G0 X6.000 Y14.000
+M3 ; Pen down
+G1 X6.000 Y14.000
+M5 ; Pen up
+G0 X12.000 Y14.000
+M3 ; Pen down
+G1 X56.000 Y14.000
+M5 ; Pen up
+G0 X62.000 Y14.000
+M3 ; Pen down
+G1 X62.500 Y14.000
+M5 ; Pen up
+G0 X68.500 Y14.000
+M3 ; Pen down
+G1 X68.500 Y14.000
+M5 ; Pen up
+G0 X74.500 Y14.000
+M3 ; Pen down
+G1 X74.500 Y14.000
+M5 ; Pen up
+G0 X81.000 Y14.000
+M3 ; Pen down
+G1 X81.000 Y14.000
+M5 ; Pen up
+G0 X87.000 Y14.000
+M3 ; Pen down
+G1 X87.500 Y14.000
+M5 ; Pen up
+G0 X93.500 Y14.000
+M3 ; Pen down
+G1 X93.500 Y14.000
+M5 ; Pen up
+G0 X93.500 Y14.500
+M3 ; Pen down
+G1 X93.500 Y14.500
+M5 ; Pen up
+G0 X87.500 Y14.500
+M3 ; Pen down
+G1 X87.000 Y14.500
+M5 ; Pen up
+G0 X81.000 Y14.500
+M3 ; Pen down
+G1 X81.000 Y14.500
+M5 ; Pen up
+G0 X74.500 Y14.500
+M3 ; Pen down
+G1 X74.500 Y14.500
+M5 ; Pen up
+G0 X68.500 Y14.500
+M3 ; Pen down
+G1 X68.500 Y14.500
+M5 ; Pen up
+G0 X62.500 Y14.500
+M3 ; Pen down
+G1 X62.000 Y14.500
+M5 ; Pen up
+G0 X56.000 Y14.500
+M3 ; Pen down
+G1 X12.000 Y14.500
+M5 ; Pen up
+G0 X6.000 Y14.500
+M3 ; Pen down
+G1 X6.000 Y14.500
+M5 ; Pen up
+G0 X0.000 Y14.500
+M3 ; Pen down
+G1 X0.000 Y14.500
+M5 ; Pen up
+G0 X0.000 Y15.000
+M3 ; Pen down
+G1 X0.000 Y15.000
+M5 ; Pen up
+G0 X6.000 Y15.000
+M3 ; Pen down
+G1 X6.000 Y15.000
+M5 ; Pen up
+G0 X12.000 Y15.000
+M3 ; Pen down
+G1 X56.000 Y15.000
+M5 ; Pen up
+G0 X62.000 Y15.000
+M3 ; Pen down
+G1 X62.500 Y15.000
+M5 ; Pen up
+G0 X68.500 Y15.000
+M3 ; Pen down
+G1 X68.500 Y15.000
+M5 ; Pen up
+G0 X74.500 Y15.000
+M3 ; Pen down
+G1 X74.500 Y15.000
+M5 ; Pen up
+G0 X81.000 Y15.000
+M3 ; Pen down
+G1 X81.000 Y15.000
+M5 ; Pen up
+G0 X87.000 Y15.000
+M3 ; Pen down
+G1 X87.500 Y15.000
+M5 ; Pen up
+G0 X93.500 Y15.000
+M3 ; Pen down
+G1 X93.500 Y15.000
+M5 ; Pen up
+G0 X93.500 Y15.500
+M3 ; Pen down
+G1 X93.500 Y15.500
+M5 ; Pen up
+G0 X87.500 Y15.500
+M3 ; Pen down
+G1 X87.000 Y15.500
+M5 ; Pen up
+G0 X81.000 Y15.500
+M3 ; Pen down
+G1 X81.000 Y15.500
+M5 ; Pen up
+G0 X74.500 Y15.500
+M3 ; Pen down
+G1 X74.500 Y15.500
+M5 ; Pen up
+G0 X68.500 Y15.500
+M3 ; Pen down
+G1 X68.500 Y15.500
+M5 ; Pen up
+G0 X62.500 Y15.500
+M3 ; Pen down
+G1 X62.000 Y15.500
+M5 ; Pen up
+G0 X56.000 Y15.500
+M3 ; Pen down
+G1 X12.000 Y15.500
+M5 ; Pen up
+G0 X6.000 Y15.500
+M3 ; Pen down
+G1 X6.000 Y15.500
+M5 ; Pen up
+G0 X0.000 Y15.500
+M3 ; Pen down
+G1 X0.000 Y15.500
+M5 ; Pen up
+G0 X0.000 Y16.000
+M3 ; Pen down
+G1 X0.000 Y16.000
+M5 ; Pen up
+G0 X6.000 Y16.000
+M3 ; Pen down
+G1 X6.000 Y16.000
+M5 ; Pen up
+G0 X12.000 Y16.000
+M3 ; Pen down
+G1 X56.000 Y16.000
+M5 ; Pen up
+G0 X62.000 Y16.000
+M3 ; Pen down
+G1 X62.500 Y16.000
+M5 ; Pen up
+G0 X68.500 Y16.000
+M3 ; Pen down
+G1 X68.500 Y16.000
+M5 ; Pen up
+G0 X74.500 Y16.000
+M3 ; Pen down
+G1 X74.500 Y16.000
+M5 ; Pen up
+G0 X81.000 Y16.000
+M3 ; Pen down
+G1 X81.000 Y16.000
+M5 ; Pen up
+G0 X87.000 Y16.000
+M3 ; Pen down
+G1 X87.500 Y16.000
+M5 ; Pen up
+G0 X93.500 Y16.000
+M3 ; Pen down
+G1 X93.500 Y16.000
+M5 ; Pen up
+G0 X93.500 Y16.500
+M3 ; Pen down
+G1 X93.500 Y16.500
+M5 ; Pen up
+G0 X87.500 Y16.500
+M3 ; Pen down
+G1 X87.000 Y16.500
+M5 ; Pen up
+G0 X81.000 Y16.500
+M3 ; Pen down
+G1 X81.000 Y16.500
+M5 ; Pen up
+G0 X74.500 Y16.500
+M3 ; Pen down
+G1 X74.500 Y16.500
+M5 ; Pen up
+G0 X68.500 Y16.500
+M3 ; Pen down
+G1 X68.500 Y16.500
+M5 ; Pen up
+G0 X62.500 Y16.500
+M3 ; Pen down
+G1 X62.000 Y16.500
+M5 ; Pen up
+G0 X56.000 Y16.500
+M3 ; Pen down
+G1 X12.000 Y16.500
+M5 ; Pen up
+G0 X6.000 Y16.500
+M3 ; Pen down
+G1 X6.000 Y16.500
+M5 ; Pen up
+G0 X0.000 Y16.500
+M3 ; Pen down
+G1 X0.000 Y16.500
+M5 ; Pen up
+G0 X0.000 Y17.000
+M3 ; Pen down
+G1 X0.000 Y17.000
+M5 ; Pen up
+G0 X6.000 Y17.000
+M3 ; Pen down
+G1 X6.000 Y17.000
+M5 ; Pen up
+G0 X12.000 Y17.000
+M3 ; Pen down
+G1 X56.000 Y17.000
+M5 ; Pen up
+G0 X62.000 Y17.000
+M3 ; Pen down
+G1 X62.500 Y17.000
+M5 ; Pen up
+G0 X68.500 Y17.000
+M3 ; Pen down
+G1 X68.500 Y17.000
+M5 ; Pen up
+G0 X74.500 Y17.000
+M3 ; Pen down
+G1 X74.500 Y17.000
+M5 ; Pen up
+G0 X81.000 Y17.000
+M3 ; Pen down
+G1 X81.000 Y17.000
+M5 ; Pen up
+G0 X87.000 Y17.000
+M3 ; Pen down
+G1 X87.500 Y17.000
+M5 ; Pen up
+G0 X93.500 Y17.000
+M3 ; Pen down
+G1 X93.500 Y17.000
+M5 ; Pen up
+G0 X93.500 Y17.500
+M3 ; Pen down
+G1 X93.500 Y17.500
+M5 ; Pen up
+G0 X87.500 Y17.500
+M3 ; Pen down
+G1 X87.000 Y17.500
+M5 ; Pen up
+G0 X81.000 Y17.500
+M3 ; Pen down
+G1 X81.000 Y17.500
+M5 ; Pen up
+G0 X74.500 Y17.500
+M3 ; Pen down
+G1 X74.500 Y17.500
+M5 ; Pen up
+G0 X68.500 Y17.500
+M3 ; Pen down
+G1 X68.500 Y17.500
+M5 ; Pen up
+G0 X62.000 Y17.500
+M3 ; Pen down
+G1 X62.000 Y17.500
+M5 ; Pen up
+G0 X56.000 Y17.500
+M3 ; Pen down
+G1 X12.000 Y17.500
+M5 ; Pen up
+G0 X6.000 Y17.500
+M3 ; Pen down
+G1 X6.000 Y17.500
+M5 ; Pen up
+G0 X0.000 Y17.500
+M3 ; Pen down
+G1 X0.000 Y17.500
+M5 ; Pen up
+G0 X0.000 Y18.000
+M3 ; Pen down
+G1 X0.000 Y18.000
+M5 ; Pen up
+G0 X5.500 Y18.000
+M3 ; Pen down
+G1 X6.500 Y18.000
+M5 ; Pen up
+G0 X12.000 Y18.000
+M3 ; Pen down
+G1 X56.000 Y18.000
+M5 ; Pen up
+G0 X62.000 Y18.000
+M3 ; Pen down
+G1 X62.500 Y18.000
+M5 ; Pen up
+G0 X68.500 Y18.000
+M3 ; Pen down
+G1 X69.000 Y18.000
+M5 ; Pen up
+G0 X74.500 Y18.000
+M3 ; Pen down
+G1 X75.000 Y18.000
+M5 ; Pen up
+G0 X81.000 Y18.000
+M3 ; Pen down
+G1 X81.500 Y18.000
+M5 ; Pen up
+G0 X87.000 Y18.000
+M3 ; Pen down
+G1 X87.500 Y18.000
+M5 ; Pen up
+G0 X93.500 Y18.000
+M3 ; Pen down
+G1 X94.000 Y18.000
+M5 ; Pen up
+G0 X99.500 Y18.000
+M3 ; Pen down
+G1 X99.500 Y18.000
+M5 ; Pen up
+G0 X99.500 Y18.500
+M3 ; Pen down
+G1 X0.000 Y18.500
+M5 ; Pen up
+G0 X0.000 Y19.000
+M3 ; Pen down
+G1 X0.000 Y19.000
+M5 ; Pen up
+G0 X6.000 Y19.000
+M3 ; Pen down
+G1 X6.000 Y19.000
+M5 ; Pen up
+G0 X12.000 Y19.000
+M3 ; Pen down
+G1 X12.500 Y19.000
+M5 ; Pen up
+G0 X18.500 Y19.000
+M3 ; Pen down
+G1 X18.500 Y19.000
+M5 ; Pen up
+G0 X24.500 Y19.000
+M3 ; Pen down
+G1 X25.000 Y19.000
+M5 ; Pen up
+G0 X31.000 Y19.000
+M3 ; Pen down
+G1 X37.500 Y19.000
+M5 ; Pen up
+G0 X43.500 Y19.000
+M3 ; Pen down
+G1 X43.500 Y19.000
+M5 ; Pen up
+G0 X49.500 Y19.000
+M3 ; Pen down
+G1 X50.000 Y19.000
+M5 ; Pen up
+G0 X56.000 Y19.000
+M3 ; Pen down
+G1 X56.000 Y19.000
+M5 ; Pen up
+G0 X62.000 Y19.000
+M3 ; Pen down
+G1 X62.500 Y19.000
+M5 ; Pen up
+G0 X68.500 Y19.000
+M3 ; Pen down
+G1 X68.500 Y19.000
+M5 ; Pen up
+G0 X74.500 Y19.000
+M3 ; Pen down
+G1 X75.000 Y19.000
+M5 ; Pen up
+G0 X81.000 Y19.000
+M3 ; Pen down
+G1 X81.000 Y19.000
+M5 ; Pen up
+G0 X87.000 Y19.000
+M3 ; Pen down
+G1 X87.500 Y19.000
+M5 ; Pen up
+G0 X93.500 Y19.000
+M3 ; Pen down
+G1 X93.500 Y19.000
+M5 ; Pen up
+G0 X99.500 Y19.000
+M3 ; Pen down
+G1 X99.500 Y19.000
+M5 ; Pen up
+G0 X93.500 Y19.500
+M3 ; Pen down
+G1 X93.500 Y19.500
+M5 ; Pen up
+G0 X87.500 Y19.500
+M3 ; Pen down
+G1 X87.000 Y19.500
+M5 ; Pen up
+G0 X81.000 Y19.500
+M3 ; Pen down
+G1 X81.000 Y19.500
+M5 ; Pen up
+G0 X74.500 Y19.500
+M3 ; Pen down
+G1 X74.500 Y19.500
+M5 ; Pen up
+G0 X68.500 Y19.500
+M3 ; Pen down
+G1 X68.500 Y19.500
+M5 ; Pen up
+G0 X62.500 Y19.500
+M3 ; Pen down
+G1 X62.000 Y19.500
+M5 ; Pen up
+G0 X56.000 Y19.500
+M3 ; Pen down
+G1 X56.000 Y19.500
+M5 ; Pen up
+G0 X43.500 Y19.500
+M3 ; Pen down
+G1 X43.500 Y19.500
+M5 ; Pen up
+G0 X37.500 Y19.500
+M3 ; Pen down
+G1 X31.000 Y19.500
+M5 ; Pen up
+G0 X25.000 Y19.500
+M3 ; Pen down
+G1 X25.000 Y19.500
+M5 ; Pen up
+G0 X18.500 Y19.500
+M3 ; Pen down
+G1 X18.500 Y19.500
+M5 ; Pen up
+G0 X12.500 Y19.500
+M3 ; Pen down
+G1 X12.000 Y19.500
+M5 ; Pen up
+G0 X6.000 Y19.500
+M3 ; Pen down
+G1 X6.000 Y19.500
+M5 ; Pen up
+G0 X0.000 Y19.500
+M3 ; Pen down
+G1 X0.000 Y19.500
+M5 ; Pen up
+G0 X0.000 Y20.000
+M3 ; Pen down
+G1 X0.000 Y20.000
+M5 ; Pen up
+G0 X6.000 Y20.000
+M3 ; Pen down
+G1 X6.000 Y20.000
+M5 ; Pen up
+G0 X12.000 Y20.000
+M3 ; Pen down
+G1 X12.500 Y20.000
+M5 ; Pen up
+G0 X18.500 Y20.000
+M3 ; Pen down
+G1 X18.500 Y20.000
+M5 ; Pen up
+G0 X25.000 Y20.000
+M3 ; Pen down
+G1 X25.000 Y20.000
+M5 ; Pen up
+G0 X31.000 Y20.000
+M3 ; Pen down
+G1 X37.500 Y20.000
+M5 ; Pen up
+G0 X43.500 Y20.000
+M3 ; Pen down
+G1 X43.500 Y20.000
+M5 ; Pen up
+G0 X56.000 Y20.000
+M3 ; Pen down
+G1 X56.000 Y20.000
+M5 ; Pen up
+G0 X62.000 Y20.000
+M3 ; Pen down
+G1 X62.500 Y20.000
+M5 ; Pen up
+G0 X68.500 Y20.000
+M3 ; Pen down
+G1 X68.500 Y20.000
+M5 ; Pen up
+G0 X74.500 Y20.000
+M3 ; Pen down
+G1 X74.500 Y20.000
+M5 ; Pen up
+G0 X81.000 Y20.000
+M3 ; Pen down
+G1 X81.000 Y20.000
+M5 ; Pen up
+G0 X87.000 Y20.000
+M3 ; Pen down
+G1 X87.500 Y20.000
+M5 ; Pen up
+G0 X93.500 Y20.000
+M3 ; Pen down
+G1 X93.500 Y20.000
+M5 ; Pen up
+G0 X93.500 Y20.500
+M3 ; Pen down
+G1 X93.500 Y20.500
+M5 ; Pen up
+G0 X87.500 Y20.500
+M3 ; Pen down
+G1 X87.000 Y20.500
+M5 ; Pen up
+G0 X81.000 Y20.500
+M3 ; Pen down
+G1 X81.000 Y20.500
+M5 ; Pen up
+G0 X74.500 Y20.500
+M3 ; Pen down
+G1 X74.500 Y20.500
+M5 ; Pen up
+G0 X68.500 Y20.500
+M3 ; Pen down
+G1 X68.500 Y20.500
+M5 ; Pen up
+G0 X62.500 Y20.500
+M3 ; Pen down
+G1 X62.000 Y20.500
+M5 ; Pen up
+G0 X56.000 Y20.500
+M3 ; Pen down
+G1 X56.000 Y20.500
+M5 ; Pen up
+G0 X43.500 Y20.500
+M3 ; Pen down
+G1 X43.500 Y20.500
+M5 ; Pen up
+G0 X37.500 Y20.500
+M3 ; Pen down
+G1 X31.000 Y20.500
+M5 ; Pen up
+G0 X25.000 Y20.500
+M3 ; Pen down
+G1 X25.000 Y20.500
+M5 ; Pen up
+G0 X18.500 Y20.500
+M3 ; Pen down
+G1 X18.500 Y20.500
+M5 ; Pen up
+G0 X12.500 Y20.500
+M3 ; Pen down
+G1 X12.000 Y20.500
+M5 ; Pen up
+G0 X6.000 Y20.500
+M3 ; Pen down
+G1 X6.000 Y20.500
+M5 ; Pen up
+G0 X0.000 Y20.500
+M3 ; Pen down
+G1 X0.000 Y20.500
+M5 ; Pen up
+G0 X0.000 Y21.000
+M3 ; Pen down
+G1 X0.000 Y21.000
+M5 ; Pen up
+G0 X6.000 Y21.000
+M3 ; Pen down
+G1 X6.000 Y21.000
+M5 ; Pen up
+G0 X12.000 Y21.000
+M3 ; Pen down
+G1 X12.500 Y21.000
+M5 ; Pen up
+G0 X18.500 Y21.000
+M3 ; Pen down
+G1 X18.500 Y21.000
+M5 ; Pen up
+G0 X25.000 Y21.000
+M3 ; Pen down
+G1 X25.000 Y21.000
+M5 ; Pen up
+G0 X31.000 Y21.000
+M3 ; Pen down
+G1 X37.500 Y21.000
+M5 ; Pen up
+G0 X43.500 Y21.000
+M3 ; Pen down
+G1 X43.500 Y21.000
+M5 ; Pen up
+G0 X56.000 Y21.000
+M3 ; Pen down
+G1 X56.000 Y21.000
+M5 ; Pen up
+G0 X62.000 Y21.000
+M3 ; Pen down
+G1 X62.500 Y21.000
+M5 ; Pen up
+G0 X68.500 Y21.000
+M3 ; Pen down
+G1 X68.500 Y21.000
+M5 ; Pen up
+G0 X74.500 Y21.000
+M3 ; Pen down
+G1 X74.500 Y21.000
+M5 ; Pen up
+G0 X81.000 Y21.000
+M3 ; Pen down
+G1 X81.000 Y21.000
+M5 ; Pen up
+G0 X87.000 Y21.000
+M3 ; Pen down
+G1 X87.500 Y21.000
+M5 ; Pen up
+G0 X93.500 Y21.000
+M3 ; Pen down
+G1 X93.500 Y21.000
+M5 ; Pen up
+G0 X93.500 Y21.500
+M3 ; Pen down
+G1 X93.500 Y21.500
+M5 ; Pen up
+G0 X87.500 Y21.500
+M3 ; Pen down
+G1 X87.000 Y21.500
+M5 ; Pen up
+G0 X81.000 Y21.500
+M3 ; Pen down
+G1 X81.000 Y21.500
+M5 ; Pen up
+G0 X74.500 Y21.500
+M3 ; Pen down
+G1 X74.500 Y21.500
+M5 ; Pen up
+G0 X68.500 Y21.500
+M3 ; Pen down
+G1 X68.500 Y21.500
+M5 ; Pen up
+G0 X62.500 Y21.500
+M3 ; Pen down
+G1 X62.000 Y21.500
+M5 ; Pen up
+G0 X56.000 Y21.500
+M3 ; Pen down
+G1 X56.000 Y21.500
+M5 ; Pen up
+G0 X43.500 Y21.500
+M3 ; Pen down
+G1 X43.500 Y21.500
+M5 ; Pen up
+G0 X37.500 Y21.500
+M3 ; Pen down
+G1 X31.000 Y21.500
+M5 ; Pen up
+G0 X25.000 Y21.500
+M3 ; Pen down
+G1 X25.000 Y21.500
+M5 ; Pen up
+G0 X18.500 Y21.500
+M3 ; Pen down
+G1 X18.500 Y21.500
+M5 ; Pen up
+G0 X12.500 Y21.500
+M3 ; Pen down
+G1 X12.000 Y21.500
+M5 ; Pen up
+G0 X6.000 Y21.500
+M3 ; Pen down
+G1 X6.000 Y21.500
+M5 ; Pen up
+G0 X0.000 Y21.500
+M3 ; Pen down
+G1 X0.000 Y21.500
+M5 ; Pen up
+G0 X0.000 Y22.000
+M3 ; Pen down
+G1 X0.000 Y22.000
+M5 ; Pen up
+G0 X6.000 Y22.000
+M3 ; Pen down
+G1 X6.000 Y22.000
+M5 ; Pen up
+G0 X12.000 Y22.000
+M3 ; Pen down
+G1 X12.500 Y22.000
+M5 ; Pen up
+G0 X18.500 Y22.000
+M3 ; Pen down
+G1 X18.500 Y22.000
+M5 ; Pen up
+G0 X25.000 Y22.000
+M3 ; Pen down
+G1 X25.000 Y22.000
+M5 ; Pen up
+G0 X31.000 Y22.000
+M3 ; Pen down
+G1 X37.500 Y22.000
+M5 ; Pen up
+G0 X43.500 Y22.000
+M3 ; Pen down
+G1 X43.500 Y22.000
+M5 ; Pen up
+G0 X56.000 Y22.000
+M3 ; Pen down
+G1 X56.000 Y22.000
+M5 ; Pen up
+G0 X62.000 Y22.000
+M3 ; Pen down
+G1 X62.500 Y22.000
+M5 ; Pen up
+G0 X68.500 Y22.000
+M3 ; Pen down
+G1 X68.500 Y22.000
+M5 ; Pen up
+G0 X74.500 Y22.000
+M3 ; Pen down
+G1 X74.500 Y22.000
+M5 ; Pen up
+G0 X81.000 Y22.000
+M3 ; Pen down
+G1 X81.000 Y22.000
+M5 ; Pen up
+G0 X87.000 Y22.000
+M3 ; Pen down
+G1 X87.500 Y22.000
+M5 ; Pen up
+G0 X93.500 Y22.000
+M3 ; Pen down
+G1 X93.500 Y22.000
+M5 ; Pen up
+G0 X93.500 Y22.500
+M3 ; Pen down
+G1 X93.500 Y22.500
+M5 ; Pen up
+G0 X87.500 Y22.500
+M3 ; Pen down
+G1 X87.000 Y22.500
+M5 ; Pen up
+G0 X81.000 Y22.500
+M3 ; Pen down
+G1 X81.000 Y22.500
+M5 ; Pen up
+G0 X74.500 Y22.500
+M3 ; Pen down
+G1 X74.500 Y22.500
+M5 ; Pen up
+G0 X68.500 Y22.500
+M3 ; Pen down
+G1 X68.500 Y22.500
+M5 ; Pen up
+G0 X62.500 Y22.500
+M3 ; Pen down
+G1 X62.000 Y22.500
+M5 ; Pen up
+G0 X56.000 Y22.500
+M3 ; Pen down
+G1 X56.000 Y22.500
+M5 ; Pen up
+G0 X43.500 Y22.500
+M3 ; Pen down
+G1 X43.500 Y22.500
+M5 ; Pen up
+G0 X37.500 Y22.500
+M3 ; Pen down
+G1 X31.000 Y22.500
+M5 ; Pen up
+G0 X25.000 Y22.500
+M3 ; Pen down
+G1 X25.000 Y22.500
+M5 ; Pen up
+G0 X18.500 Y22.500
+M3 ; Pen down
+G1 X18.500 Y22.500
+M5 ; Pen up
+G0 X12.500 Y22.500
+M3 ; Pen down
+G1 X12.000 Y22.500
+M5 ; Pen up
+G0 X6.000 Y22.500
+M3 ; Pen down
+G1 X6.000 Y22.500
+M5 ; Pen up
+G0 X0.000 Y22.500
+M3 ; Pen down
+G1 X0.000 Y22.500
+M5 ; Pen up
+G0 X0.000 Y23.000
+M3 ; Pen down
+G1 X0.000 Y23.000
+M5 ; Pen up
+G0 X6.000 Y23.000
+M3 ; Pen down
+G1 X6.000 Y23.000
+M5 ; Pen up
+G0 X12.000 Y23.000
+M3 ; Pen down
+G1 X12.500 Y23.000
+M5 ; Pen up
+G0 X18.500 Y23.000
+M3 ; Pen down
+G1 X18.500 Y23.000
+M5 ; Pen up
+G0 X25.000 Y23.000
+M3 ; Pen down
+G1 X25.000 Y23.000
+M5 ; Pen up
+G0 X31.000 Y23.000
+M3 ; Pen down
+G1 X37.500 Y23.000
+M5 ; Pen up
+G0 X43.500 Y23.000
+M3 ; Pen down
+G1 X43.500 Y23.000
+M5 ; Pen up
+G0 X56.000 Y23.000
+M3 ; Pen down
+G1 X56.000 Y23.000
+M5 ; Pen up
+G0 X62.000 Y23.000
+M3 ; Pen down
+G1 X62.500 Y23.000
+M5 ; Pen up
+G0 X68.500 Y23.000
+M3 ; Pen down
+G1 X68.500 Y23.000
+M5 ; Pen up
+G0 X74.500 Y23.000
+M3 ; Pen down
+G1 X74.500 Y23.000
+M5 ; Pen up
+G0 X81.000 Y23.000
+M3 ; Pen down
+G1 X81.000 Y23.000
+M5 ; Pen up
+G0 X87.000 Y23.000
+M3 ; Pen down
+G1 X87.500 Y23.000
+M5 ; Pen up
+G0 X93.500 Y23.000
+M3 ; Pen down
+G1 X93.500 Y23.000
+M5 ; Pen up
+G0 X93.500 Y23.500
+M3 ; Pen down
+G1 X93.500 Y23.500
+M5 ; Pen up
+G0 X87.500 Y23.500
+M3 ; Pen down
+G1 X87.000 Y23.500
+M5 ; Pen up
+G0 X81.000 Y23.500
+M3 ; Pen down
+G1 X81.000 Y23.500
+M5 ; Pen up
+G0 X74.500 Y23.500
+M3 ; Pen down
+G1 X74.500 Y23.500
+M5 ; Pen up
+G0 X68.500 Y23.500
+M3 ; Pen down
+G1 X68.500 Y23.500
+M5 ; Pen up
+G0 X62.500 Y23.500
+M3 ; Pen down
+G1 X62.000 Y23.500
+M5 ; Pen up
+G0 X56.000 Y23.500
+M3 ; Pen down
+G1 X56.000 Y23.500
+M5 ; Pen up
+G0 X43.500 Y23.500
+M3 ; Pen down
+G1 X43.500 Y23.500
+M5 ; Pen up
+G0 X37.500 Y23.500
+M3 ; Pen down
+G1 X31.000 Y23.500
+M5 ; Pen up
+G0 X25.000 Y23.500
+M3 ; Pen down
+G1 X25.000 Y23.500
+M5 ; Pen up
+G0 X18.500 Y23.500
+M3 ; Pen down
+G1 X18.500 Y23.500
+M5 ; Pen up
+G0 X12.500 Y23.500
+M3 ; Pen down
+G1 X12.000 Y23.500
+M5 ; Pen up
+G0 X6.000 Y23.500
+M3 ; Pen down
+G1 X6.000 Y23.500
+M5 ; Pen up
+G0 X0.000 Y23.500
+M3 ; Pen down
+G1 X0.000 Y23.500
+M5 ; Pen up
+G0 X0.000 Y24.000
+M3 ; Pen down
+G1 X0.000 Y24.000
+M5 ; Pen up
+G0 X6.000 Y24.000
+M3 ; Pen down
+G1 X6.000 Y24.000
+M5 ; Pen up
+G0 X12.000 Y24.000
+M3 ; Pen down
+G1 X12.500 Y24.000
+M5 ; Pen up
+G0 X18.500 Y24.000
+M3 ; Pen down
+G1 X18.500 Y24.000
+M5 ; Pen up
+G0 X25.000 Y24.000
+M3 ; Pen down
+G1 X25.000 Y24.000
+M5 ; Pen up
+G0 X31.000 Y24.000
+M3 ; Pen down
+G1 X37.500 Y24.000
+M5 ; Pen up
+G0 X43.500 Y24.000
+M3 ; Pen down
+G1 X43.500 Y24.000
+M5 ; Pen up
+G0 X56.000 Y24.000
+M3 ; Pen down
+G1 X56.000 Y24.000
+M5 ; Pen up
+G0 X62.000 Y24.000
+M3 ; Pen down
+G1 X62.500 Y24.000
+M5 ; Pen up
+G0 X68.500 Y24.000
+M3 ; Pen down
+G1 X68.500 Y24.000
+M5 ; Pen up
+G0 X74.500 Y24.000
+M3 ; Pen down
+G1 X74.500 Y24.000
+M5 ; Pen up
+G0 X81.000 Y24.000
+M3 ; Pen down
+G1 X81.000 Y24.000
+M5 ; Pen up
+G0 X87.000 Y24.000
+M3 ; Pen down
+G1 X87.500 Y24.000
+M5 ; Pen up
+G0 X93.500 Y24.000
+M3 ; Pen down
+G1 X93.500 Y24.000
+M5 ; Pen up
+G0 X99.500 Y24.500
+M3 ; Pen down
+G1 X99.500 Y24.500
+M5 ; Pen up
+G0 X94.000 Y24.500
+M3 ; Pen down
+G1 X93.500 Y24.500
+M5 ; Pen up
+G0 X87.500 Y24.500
+M3 ; Pen down
+G1 X87.000 Y24.500
+M5 ; Pen up
+G0 X81.500 Y24.500
+M3 ; Pen down
+G1 X80.500 Y24.500
+M5 ; Pen up
+G0 X75.000 Y24.500
+M3 ; Pen down
+G1 X74.500 Y24.500
+M5 ; Pen up
+G0 X69.000 Y24.500
+M3 ; Pen down
+G1 X68.500 Y24.500
+M5 ; Pen up
+G0 X62.500 Y24.500
+M3 ; Pen down
+G1 X62.000 Y24.500
+M5 ; Pen up
+G0 X56.500 Y24.500
+M3 ; Pen down
+G1 X56.000 Y24.500
+M5 ; Pen up
+G0 X50.000 Y24.500
+M3 ; Pen down
+G1 X49.500 Y24.500
+M5 ; Pen up
+G0 X43.500 Y24.500
+M3 ; Pen down
+G1 X43.500 Y24.500
+M5 ; Pen up
+G0 X37.500 Y24.500
+M3 ; Pen down
+G1 X30.500 Y24.500
+M5 ; Pen up
+G0 X25.000 Y24.500
+M3 ; Pen down
+G1 X24.500 Y24.500
+M5 ; Pen up
+G0 X19.000 Y24.500
+M3 ; Pen down
+G1 X18.500 Y24.500
+M5 ; Pen up
+G0 X12.500 Y24.500
+M3 ; Pen down
+G1 X12.000 Y24.500
+M5 ; Pen up
+G0 X6.500 Y24.500
+M3 ; Pen down
+G1 X5.500 Y24.500
+M5 ; Pen up
+G0 X0.000 Y24.500
+M3 ; Pen down
+G1 X0.000 Y24.500
+M5 ; Pen up
+G0 X0.000 Y25.000
+M3 ; Pen down
+G1 X99.500 Y25.000
+M5 ; Pen up
+G0 X93.500 Y25.500
+M3 ; Pen down
+G1 X93.500 Y25.500
+M5 ; Pen up
+G0 X87.500 Y25.500
+M3 ; Pen down
+G1 X87.000 Y25.500
+M5 ; Pen up
+G0 X81.000 Y25.500
+M3 ; Pen down
+G1 X81.000 Y25.500
+M5 ; Pen up
+G0 X74.500 Y25.500
+M3 ; Pen down
+G1 X74.500 Y25.500
+M5 ; Pen up
+G0 X68.500 Y25.500
+M3 ; Pen down
+G1 X68.500 Y25.500
+M5 ; Pen up
+G0 X62.000 Y25.500
+M3 ; Pen down
+G1 X62.000 Y25.500
+M5 ; Pen up
+G0 X56.000 Y25.500
+M3 ; Pen down
+G1 X56.000 Y25.500
+M5 ; Pen up
+G0 X43.500 Y25.500
+M3 ; Pen down
+G1 X43.500 Y25.500
+M5 ; Pen up
+G0 X37.500 Y25.500
+M3 ; Pen down
+G1 X31.000 Y25.500
+M5 ; Pen up
+G0 X25.000 Y25.500
+M3 ; Pen down
+G1 X25.000 Y25.500
+M5 ; Pen up
+G0 X18.500 Y25.500
+M3 ; Pen down
+G1 X18.500 Y25.500
+M5 ; Pen up
+G0 X12.500 Y25.500
+M3 ; Pen down
+G1 X12.000 Y25.500
+M5 ; Pen up
+G0 X6.000 Y25.500
+M3 ; Pen down
+G1 X6.000 Y25.500
+M5 ; Pen up
+G0 X0.000 Y25.500
+M3 ; Pen down
+G1 X0.000 Y25.500
+M5 ; Pen up
+G0 X0.000 Y26.000
+M3 ; Pen down
+G1 X0.000 Y26.000
+M5 ; Pen up
+G0 X6.000 Y26.000
+M3 ; Pen down
+G1 X6.000 Y26.000
+M5 ; Pen up
+G0 X12.000 Y26.000
+M3 ; Pen down
+G1 X12.500 Y26.000
+M5 ; Pen up
+G0 X18.500 Y26.000
+M3 ; Pen down
+G1 X18.500 Y26.000
+M5 ; Pen up
+G0 X25.000 Y26.000
+M3 ; Pen down
+G1 X25.000 Y26.000
+M5 ; Pen up
+G0 X31.000 Y26.000
+M3 ; Pen down
+G1 X37.500 Y26.000
+M5 ; Pen up
+G0 X43.500 Y26.000
+M3 ; Pen down
+G1 X43.500 Y26.000
+M5 ; Pen up
+G0 X56.000 Y26.000
+M3 ; Pen down
+G1 X56.000 Y26.000
+M5 ; Pen up
+G0 X62.000 Y26.000
+M3 ; Pen down
+G1 X62.500 Y26.000
+M5 ; Pen up
+G0 X68.500 Y26.000
+M3 ; Pen down
+G1 X68.500 Y26.000
+M5 ; Pen up
+G0 X74.500 Y26.000
+M3 ; Pen down
+G1 X74.500 Y26.000
+M5 ; Pen up
+G0 X81.000 Y26.000
+M3 ; Pen down
+G1 X81.000 Y26.000
+M5 ; Pen up
+G0 X87.000 Y26.000
+M3 ; Pen down
+G1 X87.500 Y26.000
+M5 ; Pen up
+G0 X93.500 Y26.000
+M3 ; Pen down
+G1 X93.500 Y26.000
+M5 ; Pen up
+G0 X93.500 Y26.500
+M3 ; Pen down
+G1 X93.500 Y26.500
+M5 ; Pen up
+G0 X87.500 Y26.500
+M3 ; Pen down
+G1 X87.000 Y26.500
+M5 ; Pen up
+G0 X81.000 Y26.500
+M3 ; Pen down
+G1 X81.000 Y26.500
+M5 ; Pen up
+G0 X74.500 Y26.500
+M3 ; Pen down
+G1 X74.500 Y26.500
+M5 ; Pen up
+G0 X68.500 Y26.500
+M3 ; Pen down
+G1 X68.500 Y26.500
+M5 ; Pen up
+G0 X62.500 Y26.500
+M3 ; Pen down
+G1 X62.000 Y26.500
+M5 ; Pen up
+G0 X56.000 Y26.500
+M3 ; Pen down
+G1 X56.000 Y26.500
+M5 ; Pen up
+G0 X43.500 Y26.500
+M3 ; Pen down
+G1 X43.500 Y26.500
+M5 ; Pen up
+G0 X37.500 Y26.500
+M3 ; Pen down
+G1 X31.000 Y26.500
+M5 ; Pen up
+G0 X25.000 Y26.500
+M3 ; Pen down
+G1 X25.000 Y26.500
+M5 ; Pen up
+G0 X18.500 Y26.500
+M3 ; Pen down
+G1 X18.500 Y26.500
+M5 ; Pen up
+G0 X12.500 Y26.500
+M3 ; Pen down
+G1 X12.000 Y26.500
+M5 ; Pen up
+G0 X6.000 Y26.500
+M3 ; Pen down
+G1 X6.000 Y26.500
+M5 ; Pen up
+G0 X0.000 Y26.500
+M3 ; Pen down
+G1 X0.000 Y26.500
+M5 ; Pen up
+G0 X0.000 Y27.000
+M3 ; Pen down
+G1 X0.000 Y27.000
+M5 ; Pen up
+G0 X6.000 Y27.000
+M3 ; Pen down
+G1 X6.000 Y27.000
+M5 ; Pen up
+G0 X12.000 Y27.000
+M3 ; Pen down
+G1 X12.500 Y27.000
+M5 ; Pen up
+G0 X18.500 Y27.000
+M3 ; Pen down
+G1 X18.500 Y27.000
+M5 ; Pen up
+G0 X25.000 Y27.000
+M3 ; Pen down
+G1 X25.000 Y27.000
+M5 ; Pen up
+G0 X31.000 Y27.000
+M3 ; Pen down
+G1 X37.500 Y27.000
+M5 ; Pen up
+G0 X43.500 Y27.000
+M3 ; Pen down
+G1 X43.500 Y27.000
+M5 ; Pen up
+G0 X56.000 Y27.000
+M3 ; Pen down
+G1 X56.000 Y27.000
+M5 ; Pen up
+G0 X62.000 Y27.000
+M3 ; Pen down
+G1 X62.500 Y27.000
+M5 ; Pen up
+G0 X68.500 Y27.000
+M3 ; Pen down
+G1 X68.500 Y27.000
+M5 ; Pen up
+G0 X74.500 Y27.000
+M3 ; Pen down
+G1 X74.500 Y27.000
+M5 ; Pen up
+G0 X81.000 Y27.000
+M3 ; Pen down
+G1 X81.000 Y27.000
+M5 ; Pen up
+G0 X87.000 Y27.000
+M3 ; Pen down
+G1 X87.500 Y27.000
+M5 ; Pen up
+G0 X93.500 Y27.000
+M3 ; Pen down
+G1 X93.500 Y27.000
+M5 ; Pen up
+G0 X93.500 Y27.500
+M3 ; Pen down
+G1 X93.500 Y27.500
+M5 ; Pen up
+G0 X87.500 Y27.500
+M3 ; Pen down
+G1 X87.000 Y27.500
+M5 ; Pen up
+G0 X81.000 Y27.500
+M3 ; Pen down
+G1 X81.000 Y27.500
+M5 ; Pen up
+G0 X74.500 Y27.500
+M3 ; Pen down
+G1 X74.500 Y27.500
+M5 ; Pen up
+G0 X68.500 Y27.500
+M3 ; Pen down
+G1 X68.500 Y27.500
+M5 ; Pen up
+G0 X62.500 Y27.500
+M3 ; Pen down
+G1 X62.000 Y27.500
+M5 ; Pen up
+G0 X56.000 Y27.500
+M3 ; Pen down
+G1 X56.000 Y27.500
+M5 ; Pen up
+G0 X43.500 Y27.500
+M3 ; Pen down
+G1 X43.500 Y27.500
+M5 ; Pen up
+G0 X37.500 Y27.500
+M3 ; Pen down
+G1 X31.000 Y27.500
+M5 ; Pen up
+G0 X25.000 Y27.500
+M3 ; Pen down
+G1 X25.000 Y27.500
+M5 ; Pen up
+G0 X18.500 Y27.500
+M3 ; Pen down
+G1 X18.500 Y27.500
+M5 ; Pen up
+G0 X12.500 Y27.500
+M3 ; Pen down
+G1 X12.000 Y27.500
+M5 ; Pen up
+G0 X6.000 Y27.500
+M3 ; Pen down
+G1 X6.000 Y27.500
+M5 ; Pen up
+G0 X0.000 Y27.500
+M3 ; Pen down
+G1 X0.000 Y27.500
+M5 ; Pen up
+G0 X0.000 Y28.000
+M3 ; Pen down
+G1 X0.000 Y28.000
+M5 ; Pen up
+G0 X6.000 Y28.000
+M3 ; Pen down
+G1 X6.000 Y28.000
+M5 ; Pen up
+G0 X12.000 Y28.000
+M3 ; Pen down
+G1 X12.500 Y28.000
+M5 ; Pen up
+G0 X18.500 Y28.000
+M3 ; Pen down
+G1 X18.500 Y28.000
+M5 ; Pen up
+G0 X25.000 Y28.000
+M3 ; Pen down
+G1 X25.000 Y28.000
+M5 ; Pen up
+G0 X31.000 Y28.000
+M3 ; Pen down
+G1 X37.500 Y28.000
+M5 ; Pen up
+G0 X43.500 Y28.000
+M3 ; Pen down
+G1 X43.500 Y28.000
+M5 ; Pen up
+G0 X56.000 Y28.000
+M3 ; Pen down
+G1 X56.000 Y28.000
+M5 ; Pen up
+G0 X62.000 Y28.000
+M3 ; Pen down
+G1 X62.500 Y28.000
+M5 ; Pen up
+G0 X68.500 Y28.000
+M3 ; Pen down
+G1 X68.500 Y28.000
+M5 ; Pen up
+G0 X74.500 Y28.000
+M3 ; Pen down
+G1 X74.500 Y28.000
+M5 ; Pen up
+G0 X81.000 Y28.000
+M3 ; Pen down
+G1 X81.000 Y28.000
+M5 ; Pen up
+G0 X87.000 Y28.000
+M3 ; Pen down
+G1 X87.500 Y28.000
+M5 ; Pen up
+G0 X93.500 Y28.000
+M3 ; Pen down
+G1 X93.500 Y28.000
+M5 ; Pen up
+G0 X93.500 Y28.500
+M3 ; Pen down
+G1 X93.500 Y28.500
+M5 ; Pen up
+G0 X87.500 Y28.500
+M3 ; Pen down
+G1 X87.000 Y28.500
+M5 ; Pen up
+G0 X81.000 Y28.500
+M3 ; Pen down
+G1 X81.000 Y28.500
+M5 ; Pen up
+G0 X74.500 Y28.500
+M3 ; Pen down
+G1 X74.500 Y28.500
+M5 ; Pen up
+G0 X68.500 Y28.500
+M3 ; Pen down
+G1 X68.500 Y28.500
+M5 ; Pen up
+G0 X62.500 Y28.500
+M3 ; Pen down
+G1 X62.000 Y28.500
+M5 ; Pen up
+G0 X56.000 Y28.500
+M3 ; Pen down
+G1 X56.000 Y28.500
+M5 ; Pen up
+G0 X43.500 Y28.500
+M3 ; Pen down
+G1 X43.500 Y28.500
+M5 ; Pen up
+G0 X37.500 Y28.500
+M3 ; Pen down
+G1 X31.000 Y28.500
+M5 ; Pen up
+G0 X25.000 Y28.500
+M3 ; Pen down
+G1 X25.000 Y28.500
+M5 ; Pen up
+G0 X18.500 Y28.500
+M3 ; Pen down
+G1 X18.500 Y28.500
+M5 ; Pen up
+G0 X12.500 Y28.500
+M3 ; Pen down
+G1 X12.000 Y28.500
+M5 ; Pen up
+G0 X6.000 Y28.500
+M3 ; Pen down
+G1 X6.000 Y28.500
+M5 ; Pen up
+G0 X0.000 Y28.500
+M3 ; Pen down
+G1 X0.000 Y28.500
+M5 ; Pen up
+G0 X0.000 Y29.000
+M3 ; Pen down
+G1 X0.000 Y29.000
+M5 ; Pen up
+G0 X6.000 Y29.000
+M3 ; Pen down
+G1 X6.000 Y29.000
+M5 ; Pen up
+G0 X12.000 Y29.000
+M3 ; Pen down
+G1 X12.500 Y29.000
+M5 ; Pen up
+G0 X18.500 Y29.000
+M3 ; Pen down
+G1 X18.500 Y29.000
+M5 ; Pen up
+G0 X25.000 Y29.000
+M3 ; Pen down
+G1 X25.000 Y29.000
+M5 ; Pen up
+G0 X31.000 Y29.000
+M3 ; Pen down
+G1 X37.500 Y29.000
+M5 ; Pen up
+G0 X43.500 Y29.000
+M3 ; Pen down
+G1 X43.500 Y29.000
+M5 ; Pen up
+G0 X56.000 Y29.000
+M3 ; Pen down
+G1 X56.000 Y29.000
+M5 ; Pen up
+G0 X62.000 Y29.000
+M3 ; Pen down
+G1 X62.500 Y29.000
+M5 ; Pen up
+G0 X68.500 Y29.000
+M3 ; Pen down
+G1 X68.500 Y29.000
+M5 ; Pen up
+G0 X74.500 Y29.000
+M3 ; Pen down
+G1 X74.500 Y29.000
+M5 ; Pen up
+G0 X81.000 Y29.000
+M3 ; Pen down
+G1 X81.000 Y29.000
+M5 ; Pen up
+G0 X87.000 Y29.000
+M3 ; Pen down
+G1 X87.500 Y29.000
+M5 ; Pen up
+G0 X93.500 Y29.000
+M3 ; Pen down
+G1 X93.500 Y29.000
+M5 ; Pen up
+G0 X93.500 Y29.500
+M3 ; Pen down
+G1 X93.500 Y29.500
+M5 ; Pen up
+G0 X87.500 Y29.500
+M3 ; Pen down
+G1 X87.000 Y29.500
+M5 ; Pen up
+G0 X81.000 Y29.500
+M3 ; Pen down
+G1 X81.000 Y29.500
+M5 ; Pen up
+G0 X74.500 Y29.500
+M3 ; Pen down
+G1 X74.500 Y29.500
+M5 ; Pen up
+G0 X68.500 Y29.500
+M3 ; Pen down
+G1 X68.500 Y29.500
+M5 ; Pen up
+G0 X62.500 Y29.500
+M3 ; Pen down
+G1 X62.000 Y29.500
+M5 ; Pen up
+G0 X56.000 Y29.500
+M3 ; Pen down
+G1 X56.000 Y29.500
+M5 ; Pen up
+G0 X43.500 Y29.500
+M3 ; Pen down
+G1 X43.500 Y29.500
+M5 ; Pen up
+G0 X37.500 Y29.500
+M3 ; Pen down
+G1 X31.000 Y29.500
+M5 ; Pen up
+G0 X25.000 Y29.500
+M3 ; Pen down
+G1 X25.000 Y29.500
+M5 ; Pen up
+G0 X18.500 Y29.500
+M3 ; Pen down
+G1 X18.500 Y29.500
+M5 ; Pen up
+G0 X12.500 Y29.500
+M3 ; Pen down
+G1 X12.000 Y29.500
+M5 ; Pen up
+G0 X6.000 Y29.500
+M3 ; Pen down
+G1 X6.000 Y29.500
+M5 ; Pen up
+G0 X0.000 Y29.500
+M3 ; Pen down
+G1 X0.000 Y29.500
+M5 ; Pen up
+G0 X0.000 Y30.000
+M3 ; Pen down
+G1 X0.000 Y30.000
+M5 ; Pen up
+G0 X6.000 Y30.000
+M3 ; Pen down
+G1 X6.000 Y30.000
+M5 ; Pen up
+G0 X12.000 Y30.000
+M3 ; Pen down
+G1 X12.500 Y30.000
+M5 ; Pen up
+G0 X18.500 Y30.000
+M3 ; Pen down
+G1 X18.500 Y30.000
+M5 ; Pen up
+G0 X25.000 Y30.000
+M3 ; Pen down
+G1 X25.000 Y30.000
+M5 ; Pen up
+G0 X31.000 Y30.000
+M3 ; Pen down
+G1 X37.500 Y30.000
+M5 ; Pen up
+G0 X43.500 Y30.000
+M3 ; Pen down
+G1 X43.500 Y30.000
+M5 ; Pen up
+G0 X56.000 Y30.000
+M3 ; Pen down
+G1 X56.000 Y30.000
+M5 ; Pen up
+G0 X62.000 Y30.000
+M3 ; Pen down
+G1 X62.000 Y30.000
+M5 ; Pen up
+G0 X68.500 Y30.000
+M3 ; Pen down
+G1 X68.500 Y30.000
+M5 ; Pen up
+G0 X74.500 Y30.000
+M3 ; Pen down
+G1 X74.500 Y30.000
+M5 ; Pen up
+G0 X81.000 Y30.000
+M3 ; Pen down
+G1 X81.000 Y30.000
+M5 ; Pen up
+G0 X87.000 Y30.000
+M3 ; Pen down
+G1 X87.500 Y30.000
+M5 ; Pen up
+G0 X93.500 Y30.000
+M3 ; Pen down
+G1 X93.500 Y30.000
+M5 ; Pen up
+G0 X99.500 Y30.500
+M3 ; Pen down
+G1 X99.500 Y30.500
+M5 ; Pen up
+G0 X93.500 Y30.500
+M3 ; Pen down
+G1 X93.500 Y30.500
+M5 ; Pen up
+G0 X87.500 Y30.500
+M3 ; Pen down
+G1 X87.000 Y30.500
+M5 ; Pen up
+G0 X81.000 Y30.500
+M3 ; Pen down
+G1 X81.000 Y30.500
+M5 ; Pen up
+G0 X75.000 Y30.500
+M3 ; Pen down
+G1 X74.500 Y30.500
+M5 ; Pen up
+G0 X68.500 Y30.500
+M3 ; Pen down
+G1 X68.500 Y30.500
+M5 ; Pen up
+G0 X62.500 Y30.500
+M3 ; Pen down
+G1 X62.000 Y30.500
+M5 ; Pen up
+G0 X56.000 Y30.500
+M3 ; Pen down
+G1 X56.000 Y30.500
+M5 ; Pen up
+G0 X50.000 Y30.500
+M3 ; Pen down
+G1 X49.500 Y30.500
+M5 ; Pen up
+G0 X43.500 Y30.500
+M3 ; Pen down
+G1 X43.500 Y30.500
+M5 ; Pen up
+G0 X37.500 Y30.500
+M3 ; Pen down
+G1 X31.000 Y30.500
+M5 ; Pen up
+G0 X25.000 Y30.500
+M3 ; Pen down
+G1 X24.500 Y30.500
+M5 ; Pen up
+G0 X18.500 Y30.500
+M3 ; Pen down
+G1 X18.500 Y30.500
+M5 ; Pen up
+G0 X12.500 Y30.500
+M3 ; Pen down
+G1 X12.000 Y30.500
+M5 ; Pen up
+G0 X6.000 Y30.500
+M3 ; Pen down
+G1 X6.000 Y30.500
+M5 ; Pen up
+G0 X0.000 Y30.500
+M3 ; Pen down
+G1 X0.000 Y30.500
+M5 ; Pen up
+G0 X0.000 Y31.000
+M3 ; Pen down
+G1 X99.500 Y31.000
+M5 ; Pen up
+G0 X93.500 Y31.500
+M3 ; Pen down
+G1 X93.500 Y31.500
+M5 ; Pen up
+G0 X87.500 Y31.500
+M3 ; Pen down
+G1 X87.000 Y31.500
+M5 ; Pen up
+G0 X81.000 Y31.500
+M3 ; Pen down
+G1 X81.000 Y31.500
+M5 ; Pen up
+G0 X74.500 Y31.500
+M3 ; Pen down
+G1 X74.500 Y31.500
+M5 ; Pen up
+G0 X68.500 Y31.500
+M3 ; Pen down
+G1 X68.500 Y31.500
+M5 ; Pen up
+G0 X62.500 Y31.500
+M3 ; Pen down
+G1 X62.000 Y31.500
+M5 ; Pen up
+G0 X56.000 Y31.500
+M3 ; Pen down
+G1 X49.500 Y31.500
+M5 ; Pen up
+G0 X43.500 Y31.500
+M3 ; Pen down
+G1 X43.500 Y31.500
+M5 ; Pen up
+G0 X37.500 Y31.500
+M3 ; Pen down
+G1 X31.000 Y31.500
+M5 ; Pen up
+G0 X25.000 Y31.500
+M3 ; Pen down
+G1 X25.000 Y31.500
+M5 ; Pen up
+G0 X18.500 Y31.500
+M3 ; Pen down
+G1 X18.500 Y31.500
+M5 ; Pen up
+G0 X12.500 Y31.500
+M3 ; Pen down
+G1 X12.000 Y31.500
+M5 ; Pen up
+G0 X6.000 Y31.500
+M3 ; Pen down
+G1 X6.000 Y31.500
+M5 ; Pen up
+G0 X0.000 Y31.500
+M3 ; Pen down
+G1 X0.000 Y31.500
+M5 ; Pen up
+G0 X0.000 Y32.000
+M3 ; Pen down
+G1 X0.000 Y32.000
+M5 ; Pen up
+G0 X6.000 Y32.000
+M3 ; Pen down
+G1 X6.000 Y32.000
+M5 ; Pen up
+G0 X12.000 Y32.000
+M3 ; Pen down
+G1 X12.500 Y32.000
+M5 ; Pen up
+G0 X18.500 Y32.000
+M3 ; Pen down
+G1 X18.500 Y32.000
+M5 ; Pen up
+G0 X25.000 Y32.000
+M3 ; Pen down
+G1 X25.000 Y32.000
+M5 ; Pen up
+G0 X31.000 Y32.000
+M3 ; Pen down
+G1 X37.500 Y32.000
+M5 ; Pen up
+G0 X43.500 Y32.000
+M3 ; Pen down
+G1 X43.500 Y32.000
+M5 ; Pen up
+G0 X50.000 Y32.000
+M3 ; Pen down
+G1 X56.000 Y32.000
+M5 ; Pen up
+G0 X62.000 Y32.000
+M3 ; Pen down
+G1 X62.500 Y32.000
+M5 ; Pen up
+G0 X68.500 Y32.000
+M3 ; Pen down
+G1 X68.500 Y32.000
+M5 ; Pen up
+G0 X74.500 Y32.000
+M3 ; Pen down
+G1 X74.500 Y32.000
+M5 ; Pen up
+G0 X81.000 Y32.000
+M3 ; Pen down
+G1 X81.000 Y32.000
+M5 ; Pen up
+G0 X87.000 Y32.000
+M3 ; Pen down
+G1 X87.500 Y32.000
+M5 ; Pen up
+G0 X93.500 Y32.000
+M3 ; Pen down
+G1 X93.500 Y32.000
+M5 ; Pen up
+G0 X93.500 Y32.500
+M3 ; Pen down
+G1 X93.500 Y32.500
+M5 ; Pen up
+G0 X87.500 Y32.500
+M3 ; Pen down
+G1 X87.000 Y32.500
+M5 ; Pen up
+G0 X81.000 Y32.500
+M3 ; Pen down
+G1 X81.000 Y32.500
+M5 ; Pen up
+G0 X74.500 Y32.500
+M3 ; Pen down
+G1 X74.500 Y32.500
+M5 ; Pen up
+G0 X68.500 Y32.500
+M3 ; Pen down
+G1 X68.500 Y32.500
+M5 ; Pen up
+G0 X62.500 Y32.500
+M3 ; Pen down
+G1 X62.000 Y32.500
+M5 ; Pen up
+G0 X56.000 Y32.500
+M3 ; Pen down
+G1 X50.000 Y32.500
+M5 ; Pen up
+G0 X43.500 Y32.500
+M3 ; Pen down
+G1 X43.500 Y32.500
+M5 ; Pen up
+G0 X37.500 Y32.500
+M3 ; Pen down
+G1 X31.000 Y32.500
+M5 ; Pen up
+G0 X25.000 Y32.500
+M3 ; Pen down
+G1 X25.000 Y32.500
+M5 ; Pen up
+G0 X18.500 Y32.500
+M3 ; Pen down
+G1 X18.500 Y32.500
+M5 ; Pen up
+G0 X12.500 Y32.500
+M3 ; Pen down
+G1 X12.000 Y32.500
+M5 ; Pen up
+G0 X6.000 Y32.500
+M3 ; Pen down
+G1 X6.000 Y32.500
+M5 ; Pen up
+G0 X0.000 Y32.500
+M3 ; Pen down
+G1 X0.000 Y32.500
+M5 ; Pen up
+G0 X0.000 Y33.000
+M3 ; Pen down
+G1 X0.000 Y33.000
+M5 ; Pen up
+G0 X6.000 Y33.000
+M3 ; Pen down
+G1 X6.000 Y33.000
+M5 ; Pen up
+G0 X12.000 Y33.000
+M3 ; Pen down
+G1 X12.500 Y33.000
+M5 ; Pen up
+G0 X18.500 Y33.000
+M3 ; Pen down
+G1 X18.500 Y33.000
+M5 ; Pen up
+G0 X25.000 Y33.000
+M3 ; Pen down
+G1 X25.000 Y33.000
+M5 ; Pen up
+G0 X31.000 Y33.000
+M3 ; Pen down
+G1 X37.500 Y33.000
+M5 ; Pen up
+G0 X43.500 Y33.000
+M3 ; Pen down
+G1 X43.500 Y33.000
+M5 ; Pen up
+G0 X50.000 Y33.000
+M3 ; Pen down
+G1 X56.000 Y33.000
+M5 ; Pen up
+G0 X62.000 Y33.000
+M3 ; Pen down
+G1 X62.500 Y33.000
+M5 ; Pen up
+G0 X68.500 Y33.000
+M3 ; Pen down
+G1 X68.500 Y33.000
+M5 ; Pen up
+G0 X74.500 Y33.000
+M3 ; Pen down
+G1 X74.500 Y33.000
+M5 ; Pen up
+G0 X81.000 Y33.000
+M3 ; Pen down
+G1 X81.000 Y33.000
+M5 ; Pen up
+G0 X87.000 Y33.000
+M3 ; Pen down
+G1 X87.500 Y33.000
+M5 ; Pen up
+G0 X93.500 Y33.000
+M3 ; Pen down
+G1 X93.500 Y33.000
+M5 ; Pen up
+G0 X93.500 Y33.500
+M3 ; Pen down
+G1 X93.500 Y33.500
+M5 ; Pen up
+G0 X87.500 Y33.500
+M3 ; Pen down
+G1 X87.000 Y33.500
+M5 ; Pen up
+G0 X81.000 Y33.500
+M3 ; Pen down
+G1 X81.000 Y33.500
+M5 ; Pen up
+G0 X74.500 Y33.500
+M3 ; Pen down
+G1 X74.500 Y33.500
+M5 ; Pen up
+G0 X68.500 Y33.500
+M3 ; Pen down
+G1 X68.500 Y33.500
+M5 ; Pen up
+G0 X62.500 Y33.500
+M3 ; Pen down
+G1 X62.000 Y33.500
+M5 ; Pen up
+G0 X56.000 Y33.500
+M3 ; Pen down
+G1 X50.000 Y33.500
+M5 ; Pen up
+G0 X43.500 Y33.500
+M3 ; Pen down
+G1 X43.500 Y33.500
+M5 ; Pen up
+G0 X37.500 Y33.500
+M3 ; Pen down
+G1 X31.000 Y33.500
+M5 ; Pen up
+G0 X25.000 Y33.500
+M3 ; Pen down
+G1 X25.000 Y33.500
+M5 ; Pen up
+G0 X18.500 Y33.500
+M3 ; Pen down
+G1 X18.500 Y33.500
+M5 ; Pen up
+G0 X12.500 Y33.500
+M3 ; Pen down
+G1 X12.000 Y33.500
+M5 ; Pen up
+G0 X6.000 Y33.500
+M3 ; Pen down
+G1 X6.000 Y33.500
+M5 ; Pen up
+G0 X0.000 Y33.500
+M3 ; Pen down
+G1 X0.000 Y33.500
+M5 ; Pen up
+G0 X0.000 Y34.000
+M3 ; Pen down
+G1 X0.000 Y34.000
+M5 ; Pen up
+G0 X6.000 Y34.000
+M3 ; Pen down
+G1 X6.000 Y34.000
+M5 ; Pen up
+G0 X12.000 Y34.000
+M3 ; Pen down
+G1 X12.500 Y34.000
+M5 ; Pen up
+G0 X18.500 Y34.000
+M3 ; Pen down
+G1 X18.500 Y34.000
+M5 ; Pen up
+G0 X25.000 Y34.000
+M3 ; Pen down
+G1 X25.000 Y34.000
+M5 ; Pen up
+G0 X31.000 Y34.000
+M3 ; Pen down
+G1 X37.500 Y34.000
+M5 ; Pen up
+G0 X43.500 Y34.000
+M3 ; Pen down
+G1 X43.500 Y34.000
+M5 ; Pen up
+G0 X50.000 Y34.000
+M3 ; Pen down
+G1 X56.000 Y34.000
+M5 ; Pen up
+G0 X62.000 Y34.000
+M3 ; Pen down
+G1 X62.500 Y34.000
+M5 ; Pen up
+G0 X68.500 Y34.000
+M3 ; Pen down
+G1 X68.500 Y34.000
+M5 ; Pen up
+G0 X74.500 Y34.000
+M3 ; Pen down
+G1 X74.500 Y34.000
+M5 ; Pen up
+G0 X81.000 Y34.000
+M3 ; Pen down
+G1 X81.000 Y34.000
+M5 ; Pen up
+G0 X87.000 Y34.000
+M3 ; Pen down
+G1 X87.500 Y34.000
+M5 ; Pen up
+G0 X93.500 Y34.000
+M3 ; Pen down
+G1 X93.500 Y34.000
+M5 ; Pen up
+G0 X93.500 Y34.500
+M3 ; Pen down
+G1 X93.500 Y34.500
+M5 ; Pen up
+G0 X87.500 Y34.500
+M3 ; Pen down
+G1 X87.000 Y34.500
+M5 ; Pen up
+G0 X81.000 Y34.500
+M3 ; Pen down
+G1 X81.000 Y34.500
+M5 ; Pen up
+G0 X74.500 Y34.500
+M3 ; Pen down
+G1 X74.500 Y34.500
+M5 ; Pen up
+G0 X68.500 Y34.500
+M3 ; Pen down
+G1 X68.500 Y34.500
+M5 ; Pen up
+G0 X62.500 Y34.500
+M3 ; Pen down
+G1 X62.000 Y34.500
+M5 ; Pen up
+G0 X56.000 Y34.500
+M3 ; Pen down
+G1 X50.000 Y34.500
+M5 ; Pen up
+G0 X43.500 Y34.500
+M3 ; Pen down
+G1 X43.500 Y34.500
+M5 ; Pen up
+G0 X37.500 Y34.500
+M3 ; Pen down
+G1 X31.000 Y34.500
+M5 ; Pen up
+G0 X25.000 Y34.500
+M3 ; Pen down
+G1 X25.000 Y34.500
+M5 ; Pen up
+G0 X18.500 Y34.500
+M3 ; Pen down
+G1 X18.500 Y34.500
+M5 ; Pen up
+G0 X12.500 Y34.500
+M3 ; Pen down
+G1 X12.000 Y34.500
+M5 ; Pen up
+G0 X6.000 Y34.500
+M3 ; Pen down
+G1 X6.000 Y34.500
+M5 ; Pen up
+G0 X0.000 Y34.500
+M3 ; Pen down
+G1 X0.000 Y34.500
+M5 ; Pen up
+G0 X0.000 Y35.000
+M3 ; Pen down
+G1 X0.000 Y35.000
+M5 ; Pen up
+G0 X6.000 Y35.000
+M3 ; Pen down
+G1 X6.000 Y35.000
+M5 ; Pen up
+G0 X12.000 Y35.000
+M3 ; Pen down
+G1 X12.500 Y35.000
+M5 ; Pen up
+G0 X18.500 Y35.000
+M3 ; Pen down
+G1 X18.500 Y35.000
+M5 ; Pen up
+G0 X25.000 Y35.000
+M3 ; Pen down
+G1 X25.000 Y35.000
+M5 ; Pen up
+G0 X31.000 Y35.000
+M3 ; Pen down
+G1 X37.500 Y35.000
+M5 ; Pen up
+G0 X43.500 Y35.000
+M3 ; Pen down
+G1 X43.500 Y35.000
+M5 ; Pen up
+G0 X50.000 Y35.000
+M3 ; Pen down
+G1 X56.000 Y35.000
+M5 ; Pen up
+G0 X62.000 Y35.000
+M3 ; Pen down
+G1 X62.500 Y35.000
+M5 ; Pen up
+G0 X68.500 Y35.000
+M3 ; Pen down
+G1 X68.500 Y35.000
+M5 ; Pen up
+G0 X74.500 Y35.000
+M3 ; Pen down
+G1 X74.500 Y35.000
+M5 ; Pen up
+G0 X81.000 Y35.000
+M3 ; Pen down
+G1 X81.000 Y35.000
+M5 ; Pen up
+G0 X87.000 Y35.000
+M3 ; Pen down
+G1 X87.500 Y35.000
+M5 ; Pen up
+G0 X93.500 Y35.000
+M3 ; Pen down
+G1 X93.500 Y35.000
+M5 ; Pen up
+G0 X93.500 Y35.500
+M3 ; Pen down
+G1 X93.500 Y35.500
+M5 ; Pen up
+G0 X87.500 Y35.500
+M3 ; Pen down
+G1 X87.000 Y35.500
+M5 ; Pen up
+G0 X81.000 Y35.500
+M3 ; Pen down
+G1 X81.000 Y35.500
+M5 ; Pen up
+G0 X74.500 Y35.500
+M3 ; Pen down
+G1 X74.500 Y35.500
+M5 ; Pen up
+G0 X68.500 Y35.500
+M3 ; Pen down
+G1 X68.500 Y35.500
+M5 ; Pen up
+G0 X62.500 Y35.500
+M3 ; Pen down
+G1 X62.000 Y35.500
+M5 ; Pen up
+G0 X56.000 Y35.500
+M3 ; Pen down
+G1 X50.000 Y35.500
+M5 ; Pen up
+G0 X43.500 Y35.500
+M3 ; Pen down
+G1 X43.500 Y35.500
+M5 ; Pen up
+G0 X37.500 Y35.500
+M3 ; Pen down
+G1 X31.000 Y35.500
+M5 ; Pen up
+G0 X25.000 Y35.500
+M3 ; Pen down
+G1 X25.000 Y35.500
+M5 ; Pen up
+G0 X18.500 Y35.500
+M3 ; Pen down
+G1 X18.500 Y35.500
+M5 ; Pen up
+G0 X12.500 Y35.500
+M3 ; Pen down
+G1 X12.000 Y35.500
+M5 ; Pen up
+G0 X6.000 Y35.500
+M3 ; Pen down
+G1 X6.000 Y35.500
+M5 ; Pen up
+G0 X0.000 Y35.500
+M3 ; Pen down
+G1 X0.000 Y35.500
+M5 ; Pen up
+G0 X0.000 Y36.000
+M3 ; Pen down
+G1 X0.000 Y36.000
+M5 ; Pen up
+G0 X6.000 Y36.000
+M3 ; Pen down
+G1 X6.000 Y36.000
+M5 ; Pen up
+G0 X12.000 Y36.000
+M3 ; Pen down
+G1 X12.500 Y36.000
+M5 ; Pen up
+G0 X18.500 Y36.000
+M3 ; Pen down
+G1 X18.500 Y36.000
+M5 ; Pen up
+G0 X25.000 Y36.000
+M3 ; Pen down
+G1 X25.000 Y36.000
+M5 ; Pen up
+G0 X31.000 Y36.000
+M3 ; Pen down
+G1 X37.500 Y36.000
+M5 ; Pen up
+G0 X43.500 Y36.000
+M3 ; Pen down
+G1 X43.500 Y36.000
+M5 ; Pen up
+G0 X50.000 Y36.000
+M3 ; Pen down
+G1 X56.000 Y36.000
+M5 ; Pen up
+G0 X62.000 Y36.000
+M3 ; Pen down
+G1 X62.500 Y36.000
+M5 ; Pen up
+G0 X68.500 Y36.000
+M3 ; Pen down
+G1 X68.500 Y36.000
+M5 ; Pen up
+G0 X74.500 Y36.000
+M3 ; Pen down
+G1 X74.500 Y36.000
+M5 ; Pen up
+G0 X81.000 Y36.000
+M3 ; Pen down
+G1 X81.000 Y36.000
+M5 ; Pen up
+G0 X87.000 Y36.000
+M3 ; Pen down
+G1 X87.500 Y36.000
+M5 ; Pen up
+G0 X93.500 Y36.000
+M3 ; Pen down
+G1 X93.500 Y36.000
+M5 ; Pen up
+G0 X99.500 Y36.500
+M3 ; Pen down
+G1 X99.500 Y36.500
+M5 ; Pen up
+G0 X93.500 Y36.500
+M3 ; Pen down
+G1 X93.500 Y36.500
+M5 ; Pen up
+G0 X87.500 Y36.500
+M3 ; Pen down
+G1 X87.000 Y36.500
+M5 ; Pen up
+G0 X81.000 Y36.500
+M3 ; Pen down
+G1 X81.000 Y36.500
+M5 ; Pen up
+G0 X74.500 Y36.500
+M3 ; Pen down
+G1 X74.500 Y36.500
+M5 ; Pen up
+G0 X68.500 Y36.500
+M3 ; Pen down
+G1 X68.500 Y36.500
+M5 ; Pen up
+G0 X62.500 Y36.500
+M3 ; Pen down
+G1 X62.000 Y36.500
+M5 ; Pen up
+G0 X56.000 Y36.500
+M3 ; Pen down
+G1 X49.500 Y36.500
+M5 ; Pen up
+G0 X43.500 Y36.500
+M3 ; Pen down
+G1 X43.500 Y36.500
+M5 ; Pen up
+G0 X37.500 Y36.500
+M3 ; Pen down
+G1 X31.000 Y36.500
+M5 ; Pen up
+G0 X25.000 Y36.500
+M3 ; Pen down
+G1 X25.000 Y36.500
+M5 ; Pen up
+G0 X18.500 Y36.500
+M3 ; Pen down
+G1 X18.500 Y36.500
+M5 ; Pen up
+G0 X12.500 Y36.500
+M3 ; Pen down
+G1 X12.000 Y36.500
+M5 ; Pen up
+G0 X6.000 Y36.500
+M3 ; Pen down
+G1 X6.000 Y36.500
+M5 ; Pen up
+G0 X0.000 Y36.500
+M3 ; Pen down
+G1 X0.000 Y36.500
+M5 ; Pen up
+G0 X0.000 Y37.000
+M3 ; Pen down
+G1 X99.500 Y37.000
+M5 ; Pen up
+G0 X99.500 Y37.500
+M3 ; Pen down
+G1 X99.500 Y37.500
+M5 ; Pen up
+G0 X94.000 Y37.500
+M3 ; Pen down
+G1 X93.000 Y37.500
+M5 ; Pen up
+G0 X87.500 Y37.500
+M3 ; Pen down
+G1 X87.000 Y37.500
+M5 ; Pen up
+G0 X81.500 Y37.500
+M3 ; Pen down
+G1 X80.500 Y37.500
+M5 ; Pen up
+G0 X75.000 Y37.500
+M3 ; Pen down
+G1 X74.500 Y37.500
+M5 ; Pen up
+G0 X69.000 Y37.500
+M3 ; Pen down
+G1 X30.500 Y37.500
+M5 ; Pen up
+G0 X25.000 Y37.500
+M3 ; Pen down
+G1 X24.500 Y37.500
+M5 ; Pen up
+G0 X19.000 Y37.500
+M3 ; Pen down
+G1 X18.000 Y37.500
+M5 ; Pen up
+G0 X12.500 Y37.500
+M3 ; Pen down
+G1 X12.000 Y37.500
+M5 ; Pen up
+G0 X6.500 Y37.500
+M3 ; Pen down
+G1 X5.500 Y37.500
+M5 ; Pen up
+G0 X0.000 Y37.500
+M3 ; Pen down
+G1 X0.000 Y37.500
+M5 ; Pen up
+G0 X0.000 Y38.000
+M3 ; Pen down
+G1 X0.000 Y38.000
+M5 ; Pen up
+G0 X6.000 Y38.000
+M3 ; Pen down
+G1 X6.000 Y38.000
+M5 ; Pen up
+G0 X12.000 Y38.000
+M3 ; Pen down
+G1 X12.500 Y38.000
+M5 ; Pen up
+G0 X18.500 Y38.000
+M3 ; Pen down
+G1 X18.500 Y38.000
+M5 ; Pen up
+G0 X25.000 Y38.000
+M3 ; Pen down
+G1 X25.000 Y38.000
+M5 ; Pen up
+G0 X31.000 Y38.000
+M3 ; Pen down
+G1 X68.500 Y38.000
+M5 ; Pen up
+G0 X74.500 Y38.000
+M3 ; Pen down
+G1 X74.500 Y38.000
+M5 ; Pen up
+G0 X81.000 Y38.000
+M3 ; Pen down
+G1 X81.000 Y38.000
+M5 ; Pen up
+G0 X87.000 Y38.000
+M3 ; Pen down
+G1 X87.500 Y38.000
+M5 ; Pen up
+G0 X93.500 Y38.000
+M3 ; Pen down
+G1 X93.500 Y38.000
+M5 ; Pen up
+G0 X93.500 Y38.500
+M3 ; Pen down
+G1 X93.500 Y38.500
+M5 ; Pen up
+G0 X87.500 Y38.500
+M3 ; Pen down
+G1 X87.000 Y38.500
+M5 ; Pen up
+G0 X81.000 Y38.500
+M3 ; Pen down
+G1 X81.000 Y38.500
+M5 ; Pen up
+G0 X74.500 Y38.500
+M3 ; Pen down
+G1 X74.500 Y38.500
+M5 ; Pen up
+G0 X68.500 Y38.500
+M3 ; Pen down
+G1 X31.000 Y38.500
+M5 ; Pen up
+G0 X25.000 Y38.500
+M3 ; Pen down
+G1 X25.000 Y38.500
+M5 ; Pen up
+G0 X18.500 Y38.500
+M3 ; Pen down
+G1 X18.500 Y38.500
+M5 ; Pen up
+G0 X12.500 Y38.500
+M3 ; Pen down
+G1 X12.000 Y38.500
+M5 ; Pen up
+G0 X6.000 Y38.500
+M3 ; Pen down
+G1 X6.000 Y38.500
+M5 ; Pen up
+G0 X0.000 Y38.500
+M3 ; Pen down
+G1 X0.000 Y38.500
+M5 ; Pen up
+G0 X0.000 Y39.000
+M3 ; Pen down
+G1 X0.000 Y39.000
+M5 ; Pen up
+G0 X6.000 Y39.000
+M3 ; Pen down
+G1 X6.000 Y39.000
+M5 ; Pen up
+G0 X12.000 Y39.000
+M3 ; Pen down
+G1 X12.500 Y39.000
+M5 ; Pen up
+G0 X18.500 Y39.000
+M3 ; Pen down
+G1 X18.500 Y39.000
+M5 ; Pen up
+G0 X25.000 Y39.000
+M3 ; Pen down
+G1 X25.000 Y39.000
+M5 ; Pen up
+G0 X31.000 Y39.000
+M3 ; Pen down
+G1 X68.500 Y39.000
+M5 ; Pen up
+G0 X74.500 Y39.000
+M3 ; Pen down
+G1 X74.500 Y39.000
+M5 ; Pen up
+G0 X81.000 Y39.000
+M3 ; Pen down
+G1 X81.000 Y39.000
+M5 ; Pen up
+G0 X87.000 Y39.000
+M3 ; Pen down
+G1 X87.500 Y39.000
+M5 ; Pen up
+G0 X93.500 Y39.000
+M3 ; Pen down
+G1 X93.500 Y39.000
+M5 ; Pen up
+G0 X93.500 Y39.500
+M3 ; Pen down
+G1 X93.500 Y39.500
+M5 ; Pen up
+G0 X87.500 Y39.500
+M3 ; Pen down
+G1 X87.000 Y39.500
+M5 ; Pen up
+G0 X81.000 Y39.500
+M3 ; Pen down
+G1 X81.000 Y39.500
+M5 ; Pen up
+G0 X74.500 Y39.500
+M3 ; Pen down
+G1 X74.500 Y39.500
+M5 ; Pen up
+G0 X68.500 Y39.500
+M3 ; Pen down
+G1 X31.000 Y39.500
+M5 ; Pen up
+G0 X25.000 Y39.500
+M3 ; Pen down
+G1 X25.000 Y39.500
+M5 ; Pen up
+G0 X18.500 Y39.500
+M3 ; Pen down
+G1 X18.500 Y39.500
+M5 ; Pen up
+G0 X12.500 Y39.500
+M3 ; Pen down
+G1 X12.000 Y39.500
+M5 ; Pen up
+G0 X6.000 Y39.500
+M3 ; Pen down
+G1 X6.000 Y39.500
+M5 ; Pen up
+G0 X0.000 Y39.500
+M3 ; Pen down
+G1 X0.000 Y39.500
+M5 ; Pen up
+G0 X0.000 Y40.000
+M3 ; Pen down
+G1 X0.000 Y40.000
+M5 ; Pen up
+G0 X6.000 Y40.000
+M3 ; Pen down
+G1 X6.000 Y40.000
+M5 ; Pen up
+G0 X12.000 Y40.000
+M3 ; Pen down
+G1 X12.500 Y40.000
+M5 ; Pen up
+G0 X18.500 Y40.000
+M3 ; Pen down
+G1 X18.500 Y40.000
+M5 ; Pen up
+G0 X25.000 Y40.000
+M3 ; Pen down
+G1 X25.000 Y40.000
+M5 ; Pen up
+G0 X31.000 Y40.000
+M3 ; Pen down
+G1 X68.500 Y40.000
+M5 ; Pen up
+G0 X74.500 Y40.000
+M3 ; Pen down
+G1 X74.500 Y40.000
+M5 ; Pen up
+G0 X81.000 Y40.000
+M3 ; Pen down
+G1 X81.000 Y40.000
+M5 ; Pen up
+G0 X87.000 Y40.000
+M3 ; Pen down
+G1 X87.500 Y40.000
+M5 ; Pen up
+G0 X93.500 Y40.000
+M3 ; Pen down
+G1 X93.500 Y40.000
+M5 ; Pen up
+G0 X93.500 Y40.500
+M3 ; Pen down
+G1 X93.500 Y40.500
+M5 ; Pen up
+G0 X87.500 Y40.500
+M3 ; Pen down
+G1 X87.000 Y40.500
+M5 ; Pen up
+G0 X81.000 Y40.500
+M3 ; Pen down
+G1 X81.000 Y40.500
+M5 ; Pen up
+G0 X74.500 Y40.500
+M3 ; Pen down
+G1 X74.500 Y40.500
+M5 ; Pen up
+G0 X68.500 Y40.500
+M3 ; Pen down
+G1 X31.000 Y40.500
+M5 ; Pen up
+G0 X25.000 Y40.500
+M3 ; Pen down
+G1 X25.000 Y40.500
+M5 ; Pen up
+G0 X18.500 Y40.500
+M3 ; Pen down
+G1 X18.500 Y40.500
+M5 ; Pen up
+G0 X12.500 Y40.500
+M3 ; Pen down
+G1 X12.000 Y40.500
+M5 ; Pen up
+G0 X6.000 Y40.500
+M3 ; Pen down
+G1 X6.000 Y40.500
+M5 ; Pen up
+G0 X0.000 Y40.500
+M3 ; Pen down
+G1 X0.000 Y40.500
+M5 ; Pen up
+G0 X0.000 Y41.000
+M3 ; Pen down
+G1 X0.000 Y41.000
+M5 ; Pen up
+G0 X6.000 Y41.000
+M3 ; Pen down
+G1 X6.000 Y41.000
+M5 ; Pen up
+G0 X12.000 Y41.000
+M3 ; Pen down
+G1 X12.500 Y41.000
+M5 ; Pen up
+G0 X18.500 Y41.000
+M3 ; Pen down
+G1 X18.500 Y41.000
+M5 ; Pen up
+G0 X25.000 Y41.000
+M3 ; Pen down
+G1 X25.000 Y41.000
+M5 ; Pen up
+G0 X31.000 Y41.000
+M3 ; Pen down
+G1 X68.500 Y41.000
+M5 ; Pen up
+G0 X74.500 Y41.000
+M3 ; Pen down
+G1 X74.500 Y41.000
+M5 ; Pen up
+G0 X81.000 Y41.000
+M3 ; Pen down
+G1 X81.000 Y41.000
+M5 ; Pen up
+G0 X87.000 Y41.000
+M3 ; Pen down
+G1 X87.500 Y41.000
+M5 ; Pen up
+G0 X93.500 Y41.000
+M3 ; Pen down
+G1 X93.500 Y41.000
+M5 ; Pen up
+G0 X93.500 Y41.500
+M3 ; Pen down
+G1 X93.500 Y41.500
+M5 ; Pen up
+G0 X87.500 Y41.500
+M3 ; Pen down
+G1 X87.000 Y41.500
+M5 ; Pen up
+G0 X81.000 Y41.500
+M3 ; Pen down
+G1 X81.000 Y41.500
+M5 ; Pen up
+G0 X74.500 Y41.500
+M3 ; Pen down
+G1 X74.500 Y41.500
+M5 ; Pen up
+G0 X68.500 Y41.500
+M3 ; Pen down
+G1 X31.000 Y41.500
+M5 ; Pen up
+G0 X25.000 Y41.500
+M3 ; Pen down
+G1 X25.000 Y41.500
+M5 ; Pen up
+G0 X18.500 Y41.500
+M3 ; Pen down
+G1 X18.500 Y41.500
+M5 ; Pen up
+G0 X12.500 Y41.500
+M3 ; Pen down
+G1 X12.000 Y41.500
+M5 ; Pen up
+G0 X6.000 Y41.500
+M3 ; Pen down
+G1 X6.000 Y41.500
+M5 ; Pen up
+G0 X0.000 Y41.500
+M3 ; Pen down
+G1 X0.000 Y41.500
+M5 ; Pen up
+G0 X0.000 Y42.000
+M3 ; Pen down
+G1 X0.000 Y42.000
+M5 ; Pen up
+G0 X6.000 Y42.000
+M3 ; Pen down
+G1 X6.000 Y42.000
+M5 ; Pen up
+G0 X12.000 Y42.000
+M3 ; Pen down
+G1 X12.500 Y42.000
+M5 ; Pen up
+G0 X18.500 Y42.000
+M3 ; Pen down
+G1 X18.500 Y42.000
+M5 ; Pen up
+G0 X25.000 Y42.000
+M3 ; Pen down
+G1 X25.000 Y42.000
+M5 ; Pen up
+G0 X31.000 Y42.000
+M3 ; Pen down
+G1 X68.500 Y42.000
+M5 ; Pen up
+G0 X74.500 Y42.000
+M3 ; Pen down
+G1 X74.500 Y42.000
+M5 ; Pen up
+G0 X81.000 Y42.000
+M3 ; Pen down
+G1 X81.000 Y42.000
+M5 ; Pen up
+G0 X87.000 Y42.000
+M3 ; Pen down
+G1 X87.500 Y42.000
+M5 ; Pen up
+G0 X93.500 Y42.000
+M3 ; Pen down
+G1 X93.500 Y42.000
+M5 ; Pen up
+G0 X93.500 Y42.500
+M3 ; Pen down
+G1 X93.500 Y42.500
+M5 ; Pen up
+G0 X87.500 Y42.500
+M3 ; Pen down
+G1 X87.000 Y42.500
+M5 ; Pen up
+G0 X81.000 Y42.500
+M3 ; Pen down
+G1 X81.000 Y42.500
+M5 ; Pen up
+G0 X74.500 Y42.500
+M3 ; Pen down
+G1 X74.500 Y42.500
+M5 ; Pen up
+G0 X68.500 Y42.500
+M3 ; Pen down
+G1 X31.000 Y42.500
+M5 ; Pen up
+G0 X25.000 Y42.500
+M3 ; Pen down
+G1 X25.000 Y42.500
+M5 ; Pen up
+G0 X18.500 Y42.500
+M3 ; Pen down
+G1 X18.500 Y42.500
+M5 ; Pen up
+G0 X12.500 Y42.500
+M3 ; Pen down
+G1 X12.000 Y42.500
+M5 ; Pen up
+G0 X6.000 Y42.500
+M3 ; Pen down
+G1 X6.000 Y42.500
+M5 ; Pen up
+G0 X0.000 Y42.500
+M3 ; Pen down
+G1 X0.000 Y42.500
+M5 ; Pen up
+G0 X0.000 Y43.000
+M3 ; Pen down
+G1 X0.000 Y43.000
+M5 ; Pen up
+G0 X6.000 Y43.000
+M3 ; Pen down
+G1 X6.000 Y43.000
+M5 ; Pen up
+G0 X12.000 Y43.000
+M3 ; Pen down
+G1 X12.500 Y43.000
+M5 ; Pen up
+G0 X18.500 Y43.000
+M3 ; Pen down
+G1 X18.500 Y43.000
+M5 ; Pen up
+G0 X24.500 Y43.000
+M3 ; Pen down
+G1 X25.000 Y43.000
+M5 ; Pen up
+G0 X31.000 Y43.000
+M3 ; Pen down
+G1 X68.500 Y43.000
+M5 ; Pen up
+G0 X74.500 Y43.000
+M3 ; Pen down
+G1 X75.000 Y43.000
+M5 ; Pen up
+G0 X81.000 Y43.000
+M3 ; Pen down
+G1 X81.000 Y43.000
+M5 ; Pen up
+G0 X87.000 Y43.000
+M3 ; Pen down
+G1 X87.500 Y43.000
+M5 ; Pen up
+G0 X93.500 Y43.000
+M3 ; Pen down
+G1 X93.500 Y43.000
+M5 ; Pen up
+G0 X99.500 Y43.000
+M3 ; Pen down
+G1 X99.500 Y43.000
+M5 ; Pen up
+G0 X99.500 Y43.500
+M3 ; Pen down
+G1 X0.000 Y43.500
+M5 ; Pen up
+G0 X0.000 Y44.000
+M3 ; Pen down
+G1 X0.000 Y44.000
+M5 ; Pen up
+G0 X6.000 Y44.000
+M3 ; Pen down
+G1 X6.000 Y44.000
+M5 ; Pen up
+G0 X12.000 Y44.000
+M3 ; Pen down
+G1 X12.500 Y44.000
+M5 ; Pen up
+G0 X18.500 Y44.000
+M3 ; Pen down
+G1 X18.500 Y44.000
+M5 ; Pen up
+G0 X25.000 Y44.000
+M3 ; Pen down
+G1 X37.500 Y44.000
+M5 ; Pen up
+G0 X43.500 Y44.000
+M3 ; Pen down
+G1 X43.500 Y44.000
+M5 ; Pen up
+G0 X49.500 Y44.000
+M3 ; Pen down
+G1 X56.000 Y44.000
+M5 ; Pen up
+G0 X62.000 Y44.000
+M3 ; Pen down
+G1 X62.500 Y44.000
+M5 ; Pen up
+G0 X68.500 Y44.000
+M3 ; Pen down
+G1 X81.000 Y44.000
+M5 ; Pen up
+G0 X87.000 Y44.000
+M3 ; Pen down
+G1 X87.500 Y44.000
+M5 ; Pen up
+G0 X93.500 Y44.000
+M3 ; Pen down
+G1 X93.500 Y44.000
+M5 ; Pen up
+G0 X99.500 Y44.000
+M3 ; Pen down
+G1 X99.500 Y44.000
+M5 ; Pen up
+G0 X93.500 Y44.500
+M3 ; Pen down
+G1 X93.500 Y44.500
+M5 ; Pen up
+G0 X87.500 Y44.500
+M3 ; Pen down
+G1 X87.000 Y44.500
+M5 ; Pen up
+G0 X81.000 Y44.500
+M3 ; Pen down
+G1 X68.500 Y44.500
+M5 ; Pen up
+G0 X62.500 Y44.500
+M3 ; Pen down
+G1 X62.000 Y44.500
+M5 ; Pen up
+G0 X56.000 Y44.500
+M3 ; Pen down
+G1 X50.000 Y44.500
+M5 ; Pen up
+G0 X43.500 Y44.500
+M3 ; Pen down
+G1 X43.500 Y44.500
+M5 ; Pen up
+G0 X37.500 Y44.500
+M3 ; Pen down
+G1 X25.000 Y44.500
+M5 ; Pen up
+G0 X18.500 Y44.500
+M3 ; Pen down
+G1 X18.500 Y44.500
+M5 ; Pen up
+G0 X12.500 Y44.500
+M3 ; Pen down
+G1 X12.000 Y44.500
+M5 ; Pen up
+G0 X6.000 Y44.500
+M3 ; Pen down
+G1 X6.000 Y44.500
+M5 ; Pen up
+G0 X0.000 Y44.500
+M3 ; Pen down
+G1 X0.000 Y44.500
+M5 ; Pen up
+G0 X0.000 Y45.000
+M3 ; Pen down
+G1 X0.000 Y45.000
+M5 ; Pen up
+G0 X6.000 Y45.000
+M3 ; Pen down
+G1 X6.000 Y45.000
+M5 ; Pen up
+G0 X12.000 Y45.000
+M3 ; Pen down
+G1 X12.500 Y45.000
+M5 ; Pen up
+G0 X18.500 Y45.000
+M3 ; Pen down
+G1 X18.500 Y45.000
+M5 ; Pen up
+G0 X25.000 Y45.000
+M3 ; Pen down
+G1 X37.500 Y45.000
+M5 ; Pen up
+G0 X43.500 Y45.000
+M3 ; Pen down
+G1 X43.500 Y45.000
+M5 ; Pen up
+G0 X50.000 Y45.000
+M3 ; Pen down
+G1 X56.000 Y45.000
+M5 ; Pen up
+G0 X62.000 Y45.000
+M3 ; Pen down
+G1 X62.500 Y45.000
+M5 ; Pen up
+G0 X68.500 Y45.000
+M3 ; Pen down
+G1 X81.000 Y45.000
+M5 ; Pen up
+G0 X87.000 Y45.000
+M3 ; Pen down
+G1 X87.500 Y45.000
+M5 ; Pen up
+G0 X93.500 Y45.000
+M3 ; Pen down
+G1 X93.500 Y45.000
+M5 ; Pen up
+G0 X93.500 Y45.500
+M3 ; Pen down
+G1 X93.500 Y45.500
+M5 ; Pen up
+G0 X87.500 Y45.500
+M3 ; Pen down
+G1 X87.000 Y45.500
+M5 ; Pen up
+G0 X81.000 Y45.500
+M3 ; Pen down
+G1 X68.500 Y45.500
+M5 ; Pen up
+G0 X62.500 Y45.500
+M3 ; Pen down
+G1 X62.000 Y45.500
+M5 ; Pen up
+G0 X56.000 Y45.500
+M3 ; Pen down
+G1 X50.000 Y45.500
+M5 ; Pen up
+G0 X43.500 Y45.500
+M3 ; Pen down
+G1 X43.500 Y45.500
+M5 ; Pen up
+G0 X37.500 Y45.500
+M3 ; Pen down
+G1 X25.000 Y45.500
+M5 ; Pen up
+G0 X18.500 Y45.500
+M3 ; Pen down
+G1 X18.500 Y45.500
+M5 ; Pen up
+G0 X12.500 Y45.500
+M3 ; Pen down
+G1 X12.000 Y45.500
+M5 ; Pen up
+G0 X6.000 Y45.500
+M3 ; Pen down
+G1 X6.000 Y45.500
+M5 ; Pen up
+G0 X0.000 Y45.500
+M3 ; Pen down
+G1 X0.000 Y45.500
+M5 ; Pen up
+G0 X0.000 Y46.000
+M3 ; Pen down
+G1 X0.000 Y46.000
+M5 ; Pen up
+G0 X6.000 Y46.000
+M3 ; Pen down
+G1 X6.000 Y46.000
+M5 ; Pen up
+G0 X12.000 Y46.000
+M3 ; Pen down
+G1 X12.500 Y46.000
+M5 ; Pen up
+G0 X18.500 Y46.000
+M3 ; Pen down
+G1 X18.500 Y46.000
+M5 ; Pen up
+G0 X25.000 Y46.000
+M3 ; Pen down
+G1 X37.500 Y46.000
+M5 ; Pen up
+G0 X43.500 Y46.000
+M3 ; Pen down
+G1 X43.500 Y46.000
+M5 ; Pen up
+G0 X50.000 Y46.000
+M3 ; Pen down
+G1 X56.000 Y46.000
+M5 ; Pen up
+G0 X62.000 Y46.000
+M3 ; Pen down
+G1 X62.500 Y46.000
+M5 ; Pen up
+G0 X68.500 Y46.000
+M3 ; Pen down
+G1 X81.000 Y46.000
+M5 ; Pen up
+G0 X87.000 Y46.000
+M3 ; Pen down
+G1 X87.500 Y46.000
+M5 ; Pen up
+G0 X93.500 Y46.000
+M3 ; Pen down
+G1 X93.500 Y46.000
+M5 ; Pen up
+G0 X93.500 Y46.500
+M3 ; Pen down
+G1 X93.500 Y46.500
+M5 ; Pen up
+G0 X87.500 Y46.500
+M3 ; Pen down
+G1 X87.000 Y46.500
+M5 ; Pen up
+G0 X81.000 Y46.500
+M3 ; Pen down
+G1 X68.500 Y46.500
+M5 ; Pen up
+G0 X62.500 Y46.500
+M3 ; Pen down
+G1 X62.000 Y46.500
+M5 ; Pen up
+G0 X56.000 Y46.500
+M3 ; Pen down
+G1 X50.000 Y46.500
+M5 ; Pen up
+G0 X43.500 Y46.500
+M3 ; Pen down
+G1 X43.500 Y46.500
+M5 ; Pen up
+G0 X37.500 Y46.500
+M3 ; Pen down
+G1 X25.000 Y46.500
+M5 ; Pen up
+G0 X18.500 Y46.500
+M3 ; Pen down
+G1 X18.500 Y46.500
+M5 ; Pen up
+G0 X12.500 Y46.500
+M3 ; Pen down
+G1 X12.000 Y46.500
+M5 ; Pen up
+G0 X6.000 Y46.500
+M3 ; Pen down
+G1 X6.000 Y46.500
+M5 ; Pen up
+G0 X0.000 Y46.500
+M3 ; Pen down
+G1 X0.000 Y46.500
+M5 ; Pen up
+G0 X0.000 Y47.000
+M3 ; Pen down
+G1 X0.000 Y47.000
+M5 ; Pen up
+G0 X6.000 Y47.000
+M3 ; Pen down
+G1 X6.000 Y47.000
+M5 ; Pen up
+G0 X12.000 Y47.000
+M3 ; Pen down
+G1 X12.500 Y47.000
+M5 ; Pen up
+G0 X18.500 Y47.000
+M3 ; Pen down
+G1 X18.500 Y47.000
+M5 ; Pen up
+G0 X25.000 Y47.000
+M3 ; Pen down
+G1 X37.500 Y47.000
+M5 ; Pen up
+G0 X43.500 Y47.000
+M3 ; Pen down
+G1 X43.500 Y47.000
+M5 ; Pen up
+G0 X50.000 Y47.000
+M3 ; Pen down
+G1 X56.000 Y47.000
+M5 ; Pen up
+G0 X62.000 Y47.000
+M3 ; Pen down
+G1 X62.500 Y47.000
+M5 ; Pen up
+G0 X68.500 Y47.000
+M3 ; Pen down
+G1 X81.000 Y47.000
+M5 ; Pen up
+G0 X87.000 Y47.000
+M3 ; Pen down
+G1 X87.500 Y47.000
+M5 ; Pen up
+G0 X93.500 Y47.000
+M3 ; Pen down
+G1 X93.500 Y47.000
+M5 ; Pen up
+G0 X93.500 Y47.500
+M3 ; Pen down
+G1 X93.500 Y47.500
+M5 ; Pen up
+G0 X87.500 Y47.500
+M3 ; Pen down
+G1 X87.000 Y47.500
+M5 ; Pen up
+G0 X81.000 Y47.500
+M3 ; Pen down
+G1 X68.500 Y47.500
+M5 ; Pen up
+G0 X62.500 Y47.500
+M3 ; Pen down
+G1 X62.000 Y47.500
+M5 ; Pen up
+G0 X56.000 Y47.500
+M3 ; Pen down
+G1 X50.000 Y47.500
+M5 ; Pen up
+G0 X43.500 Y47.500
+M3 ; Pen down
+G1 X43.500 Y47.500
+M5 ; Pen up
+G0 X37.500 Y47.500
+M3 ; Pen down
+G1 X25.000 Y47.500
+M5 ; Pen up
+G0 X18.500 Y47.500
+M3 ; Pen down
+G1 X18.500 Y47.500
+M5 ; Pen up
+G0 X12.500 Y47.500
+M3 ; Pen down
+G1 X12.000 Y47.500
+M5 ; Pen up
+G0 X6.000 Y47.500
+M3 ; Pen down
+G1 X6.000 Y47.500
+M5 ; Pen up
+G0 X0.000 Y47.500
+M3 ; Pen down
+G1 X0.000 Y47.500
+M5 ; Pen up
+G0 X0.000 Y48.000
+M3 ; Pen down
+G1 X0.000 Y48.000
+M5 ; Pen up
+G0 X6.000 Y48.000
+M3 ; Pen down
+G1 X6.000 Y48.000
+M5 ; Pen up
+G0 X12.000 Y48.000
+M3 ; Pen down
+G1 X12.500 Y48.000
+M5 ; Pen up
+G0 X18.500 Y48.000
+M3 ; Pen down
+G1 X18.500 Y48.000
+M5 ; Pen up
+G0 X25.000 Y48.000
+M3 ; Pen down
+G1 X37.500 Y48.000
+M5 ; Pen up
+G0 X43.500 Y48.000
+M3 ; Pen down
+G1 X43.500 Y48.000
+M5 ; Pen up
+G0 X50.000 Y48.000
+M3 ; Pen down
+G1 X56.000 Y48.000
+M5 ; Pen up
+G0 X62.000 Y48.000
+M3 ; Pen down
+G1 X62.500 Y48.000
+M5 ; Pen up
+G0 X68.500 Y48.000
+M3 ; Pen down
+G1 X81.000 Y48.000
+M5 ; Pen up
+G0 X87.000 Y48.000
+M3 ; Pen down
+G1 X87.500 Y48.000
+M5 ; Pen up
+G0 X93.500 Y48.000
+M3 ; Pen down
+G1 X93.500 Y48.000
+M5 ; Pen up
+G0 X93.500 Y48.500
+M3 ; Pen down
+G1 X93.500 Y48.500
+M5 ; Pen up
+G0 X87.500 Y48.500
+M3 ; Pen down
+G1 X87.000 Y48.500
+M5 ; Pen up
+G0 X81.000 Y48.500
+M3 ; Pen down
+G1 X68.500 Y48.500
+M5 ; Pen up
+G0 X62.500 Y48.500
+M3 ; Pen down
+G1 X62.000 Y48.500
+M5 ; Pen up
+G0 X56.000 Y48.500
+M3 ; Pen down
+G1 X50.000 Y48.500
+M5 ; Pen up
+G0 X43.500 Y48.500
+M3 ; Pen down
+G1 X43.500 Y48.500
+M5 ; Pen up
+G0 X37.500 Y48.500
+M3 ; Pen down
+G1 X25.000 Y48.500
+M5 ; Pen up
+G0 X18.500 Y48.500
+M3 ; Pen down
+G1 X18.500 Y48.500
+M5 ; Pen up
+G0 X12.500 Y48.500
+M3 ; Pen down
+G1 X12.000 Y48.500
+M5 ; Pen up
+G0 X6.000 Y48.500
+M3 ; Pen down
+G1 X6.000 Y48.500
+M5 ; Pen up
+G0 X0.000 Y48.500
+M3 ; Pen down
+G1 X0.000 Y48.500
+M5 ; Pen up
+G0 X0.000 Y49.000
+M3 ; Pen down
+G1 X0.000 Y49.000
+M5 ; Pen up
+G0 X6.000 Y49.000
+M3 ; Pen down
+G1 X6.000 Y49.000
+M5 ; Pen up
+G0 X12.000 Y49.000
+M3 ; Pen down
+G1 X12.500 Y49.000
+M5 ; Pen up
+G0 X18.500 Y49.000
+M3 ; Pen down
+G1 X18.500 Y49.000
+M5 ; Pen up
+G0 X25.000 Y49.000
+M3 ; Pen down
+G1 X37.500 Y49.000
+M5 ; Pen up
+G0 X43.500 Y49.000
+M3 ; Pen down
+G1 X43.500 Y49.000
+M5 ; Pen up
+G0 X49.500 Y49.000
+M3 ; Pen down
+G1 X56.000 Y49.000
+M5 ; Pen up
+G0 X62.000 Y49.000
+M3 ; Pen down
+G1 X62.500 Y49.000
+M5 ; Pen up
+G0 X68.500 Y49.000
+M3 ; Pen down
+G1 X81.000 Y49.000
+M5 ; Pen up
+G0 X87.000 Y49.000
+M3 ; Pen down
+G1 X87.500 Y49.000
+M5 ; Pen up
+G0 X93.500 Y49.000
+M3 ; Pen down
+G1 X93.500 Y49.000
+M5 ; Pen up
+G0 X99.500 Y49.500
+M3 ; Pen down
+G1 X99.500 Y49.500
+M5 ; Pen up
+G0 X94.000 Y49.500
+M3 ; Pen down
+G1 X93.000 Y49.500
+M5 ; Pen up
+G0 X87.500 Y49.500
+M3 ; Pen down
+G1 X86.500 Y49.500
+M5 ; Pen up
+G0 X81.500 Y49.500
+M3 ; Pen down
+G1 X68.000 Y49.500
+M5 ; Pen up
+G0 X63.000 Y49.500
+M3 ; Pen down
+G1 X61.500 Y49.500
+M5 ; Pen up
+G0 X56.500 Y49.500
+M3 ; Pen down
+G1 X49.000 Y49.500
+M5 ; Pen up
+G0 X44.000 Y49.500
+M3 ; Pen down
+G1 X43.000 Y49.500
+M5 ; Pen up
+G0 X38.000 Y49.500
+M3 ; Pen down
+G1 X24.500 Y49.500
+M5 ; Pen up
+G0 X19.000 Y49.500
+M3 ; Pen down
+G1 X18.000 Y49.500
+M5 ; Pen up
+G0 X13.000 Y49.500
+M3 ; Pen down
+G1 X12.000 Y49.500
+M5 ; Pen up
+G0 X6.500 Y49.500
+M3 ; Pen down
+G1 X5.500 Y49.500
+M5 ; Pen up
+G0 X0.000 Y49.500
+M3 ; Pen down
+G1 X0.000 Y49.500
+M5 ; Pen up
+G0 X0.000 Y50.000
+M3 ; Pen down
+G1 X0.000 Y50.000
+M5 ; Pen up
+G0 X5.500 Y50.000
+M3 ; Pen down
+G1 X6.500 Y50.000
+M5 ; Pen up
+G0 X12.000 Y50.000
+M3 ; Pen down
+G1 X25.000 Y50.000
+M5 ; Pen up
+G0 X30.500 Y50.000
+M3 ; Pen down
+G1 X38.000 Y50.000
+M5 ; Pen up
+G0 X43.500 Y50.000
+M3 ; Pen down
+G1 X44.000 Y50.000
+M5 ; Pen up
+G0 X49.500 Y50.000
+M3 ; Pen down
+G1 X56.500 Y50.000
+M5 ; Pen up
+G0 X61.500 Y50.000
+M3 ; Pen down
+G1 X63.000 Y50.000
+M5 ; Pen up
+G0 X68.500 Y50.000
+M3 ; Pen down
+G1 X69.000 Y50.000
+M5 ; Pen up
+G0 X74.500 Y50.000
+M3 ; Pen down
+G1 X81.500 Y50.000
+M5 ; Pen up
+G0 X87.000 Y50.000
+M3 ; Pen down
+G1 X87.500 Y50.000
+M5 ; Pen up
+G0 X93.000 Y50.000
+M3 ; Pen down
+G1 X94.000 Y50.000
+M5 ; Pen up
+G0 X99.500 Y50.000
+M3 ; Pen down
+G1 X99.500 Y50.000
+M5 ; Pen up
+G0 X93.500 Y50.500
+M3 ; Pen down
+G1 X93.500 Y50.500
+M5 ; Pen up
+G0 X87.500 Y50.500
+M3 ; Pen down
+G1 X87.000 Y50.500
+M5 ; Pen up
+G0 X81.000 Y50.500
+M3 ; Pen down
+G1 X74.500 Y50.500
+M5 ; Pen up
+G0 X68.500 Y50.500
+M3 ; Pen down
+G1 X68.500 Y50.500
+M5 ; Pen up
+G0 X62.500 Y50.500
+M3 ; Pen down
+G1 X62.000 Y50.500
+M5 ; Pen up
+G0 X56.000 Y50.500
+M3 ; Pen down
+G1 X49.500 Y50.500
+M5 ; Pen up
+G0 X43.500 Y50.500
+M3 ; Pen down
+G1 X43.500 Y50.500
+M5 ; Pen up
+G0 X37.500 Y50.500
+M3 ; Pen down
+G1 X31.000 Y50.500
+M5 ; Pen up
+G0 X25.000 Y50.500
+M3 ; Pen down
+G1 X12.000 Y50.500
+M5 ; Pen up
+G0 X6.000 Y50.500
+M3 ; Pen down
+G1 X6.000 Y50.500
+M5 ; Pen up
+G0 X0.000 Y50.500
+M3 ; Pen down
+G1 X0.000 Y50.500
+M5 ; Pen up
+G0 X0.000 Y51.000
+M3 ; Pen down
+G1 X0.000 Y51.000
+M5 ; Pen up
+G0 X6.000 Y51.000
+M3 ; Pen down
+G1 X6.000 Y51.000
+M5 ; Pen up
+G0 X12.000 Y51.000
+M3 ; Pen down
+G1 X25.000 Y51.000
+M5 ; Pen up
+G0 X31.000 Y51.000
+M3 ; Pen down
+G1 X37.500 Y51.000
+M5 ; Pen up
+G0 X43.500 Y51.000
+M3 ; Pen down
+G1 X43.500 Y51.000
+M5 ; Pen up
+G0 X50.000 Y51.000
+M3 ; Pen down
+G1 X56.000 Y51.000
+M5 ; Pen up
+G0 X62.000 Y51.000
+M3 ; Pen down
+G1 X62.500 Y51.000
+M5 ; Pen up
+G0 X68.500 Y51.000
+M3 ; Pen down
+G1 X68.500 Y51.000
+M5 ; Pen up
+G0 X74.500 Y51.000
+M3 ; Pen down
+G1 X81.000 Y51.000
+M5 ; Pen up
+G0 X87.000 Y51.000
+M3 ; Pen down
+G1 X87.500 Y51.000
+M5 ; Pen up
+G0 X93.500 Y51.000
+M3 ; Pen down
+G1 X93.500 Y51.000
+M5 ; Pen up
+G0 X93.500 Y51.500
+M3 ; Pen down
+G1 X93.500 Y51.500
+M5 ; Pen up
+G0 X87.500 Y51.500
+M3 ; Pen down
+G1 X87.000 Y51.500
+M5 ; Pen up
+G0 X81.000 Y51.500
+M3 ; Pen down
+G1 X74.500 Y51.500
+M5 ; Pen up
+G0 X68.500 Y51.500
+M3 ; Pen down
+G1 X68.500 Y51.500
+M5 ; Pen up
+G0 X62.500 Y51.500
+M3 ; Pen down
+G1 X62.000 Y51.500
+M5 ; Pen up
+G0 X56.000 Y51.500
+M3 ; Pen down
+G1 X50.000 Y51.500
+M5 ; Pen up
+G0 X43.500 Y51.500
+M3 ; Pen down
+G1 X43.500 Y51.500
+M5 ; Pen up
+G0 X37.500 Y51.500
+M3 ; Pen down
+G1 X31.000 Y51.500
+M5 ; Pen up
+G0 X25.000 Y51.500
+M3 ; Pen down
+G1 X12.000 Y51.500
+M5 ; Pen up
+G0 X6.000 Y51.500
+M3 ; Pen down
+G1 X6.000 Y51.500
+M5 ; Pen up
+G0 X0.000 Y51.500
+M3 ; Pen down
+G1 X0.000 Y51.500
+M5 ; Pen up
+G0 X0.000 Y52.000
+M3 ; Pen down
+G1 X0.000 Y52.000
+M5 ; Pen up
+G0 X6.000 Y52.000
+M3 ; Pen down
+G1 X6.000 Y52.000
+M5 ; Pen up
+G0 X12.000 Y52.000
+M3 ; Pen down
+G1 X25.000 Y52.000
+M5 ; Pen up
+G0 X31.000 Y52.000
+M3 ; Pen down
+G1 X37.500 Y52.000
+M5 ; Pen up
+G0 X43.500 Y52.000
+M3 ; Pen down
+G1 X43.500 Y52.000
+M5 ; Pen up
+G0 X50.000 Y52.000
+M3 ; Pen down
+G1 X56.000 Y52.000
+M5 ; Pen up
+G0 X62.000 Y52.000
+M3 ; Pen down
+G1 X62.500 Y52.000
+M5 ; Pen up
+G0 X68.500 Y52.000
+M3 ; Pen down
+G1 X68.500 Y52.000
+M5 ; Pen up
+G0 X74.500 Y52.000
+M3 ; Pen down
+G1 X81.000 Y52.000
+M5 ; Pen up
+G0 X87.000 Y52.000
+M3 ; Pen down
+G1 X87.500 Y52.000
+M5 ; Pen up
+G0 X93.500 Y52.000
+M3 ; Pen down
+G1 X93.500 Y52.000
+M5 ; Pen up
+G0 X93.500 Y52.500
+M3 ; Pen down
+G1 X93.500 Y52.500
+M5 ; Pen up
+G0 X87.500 Y52.500
+M3 ; Pen down
+G1 X87.000 Y52.500
+M5 ; Pen up
+G0 X81.000 Y52.500
+M3 ; Pen down
+G1 X74.500 Y52.500
+M5 ; Pen up
+G0 X68.500 Y52.500
+M3 ; Pen down
+G1 X68.500 Y52.500
+M5 ; Pen up
+G0 X62.500 Y52.500
+M3 ; Pen down
+G1 X62.000 Y52.500
+M5 ; Pen up
+G0 X56.000 Y52.500
+M3 ; Pen down
+G1 X50.000 Y52.500
+M5 ; Pen up
+G0 X43.500 Y52.500
+M3 ; Pen down
+G1 X43.500 Y52.500
+M5 ; Pen up
+G0 X37.500 Y52.500
+M3 ; Pen down
+G1 X31.000 Y52.500
+M5 ; Pen up
+G0 X25.000 Y52.500
+M3 ; Pen down
+G1 X12.000 Y52.500
+M5 ; Pen up
+G0 X6.000 Y52.500
+M3 ; Pen down
+G1 X6.000 Y52.500
+M5 ; Pen up
+G0 X0.000 Y52.500
+M3 ; Pen down
+G1 X0.000 Y52.500
+M5 ; Pen up
+G0 X0.000 Y53.000
+M3 ; Pen down
+G1 X0.000 Y53.000
+M5 ; Pen up
+G0 X6.000 Y53.000
+M3 ; Pen down
+G1 X6.000 Y53.000
+M5 ; Pen up
+G0 X12.000 Y53.000
+M3 ; Pen down
+G1 X25.000 Y53.000
+M5 ; Pen up
+G0 X31.000 Y53.000
+M3 ; Pen down
+G1 X37.500 Y53.000
+M5 ; Pen up
+G0 X43.500 Y53.000
+M3 ; Pen down
+G1 X43.500 Y53.000
+M5 ; Pen up
+G0 X50.000 Y53.000
+M3 ; Pen down
+G1 X56.000 Y53.000
+M5 ; Pen up
+G0 X62.000 Y53.000
+M3 ; Pen down
+G1 X62.500 Y53.000
+M5 ; Pen up
+G0 X68.500 Y53.000
+M3 ; Pen down
+G1 X68.500 Y53.000
+M5 ; Pen up
+G0 X74.500 Y53.000
+M3 ; Pen down
+G1 X81.000 Y53.000
+M5 ; Pen up
+G0 X87.000 Y53.000
+M3 ; Pen down
+G1 X87.500 Y53.000
+M5 ; Pen up
+G0 X93.500 Y53.000
+M3 ; Pen down
+G1 X93.500 Y53.000
+M5 ; Pen up
+G0 X93.500 Y53.500
+M3 ; Pen down
+G1 X93.500 Y53.500
+M5 ; Pen up
+G0 X87.500 Y53.500
+M3 ; Pen down
+G1 X87.000 Y53.500
+M5 ; Pen up
+G0 X81.000 Y53.500
+M3 ; Pen down
+G1 X74.500 Y53.500
+M5 ; Pen up
+G0 X68.500 Y53.500
+M3 ; Pen down
+G1 X68.500 Y53.500
+M5 ; Pen up
+G0 X62.500 Y53.500
+M3 ; Pen down
+G1 X62.000 Y53.500
+M5 ; Pen up
+G0 X56.000 Y53.500
+M3 ; Pen down
+G1 X50.000 Y53.500
+M5 ; Pen up
+G0 X43.500 Y53.500
+M3 ; Pen down
+G1 X43.500 Y53.500
+M5 ; Pen up
+G0 X37.500 Y53.500
+M3 ; Pen down
+G1 X31.000 Y53.500
+M5 ; Pen up
+G0 X25.000 Y53.500
+M3 ; Pen down
+G1 X12.000 Y53.500
+M5 ; Pen up
+G0 X6.000 Y53.500
+M3 ; Pen down
+G1 X6.000 Y53.500
+M5 ; Pen up
+G0 X0.000 Y53.500
+M3 ; Pen down
+G1 X0.000 Y53.500
+M5 ; Pen up
+G0 X0.000 Y54.000
+M3 ; Pen down
+G1 X0.000 Y54.000
+M5 ; Pen up
+G0 X6.000 Y54.000
+M3 ; Pen down
+G1 X6.000 Y54.000
+M5 ; Pen up
+G0 X12.000 Y54.000
+M3 ; Pen down
+G1 X25.000 Y54.000
+M5 ; Pen up
+G0 X31.000 Y54.000
+M3 ; Pen down
+G1 X37.500 Y54.000
+M5 ; Pen up
+G0 X43.500 Y54.000
+M3 ; Pen down
+G1 X43.500 Y54.000
+M5 ; Pen up
+G0 X50.000 Y54.000
+M3 ; Pen down
+G1 X56.000 Y54.000
+M5 ; Pen up
+G0 X62.000 Y54.000
+M3 ; Pen down
+G1 X62.500 Y54.000
+M5 ; Pen up
+G0 X68.500 Y54.000
+M3 ; Pen down
+G1 X68.500 Y54.000
+M5 ; Pen up
+G0 X74.500 Y54.000
+M3 ; Pen down
+G1 X81.000 Y54.000
+M5 ; Pen up
+G0 X87.000 Y54.000
+M3 ; Pen down
+G1 X87.500 Y54.000
+M5 ; Pen up
+G0 X93.500 Y54.000
+M3 ; Pen down
+G1 X93.500 Y54.000
+M5 ; Pen up
+G0 X93.500 Y54.500
+M3 ; Pen down
+G1 X93.500 Y54.500
+M5 ; Pen up
+G0 X87.500 Y54.500
+M3 ; Pen down
+G1 X87.000 Y54.500
+M5 ; Pen up
+G0 X81.000 Y54.500
+M3 ; Pen down
+G1 X74.500 Y54.500
+M5 ; Pen up
+G0 X68.500 Y54.500
+M3 ; Pen down
+G1 X68.500 Y54.500
+M5 ; Pen up
+G0 X62.500 Y54.500
+M3 ; Pen down
+G1 X62.000 Y54.500
+M5 ; Pen up
+G0 X56.000 Y54.500
+M3 ; Pen down
+G1 X50.000 Y54.500
+M5 ; Pen up
+G0 X43.500 Y54.500
+M3 ; Pen down
+G1 X43.500 Y54.500
+M5 ; Pen up
+G0 X37.500 Y54.500
+M3 ; Pen down
+G1 X31.000 Y54.500
+M5 ; Pen up
+G0 X25.000 Y54.500
+M3 ; Pen down
+G1 X12.000 Y54.500
+M5 ; Pen up
+G0 X6.000 Y54.500
+M3 ; Pen down
+G1 X6.000 Y54.500
+M5 ; Pen up
+G0 X0.000 Y54.500
+M3 ; Pen down
+G1 X0.000 Y54.500
+M5 ; Pen up
+G0 X0.000 Y55.000
+M3 ; Pen down
+G1 X0.000 Y55.000
+M5 ; Pen up
+G0 X6.000 Y55.000
+M3 ; Pen down
+G1 X6.000 Y55.000
+M5 ; Pen up
+G0 X12.000 Y55.000
+M3 ; Pen down
+G1 X25.000 Y55.000
+M5 ; Pen up
+G0 X31.000 Y55.000
+M3 ; Pen down
+G1 X37.500 Y55.000
+M5 ; Pen up
+G0 X43.500 Y55.000
+M3 ; Pen down
+G1 X43.500 Y55.000
+M5 ; Pen up
+G0 X50.000 Y55.000
+M3 ; Pen down
+G1 X56.000 Y55.000
+M5 ; Pen up
+G0 X62.000 Y55.000
+M3 ; Pen down
+G1 X62.000 Y55.000
+M5 ; Pen up
+G0 X68.500 Y55.000
+M3 ; Pen down
+G1 X68.500 Y55.000
+M5 ; Pen up
+G0 X74.500 Y55.000
+M3 ; Pen down
+G1 X81.000 Y55.000
+M5 ; Pen up
+G0 X87.000 Y55.000
+M3 ; Pen down
+G1 X87.500 Y55.000
+M5 ; Pen up
+G0 X93.500 Y55.000
+M3 ; Pen down
+G1 X93.500 Y55.000
+M5 ; Pen up
+G0 X99.500 Y55.500
+M3 ; Pen down
+G1 X99.500 Y55.500
+M5 ; Pen up
+G0 X93.500 Y55.500
+M3 ; Pen down
+G1 X93.500 Y55.500
+M5 ; Pen up
+G0 X87.500 Y55.500
+M3 ; Pen down
+G1 X87.000 Y55.500
+M5 ; Pen up
+G0 X81.000 Y55.500
+M3 ; Pen down
+G1 X74.500 Y55.500
+M5 ; Pen up
+G0 X68.500 Y55.500
+M3 ; Pen down
+G1 X68.500 Y55.500
+M5 ; Pen up
+G0 X62.500 Y55.500
+M3 ; Pen down
+G1 X62.000 Y55.500
+M5 ; Pen up
+G0 X56.000 Y55.500
+M3 ; Pen down
+G1 X49.500 Y55.500
+M5 ; Pen up
+G0 X43.500 Y55.500
+M3 ; Pen down
+G1 X43.500 Y55.500
+M5 ; Pen up
+G0 X37.500 Y55.500
+M3 ; Pen down
+G1 X31.000 Y55.500
+M5 ; Pen up
+G0 X25.000 Y55.500
+M3 ; Pen down
+G1 X12.000 Y55.500
+M5 ; Pen up
+G0 X6.000 Y55.500
+M3 ; Pen down
+G1 X6.000 Y55.500
+M5 ; Pen up
+G0 X0.000 Y55.500
+M3 ; Pen down
+G1 X0.000 Y55.500
+M5 ; Pen up
+G0 X0.000 Y56.000
+M3 ; Pen down
+G1 X99.500 Y56.000
+M5 ; Pen up
+G0 X93.500 Y56.500
+M3 ; Pen down
+G1 X93.500 Y56.500
+M5 ; Pen up
+G0 X87.500 Y56.500
+M3 ; Pen down
+G1 X81.000 Y56.500
+M5 ; Pen up
+G0 X74.500 Y56.500
+M3 ; Pen down
+G1 X74.500 Y56.500
+M5 ; Pen up
+G0 X68.500 Y56.500
+M3 ; Pen down
+G1 X68.500 Y56.500
+M5 ; Pen up
+G0 X62.500 Y56.500
+M3 ; Pen down
+G1 X62.000 Y56.500
+M5 ; Pen up
+G0 X56.000 Y56.500
+M3 ; Pen down
+G1 X56.000 Y56.500
+M5 ; Pen up
+G0 X50.000 Y56.500
+M3 ; Pen down
+G1 X43.500 Y56.500
+M5 ; Pen up
+G0 X37.500 Y56.500
+M3 ; Pen down
+G1 X31.000 Y56.500
+M5 ; Pen up
+G0 X25.000 Y56.500
+M3 ; Pen down
+G1 X25.000 Y56.500
+M5 ; Pen up
+G0 X18.500 Y56.500
+M3 ; Pen down
+G1 X12.000 Y56.500
+M5 ; Pen up
+G0 X6.000 Y56.500
+M3 ; Pen down
+G1 X6.000 Y56.500
+M5 ; Pen up
+G0 X0.000 Y56.500
+M3 ; Pen down
+G1 X0.000 Y56.500
+M5 ; Pen up
+G0 X0.000 Y57.000
+M3 ; Pen down
+G1 X0.000 Y57.000
+M5 ; Pen up
+G0 X6.000 Y57.000
+M3 ; Pen down
+G1 X6.000 Y57.000
+M5 ; Pen up
+G0 X12.000 Y57.000
+M3 ; Pen down
+G1 X18.500 Y57.000
+M5 ; Pen up
+G0 X25.000 Y57.000
+M3 ; Pen down
+G1 X25.000 Y57.000
+M5 ; Pen up
+G0 X31.000 Y57.000
+M3 ; Pen down
+G1 X37.500 Y57.000
+M5 ; Pen up
+G0 X43.500 Y57.000
+M3 ; Pen down
+G1 X49.500 Y57.000
+M5 ; Pen up
+G0 X56.000 Y57.000
+M3 ; Pen down
+G1 X56.000 Y57.000
+M5 ; Pen up
+G0 X62.000 Y57.000
+M3 ; Pen down
+G1 X62.500 Y57.000
+M5 ; Pen up
+G0 X68.500 Y57.000
+M3 ; Pen down
+G1 X68.500 Y57.000
+M5 ; Pen up
+G0 X74.500 Y57.000
+M3 ; Pen down
+G1 X74.500 Y57.000
+M5 ; Pen up
+G0 X81.000 Y57.000
+M3 ; Pen down
+G1 X87.500 Y57.000
+M5 ; Pen up
+G0 X93.500 Y57.000
+M3 ; Pen down
+G1 X93.500 Y57.000
+M5 ; Pen up
+G0 X93.500 Y57.500
+M3 ; Pen down
+G1 X93.500 Y57.500
+M5 ; Pen up
+G0 X87.500 Y57.500
+M3 ; Pen down
+G1 X81.000 Y57.500
+M5 ; Pen up
+G0 X74.500 Y57.500
+M3 ; Pen down
+G1 X74.500 Y57.500
+M5 ; Pen up
+G0 X68.500 Y57.500
+M3 ; Pen down
+G1 X68.500 Y57.500
+M5 ; Pen up
+G0 X62.500 Y57.500
+M3 ; Pen down
+G1 X62.000 Y57.500
+M5 ; Pen up
+G0 X56.000 Y57.500
+M3 ; Pen down
+G1 X56.000 Y57.500
+M5 ; Pen up
+G0 X49.500 Y57.500
+M3 ; Pen down
+G1 X43.500 Y57.500
+M5 ; Pen up
+G0 X37.500 Y57.500
+M3 ; Pen down
+G1 X31.000 Y57.500
+M5 ; Pen up
+G0 X25.000 Y57.500
+M3 ; Pen down
+G1 X25.000 Y57.500
+M5 ; Pen up
+G0 X18.500 Y57.500
+M3 ; Pen down
+G1 X12.000 Y57.500
+M5 ; Pen up
+G0 X6.000 Y57.500
+M3 ; Pen down
+G1 X6.000 Y57.500
+M5 ; Pen up
+G0 X0.000 Y57.500
+M3 ; Pen down
+G1 X0.000 Y57.500
+M5 ; Pen up
+G0 X0.000 Y58.000
+M3 ; Pen down
+G1 X0.000 Y58.000
+M5 ; Pen up
+G0 X6.000 Y58.000
+M3 ; Pen down
+G1 X6.000 Y58.000
+M5 ; Pen up
+G0 X12.000 Y58.000
+M3 ; Pen down
+G1 X18.500 Y58.000
+M5 ; Pen up
+G0 X25.000 Y58.000
+M3 ; Pen down
+G1 X25.000 Y58.000
+M5 ; Pen up
+G0 X31.000 Y58.000
+M3 ; Pen down
+G1 X37.500 Y58.000
+M5 ; Pen up
+G0 X43.500 Y58.000
+M3 ; Pen down
+G1 X49.500 Y58.000
+M5 ; Pen up
+G0 X56.000 Y58.000
+M3 ; Pen down
+G1 X56.000 Y58.000
+M5 ; Pen up
+G0 X62.000 Y58.000
+M3 ; Pen down
+G1 X62.500 Y58.000
+M5 ; Pen up
+G0 X68.500 Y58.000
+M3 ; Pen down
+G1 X68.500 Y58.000
+M5 ; Pen up
+G0 X74.500 Y58.000
+M3 ; Pen down
+G1 X74.500 Y58.000
+M5 ; Pen up
+G0 X81.000 Y58.000
+M3 ; Pen down
+G1 X87.500 Y58.000
+M5 ; Pen up
+G0 X93.500 Y58.000
+M3 ; Pen down
+G1 X93.500 Y58.000
+M5 ; Pen up
+G0 X93.500 Y58.500
+M3 ; Pen down
+G1 X93.500 Y58.500
+M5 ; Pen up
+G0 X87.500 Y58.500
+M3 ; Pen down
+G1 X81.000 Y58.500
+M5 ; Pen up
+G0 X74.500 Y58.500
+M3 ; Pen down
+G1 X74.500 Y58.500
+M5 ; Pen up
+G0 X68.500 Y58.500
+M3 ; Pen down
+G1 X68.500 Y58.500
+M5 ; Pen up
+G0 X62.500 Y58.500
+M3 ; Pen down
+G1 X62.000 Y58.500
+M5 ; Pen up
+G0 X56.000 Y58.500
+M3 ; Pen down
+G1 X56.000 Y58.500
+M5 ; Pen up
+G0 X49.500 Y58.500
+M3 ; Pen down
+G1 X43.500 Y58.500
+M5 ; Pen up
+G0 X37.500 Y58.500
+M3 ; Pen down
+G1 X31.000 Y58.500
+M5 ; Pen up
+G0 X25.000 Y58.500
+M3 ; Pen down
+G1 X25.000 Y58.500
+M5 ; Pen up
+G0 X18.500 Y58.500
+M3 ; Pen down
+G1 X12.000 Y58.500
+M5 ; Pen up
+G0 X6.000 Y58.500
+M3 ; Pen down
+G1 X6.000 Y58.500
+M5 ; Pen up
+G0 X0.000 Y58.500
+M3 ; Pen down
+G1 X0.000 Y58.500
+M5 ; Pen up
+G0 X0.000 Y59.000
+M3 ; Pen down
+G1 X0.000 Y59.000
+M5 ; Pen up
+G0 X6.000 Y59.000
+M3 ; Pen down
+G1 X6.000 Y59.000
+M5 ; Pen up
+G0 X12.000 Y59.000
+M3 ; Pen down
+G1 X18.500 Y59.000
+M5 ; Pen up
+G0 X25.000 Y59.000
+M3 ; Pen down
+G1 X25.000 Y59.000
+M5 ; Pen up
+G0 X31.000 Y59.000
+M3 ; Pen down
+G1 X37.500 Y59.000
+M5 ; Pen up
+G0 X43.500 Y59.000
+M3 ; Pen down
+G1 X49.500 Y59.000
+M5 ; Pen up
+G0 X56.000 Y59.000
+M3 ; Pen down
+G1 X56.000 Y59.000
+M5 ; Pen up
+G0 X62.000 Y59.000
+M3 ; Pen down
+G1 X62.500 Y59.000
+M5 ; Pen up
+G0 X68.500 Y59.000
+M3 ; Pen down
+G1 X68.500 Y59.000
+M5 ; Pen up
+G0 X74.500 Y59.000
+M3 ; Pen down
+G1 X74.500 Y59.000
+M5 ; Pen up
+G0 X81.000 Y59.000
+M3 ; Pen down
+G1 X87.500 Y59.000
+M5 ; Pen up
+G0 X93.500 Y59.000
+M3 ; Pen down
+G1 X93.500 Y59.000
+M5 ; Pen up
+G0 X93.500 Y59.500
+M3 ; Pen down
+G1 X93.500 Y59.500
+M5 ; Pen up
+G0 X87.500 Y59.500
+M3 ; Pen down
+G1 X81.000 Y59.500
+M5 ; Pen up
+G0 X74.500 Y59.500
+M3 ; Pen down
+G1 X74.500 Y59.500
+M5 ; Pen up
+G0 X68.500 Y59.500
+M3 ; Pen down
+G1 X68.500 Y59.500
+M5 ; Pen up
+G0 X62.500 Y59.500
+M3 ; Pen down
+G1 X62.000 Y59.500
+M5 ; Pen up
+G0 X56.000 Y59.500
+M3 ; Pen down
+G1 X56.000 Y59.500
+M5 ; Pen up
+G0 X49.500 Y59.500
+M3 ; Pen down
+G1 X43.500 Y59.500
+M5 ; Pen up
+G0 X37.500 Y59.500
+M3 ; Pen down
+G1 X31.000 Y59.500
+M5 ; Pen up
+G0 X25.000 Y59.500
+M3 ; Pen down
+G1 X25.000 Y59.500
+M5 ; Pen up
+G0 X18.500 Y59.500
+M3 ; Pen down
+G1 X12.000 Y59.500
+M5 ; Pen up
+G0 X6.000 Y59.500
+M3 ; Pen down
+G1 X6.000 Y59.500
+M5 ; Pen up
+G0 X0.000 Y59.500
+M3 ; Pen down
+G1 X0.000 Y59.500
+M5 ; Pen up
+G0 X0.000 Y60.000
+M3 ; Pen down
+G1 X0.000 Y60.000
+M5 ; Pen up
+G0 X6.000 Y60.000
+M3 ; Pen down
+G1 X6.000 Y60.000
+M5 ; Pen up
+G0 X12.000 Y60.000
+M3 ; Pen down
+G1 X18.500 Y60.000
+M5 ; Pen up
+G0 X25.000 Y60.000
+M3 ; Pen down
+G1 X25.000 Y60.000
+M5 ; Pen up
+G0 X31.000 Y60.000
+M3 ; Pen down
+G1 X37.500 Y60.000
+M5 ; Pen up
+G0 X43.500 Y60.000
+M3 ; Pen down
+G1 X49.500 Y60.000
+M5 ; Pen up
+G0 X56.000 Y60.000
+M3 ; Pen down
+G1 X56.000 Y60.000
+M5 ; Pen up
+G0 X62.000 Y60.000
+M3 ; Pen down
+G1 X62.500 Y60.000
+M5 ; Pen up
+G0 X68.500 Y60.000
+M3 ; Pen down
+G1 X68.500 Y60.000
+M5 ; Pen up
+G0 X74.500 Y60.000
+M3 ; Pen down
+G1 X74.500 Y60.000
+M5 ; Pen up
+G0 X81.000 Y60.000
+M3 ; Pen down
+G1 X87.500 Y60.000
+M5 ; Pen up
+G0 X93.500 Y60.000
+M3 ; Pen down
+G1 X93.500 Y60.000
+M5 ; Pen up
+G0 X93.500 Y60.500
+M3 ; Pen down
+G1 X93.500 Y60.500
+M5 ; Pen up
+G0 X87.500 Y60.500
+M3 ; Pen down
+G1 X81.000 Y60.500
+M5 ; Pen up
+G0 X74.500 Y60.500
+M3 ; Pen down
+G1 X74.500 Y60.500
+M5 ; Pen up
+G0 X68.500 Y60.500
+M3 ; Pen down
+G1 X68.500 Y60.500
+M5 ; Pen up
+G0 X62.500 Y60.500
+M3 ; Pen down
+G1 X62.000 Y60.500
+M5 ; Pen up
+G0 X56.000 Y60.500
+M3 ; Pen down
+G1 X56.000 Y60.500
+M5 ; Pen up
+G0 X49.500 Y60.500
+M3 ; Pen down
+G1 X43.500 Y60.500
+M5 ; Pen up
+G0 X37.500 Y60.500
+M3 ; Pen down
+G1 X31.000 Y60.500
+M5 ; Pen up
+G0 X25.000 Y60.500
+M3 ; Pen down
+G1 X25.000 Y60.500
+M5 ; Pen up
+G0 X18.500 Y60.500
+M3 ; Pen down
+G1 X12.000 Y60.500
+M5 ; Pen up
+G0 X6.000 Y60.500
+M3 ; Pen down
+G1 X6.000 Y60.500
+M5 ; Pen up
+G0 X0.000 Y60.500
+M3 ; Pen down
+G1 X0.000 Y60.500
+M5 ; Pen up
+G0 X0.000 Y61.000
+M3 ; Pen down
+G1 X0.000 Y61.000
+M5 ; Pen up
+G0 X6.000 Y61.000
+M3 ; Pen down
+G1 X6.000 Y61.000
+M5 ; Pen up
+G0 X12.000 Y61.000
+M3 ; Pen down
+G1 X18.500 Y61.000
+M5 ; Pen up
+G0 X25.000 Y61.000
+M3 ; Pen down
+G1 X25.000 Y61.000
+M5 ; Pen up
+G0 X31.000 Y61.000
+M3 ; Pen down
+G1 X37.500 Y61.000
+M5 ; Pen up
+G0 X43.500 Y61.000
+M3 ; Pen down
+G1 X49.500 Y61.000
+M5 ; Pen up
+G0 X56.000 Y61.000
+M3 ; Pen down
+G1 X56.000 Y61.000
+M5 ; Pen up
+G0 X62.000 Y61.000
+M3 ; Pen down
+G1 X62.500 Y61.000
+M5 ; Pen up
+G0 X68.500 Y61.000
+M3 ; Pen down
+G1 X68.500 Y61.000
+M5 ; Pen up
+G0 X74.500 Y61.000
+M3 ; Pen down
+G1 X74.500 Y61.000
+M5 ; Pen up
+G0 X81.000 Y61.000
+M3 ; Pen down
+G1 X87.500 Y61.000
+M5 ; Pen up
+G0 X93.500 Y61.000
+M3 ; Pen down
+G1 X93.500 Y61.000
+M5 ; Pen up
+G0 X99.500 Y61.500
+M3 ; Pen down
+G1 X99.500 Y61.500
+M5 ; Pen up
+G0 X93.500 Y61.500
+M3 ; Pen down
+G1 X93.500 Y61.500
+M5 ; Pen up
+G0 X87.500 Y61.500
+M3 ; Pen down
+G1 X81.000 Y61.500
+M5 ; Pen up
+G0 X75.000 Y61.500
+M3 ; Pen down
+G1 X74.500 Y61.500
+M5 ; Pen up
+G0 X68.500 Y61.500
+M3 ; Pen down
+G1 X68.500 Y61.500
+M5 ; Pen up
+G0 X62.500 Y61.500
+M3 ; Pen down
+G1 X62.000 Y61.500
+M5 ; Pen up
+G0 X56.000 Y61.500
+M3 ; Pen down
+G1 X56.000 Y61.500
+M5 ; Pen up
+G0 X50.000 Y61.500
+M3 ; Pen down
+G1 X43.500 Y61.500
+M5 ; Pen up
+G0 X37.500 Y61.500
+M3 ; Pen down
+G1 X31.000 Y61.500
+M5 ; Pen up
+G0 X25.000 Y61.500
+M3 ; Pen down
+G1 X24.500 Y61.500
+M5 ; Pen up
+G0 X18.500 Y61.500
+M3 ; Pen down
+G1 X12.000 Y61.500
+M5 ; Pen up
+G0 X6.000 Y61.500
+M3 ; Pen down
+G1 X6.000 Y61.500
+M5 ; Pen up
+G0 X0.000 Y61.500
+M3 ; Pen down
+G1 X0.000 Y61.500
+M5 ; Pen up
+G0 X0.000 Y62.000
+M3 ; Pen down
+G1 X99.500 Y62.000
+M5 ; Pen up
+G0 X99.500 Y62.500
+M3 ; Pen down
+G1 X99.500 Y62.500
+M5 ; Pen up
+G0 X94.000 Y62.500
+M3 ; Pen down
+G1 X93.500 Y62.500
+M5 ; Pen up
+G0 X87.500 Y62.500
+M3 ; Pen down
+G1 X80.500 Y62.500
+M5 ; Pen up
+G0 X75.000 Y62.500
+M3 ; Pen down
+G1 X74.500 Y62.500
+M5 ; Pen up
+G0 X69.000 Y62.500
+M3 ; Pen down
+G1 X68.500 Y62.500
+M5 ; Pen up
+G0 X62.500 Y62.500
+M3 ; Pen down
+G1 X62.000 Y62.500
+M5 ; Pen up
+G0 X56.500 Y62.500
+M3 ; Pen down
+G1 X55.500 Y62.500
+M5 ; Pen up
+G0 X50.000 Y62.500
+M3 ; Pen down
+G1 X43.500 Y62.500
+M5 ; Pen up
+G0 X37.500 Y62.500
+M3 ; Pen down
+G1 X30.500 Y62.500
+M5 ; Pen up
+G0 X25.000 Y62.500
+M3 ; Pen down
+G1 X24.500 Y62.500
+M5 ; Pen up
+G0 X19.000 Y62.500
+M3 ; Pen down
+G1 X18.500 Y62.500
+M5 ; Pen up
+G0 X12.500 Y62.500
+M3 ; Pen down
+G1 X5.500 Y62.500
+M5 ; Pen up
+G0 X0.000 Y62.500
+M3 ; Pen down
+G1 X0.000 Y62.500
+M5 ; Pen up
+G0 X0.000 Y63.000
+M3 ; Pen down
+G1 X0.000 Y63.000
+M5 ; Pen up
+G0 X6.000 Y63.000
+M3 ; Pen down
+G1 X12.500 Y63.000
+M5 ; Pen up
+G0 X18.500 Y63.000
+M3 ; Pen down
+G1 X18.500 Y63.000
+M5 ; Pen up
+G0 X25.000 Y63.000
+M3 ; Pen down
+G1 X25.000 Y63.000
+M5 ; Pen up
+G0 X31.000 Y63.000
+M3 ; Pen down
+G1 X37.500 Y63.000
+M5 ; Pen up
+G0 X43.500 Y63.000
+M3 ; Pen down
+G1 X50.000 Y63.000
+M5 ; Pen up
+G0 X56.000 Y63.000
+M3 ; Pen down
+G1 X56.000 Y63.000
+M5 ; Pen up
+G0 X62.000 Y63.000
+M3 ; Pen down
+G1 X62.500 Y63.000
+M5 ; Pen up
+G0 X68.500 Y63.000
+M3 ; Pen down
+G1 X68.500 Y63.000
+M5 ; Pen up
+G0 X74.500 Y63.000
+M3 ; Pen down
+G1 X74.500 Y63.000
+M5 ; Pen up
+G0 X81.000 Y63.000
+M3 ; Pen down
+G1 X87.500 Y63.000
+M5 ; Pen up
+G0 X93.500 Y63.000
+M3 ; Pen down
+G1 X93.500 Y63.000
+M5 ; Pen up
+G0 X93.500 Y63.500
+M3 ; Pen down
+G1 X93.500 Y63.500
+M5 ; Pen up
+G0 X87.500 Y63.500
+M3 ; Pen down
+G1 X81.000 Y63.500
+M5 ; Pen up
+G0 X74.500 Y63.500
+M3 ; Pen down
+G1 X74.500 Y63.500
+M5 ; Pen up
+G0 X68.500 Y63.500
+M3 ; Pen down
+G1 X68.500 Y63.500
+M5 ; Pen up
+G0 X62.500 Y63.500
+M3 ; Pen down
+G1 X62.000 Y63.500
+M5 ; Pen up
+G0 X56.000 Y63.500
+M3 ; Pen down
+G1 X56.000 Y63.500
+M5 ; Pen up
+G0 X49.500 Y63.500
+M3 ; Pen down
+G1 X43.500 Y63.500
+M5 ; Pen up
+G0 X37.500 Y63.500
+M3 ; Pen down
+G1 X31.000 Y63.500
+M5 ; Pen up
+G0 X25.000 Y63.500
+M3 ; Pen down
+G1 X25.000 Y63.500
+M5 ; Pen up
+G0 X18.500 Y63.500
+M3 ; Pen down
+G1 X18.500 Y63.500
+M5 ; Pen up
+G0 X12.500 Y63.500
+M3 ; Pen down
+G1 X6.000 Y63.500
+M5 ; Pen up
+G0 X0.000 Y63.500
+M3 ; Pen down
+G1 X0.000 Y63.500
+M5 ; Pen up
+G0 X0.000 Y64.000
+M3 ; Pen down
+G1 X0.000 Y64.000
+M5 ; Pen up
+G0 X6.000 Y64.000
+M3 ; Pen down
+G1 X12.500 Y64.000
+M5 ; Pen up
+G0 X18.500 Y64.000
+M3 ; Pen down
+G1 X18.500 Y64.000
+M5 ; Pen up
+G0 X25.000 Y64.000
+M3 ; Pen down
+G1 X25.000 Y64.000
+M5 ; Pen up
+G0 X31.000 Y64.000
+M3 ; Pen down
+G1 X37.500 Y64.000
+M5 ; Pen up
+G0 X43.500 Y64.000
+M3 ; Pen down
+G1 X49.500 Y64.000
+M5 ; Pen up
+G0 X56.000 Y64.000
+M3 ; Pen down
+G1 X56.000 Y64.000
+M5 ; Pen up
+G0 X62.000 Y64.000
+M3 ; Pen down
+G1 X62.500 Y64.000
+M5 ; Pen up
+G0 X68.500 Y64.000
+M3 ; Pen down
+G1 X68.500 Y64.000
+M5 ; Pen up
+G0 X74.500 Y64.000
+M3 ; Pen down
+G1 X74.500 Y64.000
+M5 ; Pen up
+G0 X81.000 Y64.000
+M3 ; Pen down
+G1 X87.500 Y64.000
+M5 ; Pen up
+G0 X93.500 Y64.000
+M3 ; Pen down
+G1 X93.500 Y64.000
+M5 ; Pen up
+G0 X93.500 Y64.500
+M3 ; Pen down
+G1 X93.500 Y64.500
+M5 ; Pen up
+G0 X87.500 Y64.500
+M3 ; Pen down
+G1 X81.000 Y64.500
+M5 ; Pen up
+G0 X74.500 Y64.500
+M3 ; Pen down
+G1 X74.500 Y64.500
+M5 ; Pen up
+G0 X68.500 Y64.500
+M3 ; Pen down
+G1 X68.500 Y64.500
+M5 ; Pen up
+G0 X62.500 Y64.500
+M3 ; Pen down
+G1 X62.000 Y64.500
+M5 ; Pen up
+G0 X56.000 Y64.500
+M3 ; Pen down
+G1 X56.000 Y64.500
+M5 ; Pen up
+G0 X49.500 Y64.500
+M3 ; Pen down
+G1 X43.500 Y64.500
+M5 ; Pen up
+G0 X37.500 Y64.500
+M3 ; Pen down
+G1 X31.000 Y64.500
+M5 ; Pen up
+G0 X25.000 Y64.500
+M3 ; Pen down
+G1 X25.000 Y64.500
+M5 ; Pen up
+G0 X18.500 Y64.500
+M3 ; Pen down
+G1 X18.500 Y64.500
+M5 ; Pen up
+G0 X12.500 Y64.500
+M3 ; Pen down
+G1 X6.000 Y64.500
+M5 ; Pen up
+G0 X0.000 Y64.500
+M3 ; Pen down
+G1 X0.000 Y64.500
+M5 ; Pen up
+G0 X0.000 Y65.000
+M3 ; Pen down
+G1 X0.000 Y65.000
+M5 ; Pen up
+G0 X6.000 Y65.000
+M3 ; Pen down
+G1 X12.500 Y65.000
+M5 ; Pen up
+G0 X18.500 Y65.000
+M3 ; Pen down
+G1 X18.500 Y65.000
+M5 ; Pen up
+G0 X25.000 Y65.000
+M3 ; Pen down
+G1 X25.000 Y65.000
+M5 ; Pen up
+G0 X31.000 Y65.000
+M3 ; Pen down
+G1 X37.500 Y65.000
+M5 ; Pen up
+G0 X43.500 Y65.000
+M3 ; Pen down
+G1 X49.500 Y65.000
+M5 ; Pen up
+G0 X56.000 Y65.000
+M3 ; Pen down
+G1 X56.000 Y65.000
+M5 ; Pen up
+G0 X62.000 Y65.000
+M3 ; Pen down
+G1 X62.500 Y65.000
+M5 ; Pen up
+G0 X68.500 Y65.000
+M3 ; Pen down
+G1 X68.500 Y65.000
+M5 ; Pen up
+G0 X74.500 Y65.000
+M3 ; Pen down
+G1 X74.500 Y65.000
+M5 ; Pen up
+G0 X81.000 Y65.000
+M3 ; Pen down
+G1 X87.500 Y65.000
+M5 ; Pen up
+G0 X93.500 Y65.000
+M3 ; Pen down
+G1 X93.500 Y65.000
+M5 ; Pen up
+G0 X93.500 Y65.500
+M3 ; Pen down
+G1 X93.500 Y65.500
+M5 ; Pen up
+G0 X87.500 Y65.500
+M3 ; Pen down
+G1 X81.000 Y65.500
+M5 ; Pen up
+G0 X74.500 Y65.500
+M3 ; Pen down
+G1 X74.500 Y65.500
+M5 ; Pen up
+G0 X68.500 Y65.500
+M3 ; Pen down
+G1 X68.500 Y65.500
+M5 ; Pen up
+G0 X62.500 Y65.500
+M3 ; Pen down
+G1 X62.000 Y65.500
+M5 ; Pen up
+G0 X56.000 Y65.500
+M3 ; Pen down
+G1 X56.000 Y65.500
+M5 ; Pen up
+G0 X49.500 Y65.500
+M3 ; Pen down
+G1 X43.500 Y65.500
+M5 ; Pen up
+G0 X37.500 Y65.500
+M3 ; Pen down
+G1 X31.000 Y65.500
+M5 ; Pen up
+G0 X25.000 Y65.500
+M3 ; Pen down
+G1 X25.000 Y65.500
+M5 ; Pen up
+G0 X18.500 Y65.500
+M3 ; Pen down
+G1 X18.500 Y65.500
+M5 ; Pen up
+G0 X12.500 Y65.500
+M3 ; Pen down
+G1 X6.000 Y65.500
+M5 ; Pen up
+G0 X0.000 Y65.500
+M3 ; Pen down
+G1 X0.000 Y65.500
+M5 ; Pen up
+G0 X0.000 Y66.000
+M3 ; Pen down
+G1 X0.000 Y66.000
+M5 ; Pen up
+G0 X6.000 Y66.000
+M3 ; Pen down
+G1 X12.500 Y66.000
+M5 ; Pen up
+G0 X18.500 Y66.000
+M3 ; Pen down
+G1 X18.500 Y66.000
+M5 ; Pen up
+G0 X25.000 Y66.000
+M3 ; Pen down
+G1 X25.000 Y66.000
+M5 ; Pen up
+G0 X31.000 Y66.000
+M3 ; Pen down
+G1 X37.500 Y66.000
+M5 ; Pen up
+G0 X43.500 Y66.000
+M3 ; Pen down
+G1 X49.500 Y66.000
+M5 ; Pen up
+G0 X56.000 Y66.000
+M3 ; Pen down
+G1 X56.000 Y66.000
+M5 ; Pen up
+G0 X62.000 Y66.000
+M3 ; Pen down
+G1 X62.500 Y66.000
+M5 ; Pen up
+G0 X68.500 Y66.000
+M3 ; Pen down
+G1 X68.500 Y66.000
+M5 ; Pen up
+G0 X74.500 Y66.000
+M3 ; Pen down
+G1 X74.500 Y66.000
+M5 ; Pen up
+G0 X81.000 Y66.000
+M3 ; Pen down
+G1 X87.500 Y66.000
+M5 ; Pen up
+G0 X93.500 Y66.000
+M3 ; Pen down
+G1 X93.500 Y66.000
+M5 ; Pen up
+G0 X93.500 Y66.500
+M3 ; Pen down
+G1 X93.500 Y66.500
+M5 ; Pen up
+G0 X87.500 Y66.500
+M3 ; Pen down
+G1 X81.000 Y66.500
+M5 ; Pen up
+G0 X74.500 Y66.500
+M3 ; Pen down
+G1 X74.500 Y66.500
+M5 ; Pen up
+G0 X68.500 Y66.500
+M3 ; Pen down
+G1 X68.500 Y66.500
+M5 ; Pen up
+G0 X62.500 Y66.500
+M3 ; Pen down
+G1 X62.000 Y66.500
+M5 ; Pen up
+G0 X56.000 Y66.500
+M3 ; Pen down
+G1 X56.000 Y66.500
+M5 ; Pen up
+G0 X49.500 Y66.500
+M3 ; Pen down
+G1 X43.500 Y66.500
+M5 ; Pen up
+G0 X37.500 Y66.500
+M3 ; Pen down
+G1 X31.000 Y66.500
+M5 ; Pen up
+G0 X25.000 Y66.500
+M3 ; Pen down
+G1 X25.000 Y66.500
+M5 ; Pen up
+G0 X18.500 Y66.500
+M3 ; Pen down
+G1 X18.500 Y66.500
+M5 ; Pen up
+G0 X12.500 Y66.500
+M3 ; Pen down
+G1 X6.000 Y66.500
+M5 ; Pen up
+G0 X0.000 Y66.500
+M3 ; Pen down
+G1 X0.000 Y66.500
+M5 ; Pen up
+G0 X0.000 Y67.000
+M3 ; Pen down
+G1 X0.000 Y67.000
+M5 ; Pen up
+G0 X6.000 Y67.000
+M3 ; Pen down
+G1 X12.500 Y67.000
+M5 ; Pen up
+G0 X18.500 Y67.000
+M3 ; Pen down
+G1 X18.500 Y67.000
+M5 ; Pen up
+G0 X25.000 Y67.000
+M3 ; Pen down
+G1 X25.000 Y67.000
+M5 ; Pen up
+G0 X31.000 Y67.000
+M3 ; Pen down
+G1 X37.500 Y67.000
+M5 ; Pen up
+G0 X43.500 Y67.000
+M3 ; Pen down
+G1 X49.500 Y67.000
+M5 ; Pen up
+G0 X56.000 Y67.000
+M3 ; Pen down
+G1 X56.000 Y67.000
+M5 ; Pen up
+G0 X62.000 Y67.000
+M3 ; Pen down
+G1 X62.500 Y67.000
+M5 ; Pen up
+G0 X68.500 Y67.000
+M3 ; Pen down
+G1 X68.500 Y67.000
+M5 ; Pen up
+G0 X74.500 Y67.000
+M3 ; Pen down
+G1 X74.500 Y67.000
+M5 ; Pen up
+G0 X81.000 Y67.000
+M3 ; Pen down
+G1 X87.500 Y67.000
+M5 ; Pen up
+G0 X93.500 Y67.000
+M3 ; Pen down
+G1 X93.500 Y67.000
+M5 ; Pen up
+G0 X93.500 Y67.500
+M3 ; Pen down
+G1 X93.500 Y67.500
+M5 ; Pen up
+G0 X87.500 Y67.500
+M3 ; Pen down
+G1 X81.000 Y67.500
+M5 ; Pen up
+G0 X74.500 Y67.500
+M3 ; Pen down
+G1 X74.500 Y67.500
+M5 ; Pen up
+G0 X68.500 Y67.500
+M3 ; Pen down
+G1 X68.500 Y67.500
+M5 ; Pen up
+G0 X62.000 Y67.500
+M3 ; Pen down
+G1 X62.000 Y67.500
+M5 ; Pen up
+G0 X56.000 Y67.500
+M3 ; Pen down
+G1 X56.000 Y67.500
+M5 ; Pen up
+G0 X49.500 Y67.500
+M3 ; Pen down
+G1 X43.500 Y67.500
+M5 ; Pen up
+G0 X37.500 Y67.500
+M3 ; Pen down
+G1 X31.000 Y67.500
+M5 ; Pen up
+G0 X25.000 Y67.500
+M3 ; Pen down
+G1 X25.000 Y67.500
+M5 ; Pen up
+G0 X18.500 Y67.500
+M3 ; Pen down
+G1 X18.500 Y67.500
+M5 ; Pen up
+G0 X12.500 Y67.500
+M3 ; Pen down
+G1 X6.000 Y67.500
+M5 ; Pen up
+G0 X0.000 Y67.500
+M3 ; Pen down
+G1 X0.000 Y67.500
+M5 ; Pen up
+G0 X0.000 Y68.000
+M3 ; Pen down
+G1 X0.000 Y68.000
+M5 ; Pen up
+G0 X6.000 Y68.000
+M3 ; Pen down
+G1 X12.500 Y68.000
+M5 ; Pen up
+G0 X18.500 Y68.000
+M3 ; Pen down
+G1 X18.500 Y68.000
+M5 ; Pen up
+G0 X24.500 Y68.000
+M3 ; Pen down
+G1 X25.000 Y68.000
+M5 ; Pen up
+G0 X31.000 Y68.000
+M3 ; Pen down
+G1 X37.500 Y68.000
+M5 ; Pen up
+G0 X43.500 Y68.000
+M3 ; Pen down
+G1 X50.000 Y68.000
+M5 ; Pen up
+G0 X56.000 Y68.000
+M3 ; Pen down
+G1 X56.000 Y68.000
+M5 ; Pen up
+G0 X62.000 Y68.000
+M3 ; Pen down
+G1 X62.500 Y68.000
+M5 ; Pen up
+G0 X68.500 Y68.000
+M3 ; Pen down
+G1 X68.500 Y68.000
+M5 ; Pen up
+G0 X74.500 Y68.000
+M3 ; Pen down
+G1 X75.000 Y68.000
+M5 ; Pen up
+G0 X81.000 Y68.000
+M3 ; Pen down
+G1 X87.500 Y68.000
+M5 ; Pen up
+G0 X93.500 Y68.000
+M3 ; Pen down
+G1 X93.500 Y68.000
+M5 ; Pen up
+G0 X99.500 Y68.000
+M3 ; Pen down
+G1 X99.500 Y68.000
+M5 ; Pen up
+G0 X99.500 Y68.500
+M3 ; Pen down
+G1 X0.000 Y68.500
+M5 ; Pen up
+G0 X0.000 Y69.000
+M3 ; Pen down
+G1 X0.000 Y69.000
+M5 ; Pen up
+G0 X6.000 Y69.000
+M3 ; Pen down
+G1 X12.500 Y69.000
+M5 ; Pen up
+G0 X18.500 Y69.000
+M3 ; Pen down
+G1 X18.500 Y69.000
+M5 ; Pen up
+G0 X24.500 Y69.000
+M3 ; Pen down
+G1 X25.000 Y69.000
+M5 ; Pen up
+G0 X31.000 Y69.000
+M3 ; Pen down
+G1 X43.500 Y69.000
+M5 ; Pen up
+G0 X49.500 Y69.000
+M3 ; Pen down
+G1 X50.000 Y69.000
+M5 ; Pen up
+G0 X56.000 Y69.000
+M3 ; Pen down
+G1 X56.000 Y69.000
+M5 ; Pen up
+G0 X62.000 Y69.000
+M3 ; Pen down
+G1 X62.500 Y69.000
+M5 ; Pen up
+G0 X68.500 Y69.000
+M3 ; Pen down
+G1 X68.500 Y69.000
+M5 ; Pen up
+G0 X74.500 Y69.000
+M3 ; Pen down
+G1 X75.000 Y69.000
+M5 ; Pen up
+G0 X81.000 Y69.000
+M3 ; Pen down
+G1 X87.500 Y69.000
+M5 ; Pen up
+G0 X93.500 Y69.000
+M3 ; Pen down
+G1 X93.500 Y69.000
+M5 ; Pen up
+G0 X99.500 Y69.000
+M3 ; Pen down
+G1 X99.500 Y69.000
+M5 ; Pen up
+G0 X93.500 Y69.500
+M3 ; Pen down
+G1 X93.500 Y69.500
+M5 ; Pen up
+G0 X87.500 Y69.500
+M3 ; Pen down
+G1 X81.000 Y69.500
+M5 ; Pen up
+G0 X74.500 Y69.500
+M3 ; Pen down
+G1 X74.500 Y69.500
+M5 ; Pen up
+G0 X68.500 Y69.500
+M3 ; Pen down
+G1 X68.500 Y69.500
+M5 ; Pen up
+G0 X62.000 Y69.500
+M3 ; Pen down
+G1 X62.000 Y69.500
+M5 ; Pen up
+G0 X56.000 Y69.500
+M3 ; Pen down
+G1 X56.000 Y69.500
+M5 ; Pen up
+G0 X43.500 Y69.500
+M3 ; Pen down
+G1 X31.000 Y69.500
+M5 ; Pen up
+G0 X25.000 Y69.500
+M3 ; Pen down
+G1 X25.000 Y69.500
+M5 ; Pen up
+G0 X18.500 Y69.500
+M3 ; Pen down
+G1 X18.500 Y69.500
+M5 ; Pen up
+G0 X12.500 Y69.500
+M3 ; Pen down
+G1 X6.000 Y69.500
+M5 ; Pen up
+G0 X0.000 Y69.500
+M3 ; Pen down
+G1 X0.000 Y69.500
+M5 ; Pen up
+G0 X0.000 Y70.000
+M3 ; Pen down
+G1 X0.000 Y70.000
+M5 ; Pen up
+G0 X6.000 Y70.000
+M3 ; Pen down
+G1 X12.500 Y70.000
+M5 ; Pen up
+G0 X18.500 Y70.000
+M3 ; Pen down
+G1 X18.500 Y70.000
+M5 ; Pen up
+G0 X25.000 Y70.000
+M3 ; Pen down
+G1 X25.000 Y70.000
+M5 ; Pen up
+G0 X31.000 Y70.000
+M3 ; Pen down
+G1 X43.500 Y70.000
+M5 ; Pen up
+G0 X56.000 Y70.000
+M3 ; Pen down
+G1 X56.000 Y70.000
+M5 ; Pen up
+G0 X62.000 Y70.000
+M3 ; Pen down
+G1 X62.500 Y70.000
+M5 ; Pen up
+G0 X68.500 Y70.000
+M3 ; Pen down
+G1 X68.500 Y70.000
+M5 ; Pen up
+G0 X74.500 Y70.000
+M3 ; Pen down
+G1 X74.500 Y70.000
+M5 ; Pen up
+G0 X81.000 Y70.000
+M3 ; Pen down
+G1 X87.500 Y70.000
+M5 ; Pen up
+G0 X93.500 Y70.000
+M3 ; Pen down
+G1 X93.500 Y70.000
+M5 ; Pen up
+G0 X93.500 Y70.500
+M3 ; Pen down
+G1 X93.500 Y70.500
+M5 ; Pen up
+G0 X87.500 Y70.500
+M3 ; Pen down
+G1 X81.000 Y70.500
+M5 ; Pen up
+G0 X74.500 Y70.500
+M3 ; Pen down
+G1 X74.500 Y70.500
+M5 ; Pen up
+G0 X68.500 Y70.500
+M3 ; Pen down
+G1 X68.500 Y70.500
+M5 ; Pen up
+G0 X62.500 Y70.500
+M3 ; Pen down
+G1 X62.000 Y70.500
+M5 ; Pen up
+G0 X56.000 Y70.500
+M3 ; Pen down
+G1 X56.000 Y70.500
+M5 ; Pen up
+G0 X43.500 Y70.500
+M3 ; Pen down
+G1 X31.000 Y70.500
+M5 ; Pen up
+G0 X25.000 Y70.500
+M3 ; Pen down
+G1 X25.000 Y70.500
+M5 ; Pen up
+G0 X18.500 Y70.500
+M3 ; Pen down
+G1 X18.500 Y70.500
+M5 ; Pen up
+G0 X12.500 Y70.500
+M3 ; Pen down
+G1 X6.000 Y70.500
+M5 ; Pen up
+G0 X0.000 Y70.500
+M3 ; Pen down
+G1 X0.000 Y70.500
+M5 ; Pen up
+G0 X0.000 Y71.000
+M3 ; Pen down
+G1 X0.000 Y71.000
+M5 ; Pen up
+G0 X6.000 Y71.000
+M3 ; Pen down
+G1 X12.500 Y71.000
+M5 ; Pen up
+G0 X18.500 Y71.000
+M3 ; Pen down
+G1 X18.500 Y71.000
+M5 ; Pen up
+G0 X25.000 Y71.000
+M3 ; Pen down
+G1 X25.000 Y71.000
+M5 ; Pen up
+G0 X31.000 Y71.000
+M3 ; Pen down
+G1 X43.500 Y71.000
+M5 ; Pen up
+G0 X56.000 Y71.000
+M3 ; Pen down
+G1 X56.000 Y71.000
+M5 ; Pen up
+G0 X62.000 Y71.000
+M3 ; Pen down
+G1 X62.500 Y71.000
+M5 ; Pen up
+G0 X68.500 Y71.000
+M3 ; Pen down
+G1 X68.500 Y71.000
+M5 ; Pen up
+G0 X74.500 Y71.000
+M3 ; Pen down
+G1 X74.500 Y71.000
+M5 ; Pen up
+G0 X81.000 Y71.000
+M3 ; Pen down
+G1 X87.500 Y71.000
+M5 ; Pen up
+G0 X93.500 Y71.000
+M3 ; Pen down
+G1 X93.500 Y71.000
+M5 ; Pen up
+G0 X93.500 Y71.500
+M3 ; Pen down
+G1 X93.500 Y71.500
+M5 ; Pen up
+G0 X87.500 Y71.500
+M3 ; Pen down
+G1 X81.000 Y71.500
+M5 ; Pen up
+G0 X74.500 Y71.500
+M3 ; Pen down
+G1 X74.500 Y71.500
+M5 ; Pen up
+G0 X68.500 Y71.500
+M3 ; Pen down
+G1 X68.500 Y71.500
+M5 ; Pen up
+G0 X62.500 Y71.500
+M3 ; Pen down
+G1 X62.000 Y71.500
+M5 ; Pen up
+G0 X56.000 Y71.500
+M3 ; Pen down
+G1 X56.000 Y71.500
+M5 ; Pen up
+G0 X43.500 Y71.500
+M3 ; Pen down
+G1 X31.000 Y71.500
+M5 ; Pen up
+G0 X25.000 Y71.500
+M3 ; Pen down
+G1 X25.000 Y71.500
+M5 ; Pen up
+G0 X18.500 Y71.500
+M3 ; Pen down
+G1 X18.500 Y71.500
+M5 ; Pen up
+G0 X12.500 Y71.500
+M3 ; Pen down
+G1 X6.000 Y71.500
+M5 ; Pen up
+G0 X0.000 Y71.500
+M3 ; Pen down
+G1 X0.000 Y71.500
+M5 ; Pen up
+G0 X0.000 Y72.000
+M3 ; Pen down
+G1 X0.000 Y72.000
+M5 ; Pen up
+G0 X6.000 Y72.000
+M3 ; Pen down
+G1 X12.500 Y72.000
+M5 ; Pen up
+G0 X18.500 Y72.000
+M3 ; Pen down
+G1 X18.500 Y72.000
+M5 ; Pen up
+G0 X25.000 Y72.000
+M3 ; Pen down
+G1 X25.000 Y72.000
+M5 ; Pen up
+G0 X31.000 Y72.000
+M3 ; Pen down
+G1 X43.500 Y72.000
+M5 ; Pen up
+G0 X56.000 Y72.000
+M3 ; Pen down
+G1 X56.000 Y72.000
+M5 ; Pen up
+G0 X62.000 Y72.000
+M3 ; Pen down
+G1 X62.500 Y72.000
+M5 ; Pen up
+G0 X68.500 Y72.000
+M3 ; Pen down
+G1 X68.500 Y72.000
+M5 ; Pen up
+G0 X74.500 Y72.000
+M3 ; Pen down
+G1 X74.500 Y72.000
+M5 ; Pen up
+G0 X81.000 Y72.000
+M3 ; Pen down
+G1 X87.500 Y72.000
+M5 ; Pen up
+G0 X93.500 Y72.000
+M3 ; Pen down
+G1 X93.500 Y72.000
+M5 ; Pen up
+G0 X93.500 Y72.500
+M3 ; Pen down
+G1 X93.500 Y72.500
+M5 ; Pen up
+G0 X87.500 Y72.500
+M3 ; Pen down
+G1 X81.000 Y72.500
+M5 ; Pen up
+G0 X74.500 Y72.500
+M3 ; Pen down
+G1 X74.500 Y72.500
+M5 ; Pen up
+G0 X68.500 Y72.500
+M3 ; Pen down
+G1 X68.500 Y72.500
+M5 ; Pen up
+G0 X62.500 Y72.500
+M3 ; Pen down
+G1 X62.000 Y72.500
+M5 ; Pen up
+G0 X56.000 Y72.500
+M3 ; Pen down
+G1 X56.000 Y72.500
+M5 ; Pen up
+G0 X43.500 Y72.500
+M3 ; Pen down
+G1 X31.000 Y72.500
+M5 ; Pen up
+G0 X25.000 Y72.500
+M3 ; Pen down
+G1 X25.000 Y72.500
+M5 ; Pen up
+G0 X18.500 Y72.500
+M3 ; Pen down
+G1 X18.500 Y72.500
+M5 ; Pen up
+G0 X12.500 Y72.500
+M3 ; Pen down
+G1 X6.000 Y72.500
+M5 ; Pen up
+G0 X0.000 Y72.500
+M3 ; Pen down
+G1 X0.000 Y72.500
+M5 ; Pen up
+G0 X0.000 Y73.000
+M3 ; Pen down
+G1 X0.000 Y73.000
+M5 ; Pen up
+G0 X6.000 Y73.000
+M3 ; Pen down
+G1 X12.500 Y73.000
+M5 ; Pen up
+G0 X18.500 Y73.000
+M3 ; Pen down
+G1 X18.500 Y73.000
+M5 ; Pen up
+G0 X25.000 Y73.000
+M3 ; Pen down
+G1 X25.000 Y73.000
+M5 ; Pen up
+G0 X31.000 Y73.000
+M3 ; Pen down
+G1 X43.500 Y73.000
+M5 ; Pen up
+G0 X56.000 Y73.000
+M3 ; Pen down
+G1 X56.000 Y73.000
+M5 ; Pen up
+G0 X62.000 Y73.000
+M3 ; Pen down
+G1 X62.500 Y73.000
+M5 ; Pen up
+G0 X68.500 Y73.000
+M3 ; Pen down
+G1 X68.500 Y73.000
+M5 ; Pen up
+G0 X74.500 Y73.000
+M3 ; Pen down
+G1 X74.500 Y73.000
+M5 ; Pen up
+G0 X81.000 Y73.000
+M3 ; Pen down
+G1 X87.500 Y73.000
+M5 ; Pen up
+G0 X93.500 Y73.000
+M3 ; Pen down
+G1 X93.500 Y73.000
+M5 ; Pen up
+G0 X93.500 Y73.500
+M3 ; Pen down
+G1 X93.500 Y73.500
+M5 ; Pen up
+G0 X87.500 Y73.500
+M3 ; Pen down
+G1 X81.000 Y73.500
+M5 ; Pen up
+G0 X74.500 Y73.500
+M3 ; Pen down
+G1 X74.500 Y73.500
+M5 ; Pen up
+G0 X68.500 Y73.500
+M3 ; Pen down
+G1 X68.500 Y73.500
+M5 ; Pen up
+G0 X62.500 Y73.500
+M3 ; Pen down
+G1 X62.000 Y73.500
+M5 ; Pen up
+G0 X56.000 Y73.500
+M3 ; Pen down
+G1 X56.000 Y73.500
+M5 ; Pen up
+G0 X43.500 Y73.500
+M3 ; Pen down
+G1 X31.000 Y73.500
+M5 ; Pen up
+G0 X25.000 Y73.500
+M3 ; Pen down
+G1 X25.000 Y73.500
+M5 ; Pen up
+G0 X18.500 Y73.500
+M3 ; Pen down
+G1 X18.500 Y73.500
+M5 ; Pen up
+G0 X12.500 Y73.500
+M3 ; Pen down
+G1 X6.000 Y73.500
+M5 ; Pen up
+G0 X0.000 Y73.500
+M3 ; Pen down
+G1 X0.000 Y73.500
+M5 ; Pen up
+G0 X0.000 Y74.000
+M3 ; Pen down
+G1 X0.000 Y74.000
+M5 ; Pen up
+G0 X6.000 Y74.000
+M3 ; Pen down
+G1 X12.500 Y74.000
+M5 ; Pen up
+G0 X18.500 Y74.000
+M3 ; Pen down
+G1 X18.500 Y74.000
+M5 ; Pen up
+G0 X25.000 Y74.000
+M3 ; Pen down
+G1 X25.000 Y74.000
+M5 ; Pen up
+G0 X31.000 Y74.000
+M3 ; Pen down
+G1 X43.500 Y74.000
+M5 ; Pen up
+G0 X56.000 Y74.000
+M3 ; Pen down
+G1 X56.000 Y74.000
+M5 ; Pen up
+G0 X62.000 Y74.000
+M3 ; Pen down
+G1 X62.000 Y74.000
+M5 ; Pen up
+G0 X68.500 Y74.000
+M3 ; Pen down
+G1 X68.500 Y74.000
+M5 ; Pen up
+G0 X74.500 Y74.000
+M3 ; Pen down
+G1 X74.500 Y74.000
+M5 ; Pen up
+G0 X81.000 Y74.000
+M3 ; Pen down
+G1 X87.500 Y74.000
+M5 ; Pen up
+G0 X93.500 Y74.000
+M3 ; Pen down
+G1 X93.500 Y74.000
+M5 ; Pen up
+G0 X99.500 Y74.500
+M3 ; Pen down
+G1 X0.000 Y74.500
+M5 ; Pen up
+G0 X0.000 Y75.000
+M3 ; Pen down
+G1 X0.000 Y75.000
+M5 ; Pen up
+G0 X5.500 Y75.000
+M3 ; Pen down
+G1 X12.500 Y75.000
+M5 ; Pen up
+G0 X18.500 Y75.000
+M3 ; Pen down
+G1 X19.000 Y75.000
+M5 ; Pen up
+G0 X24.500 Y75.000
+M3 ; Pen down
+G1 X25.000 Y75.000
+M5 ; Pen up
+G0 X30.500 Y75.000
+M3 ; Pen down
+G1 X43.500 Y75.000
+M5 ; Pen up
+G0 X49.500 Y75.000
+M3 ; Pen down
+G1 X50.000 Y75.000
+M5 ; Pen up
+G0 X56.000 Y75.000
+M3 ; Pen down
+G1 X56.000 Y75.000
+M5 ; Pen up
+G0 X62.000 Y75.000
+M3 ; Pen down
+G1 X62.500 Y75.000
+M5 ; Pen up
+G0 X68.500 Y75.000
+M3 ; Pen down
+G1 X69.000 Y75.000
+M5 ; Pen up
+G0 X74.500 Y75.000
+M3 ; Pen down
+G1 X81.500 Y75.000
+M5 ; Pen up
+G0 X87.000 Y75.000
+M3 ; Pen down
+G1 X87.500 Y75.000
+M5 ; Pen up
+G0 X93.500 Y75.000
+M3 ; Pen down
+G1 X94.000 Y75.000
+M5 ; Pen up
+G0 X99.500 Y75.000
+M3 ; Pen down
+G1 X99.500 Y75.000
+M5 ; Pen up
+G0 X93.500 Y75.500
+M3 ; Pen down
+G1 X93.500 Y75.500
+M5 ; Pen up
+G0 X87.500 Y75.500
+M3 ; Pen down
+G1 X87.000 Y75.500
+M5 ; Pen up
+G0 X81.000 Y75.500
+M3 ; Pen down
+G1 X74.500 Y75.500
+M5 ; Pen up
+G0 X68.500 Y75.500
+M3 ; Pen down
+G1 X68.500 Y75.500
+M5 ; Pen up
+G0 X62.000 Y75.500
+M3 ; Pen down
+G1 X62.000 Y75.500
+M5 ; Pen up
+G0 X56.000 Y75.500
+M3 ; Pen down
+G1 X56.000 Y75.500
+M5 ; Pen up
+G0 X43.500 Y75.500
+M3 ; Pen down
+G1 X31.000 Y75.500
+M5 ; Pen up
+G0 X25.000 Y75.500
+M3 ; Pen down
+G1 X25.000 Y75.500
+M5 ; Pen up
+G0 X18.500 Y75.500
+M3 ; Pen down
+G1 X18.500 Y75.500
+M5 ; Pen up
+G0 X12.500 Y75.500
+M3 ; Pen down
+G1 X6.000 Y75.500
+M5 ; Pen up
+G0 X0.000 Y75.500
+M3 ; Pen down
+G1 X0.000 Y75.500
+M5 ; Pen up
+G0 X0.000 Y76.000
+M3 ; Pen down
+G1 X0.000 Y76.000
+M5 ; Pen up
+G0 X6.000 Y76.000
+M3 ; Pen down
+G1 X12.500 Y76.000
+M5 ; Pen up
+G0 X18.500 Y76.000
+M3 ; Pen down
+G1 X18.500 Y76.000
+M5 ; Pen up
+G0 X25.000 Y76.000
+M3 ; Pen down
+G1 X25.000 Y76.000
+M5 ; Pen up
+G0 X31.000 Y76.000
+M3 ; Pen down
+G1 X43.500 Y76.000
+M5 ; Pen up
+G0 X56.000 Y76.000
+M3 ; Pen down
+G1 X56.000 Y76.000
+M5 ; Pen up
+G0 X62.000 Y76.000
+M3 ; Pen down
+G1 X62.500 Y76.000
+M5 ; Pen up
+G0 X68.500 Y76.000
+M3 ; Pen down
+G1 X68.500 Y76.000
+M5 ; Pen up
+G0 X74.500 Y76.000
+M3 ; Pen down
+G1 X81.000 Y76.000
+M5 ; Pen up
+G0 X87.000 Y76.000
+M3 ; Pen down
+G1 X87.500 Y76.000
+M5 ; Pen up
+G0 X93.500 Y76.000
+M3 ; Pen down
+G1 X93.500 Y76.000
+M5 ; Pen up
+G0 X93.500 Y76.500
+M3 ; Pen down
+G1 X93.500 Y76.500
+M5 ; Pen up
+G0 X87.500 Y76.500
+M3 ; Pen down
+G1 X87.000 Y76.500
+M5 ; Pen up
+G0 X81.000 Y76.500
+M3 ; Pen down
+G1 X74.500 Y76.500
+M5 ; Pen up
+G0 X68.500 Y76.500
+M3 ; Pen down
+G1 X68.500 Y76.500
+M5 ; Pen up
+G0 X62.500 Y76.500
+M3 ; Pen down
+G1 X62.000 Y76.500
+M5 ; Pen up
+G0 X56.000 Y76.500
+M3 ; Pen down
+G1 X56.000 Y76.500
+M5 ; Pen up
+G0 X43.500 Y76.500
+M3 ; Pen down
+G1 X31.000 Y76.500
+M5 ; Pen up
+G0 X25.000 Y76.500
+M3 ; Pen down
+G1 X25.000 Y76.500
+M5 ; Pen up
+G0 X18.500 Y76.500
+M3 ; Pen down
+G1 X18.500 Y76.500
+M5 ; Pen up
+G0 X12.500 Y76.500
+M3 ; Pen down
+G1 X6.000 Y76.500
+M5 ; Pen up
+G0 X0.000 Y76.500
+M3 ; Pen down
+G1 X0.000 Y76.500
+M5 ; Pen up
+G0 X0.000 Y77.000
+M3 ; Pen down
+G1 X0.000 Y77.000
+M5 ; Pen up
+G0 X6.000 Y77.000
+M3 ; Pen down
+G1 X12.500 Y77.000
+M5 ; Pen up
+G0 X18.500 Y77.000
+M3 ; Pen down
+G1 X18.500 Y77.000
+M5 ; Pen up
+G0 X25.000 Y77.000
+M3 ; Pen down
+G1 X25.000 Y77.000
+M5 ; Pen up
+G0 X31.000 Y77.000
+M3 ; Pen down
+G1 X43.500 Y77.000
+M5 ; Pen up
+G0 X56.000 Y77.000
+M3 ; Pen down
+G1 X56.000 Y77.000
+M5 ; Pen up
+G0 X62.000 Y77.000
+M3 ; Pen down
+G1 X62.500 Y77.000
+M5 ; Pen up
+G0 X68.500 Y77.000
+M3 ; Pen down
+G1 X68.500 Y77.000
+M5 ; Pen up
+G0 X74.500 Y77.000
+M3 ; Pen down
+G1 X81.000 Y77.000
+M5 ; Pen up
+G0 X87.000 Y77.000
+M3 ; Pen down
+G1 X87.500 Y77.000
+M5 ; Pen up
+G0 X93.500 Y77.000
+M3 ; Pen down
+G1 X93.500 Y77.000
+M5 ; Pen up
+G0 X93.500 Y77.500
+M3 ; Pen down
+G1 X93.500 Y77.500
+M5 ; Pen up
+G0 X87.500 Y77.500
+M3 ; Pen down
+G1 X87.000 Y77.500
+M5 ; Pen up
+G0 X81.000 Y77.500
+M3 ; Pen down
+G1 X74.500 Y77.500
+M5 ; Pen up
+G0 X68.500 Y77.500
+M3 ; Pen down
+G1 X68.500 Y77.500
+M5 ; Pen up
+G0 X62.500 Y77.500
+M3 ; Pen down
+G1 X62.000 Y77.500
+M5 ; Pen up
+G0 X56.000 Y77.500
+M3 ; Pen down
+G1 X56.000 Y77.500
+M5 ; Pen up
+G0 X43.500 Y77.500
+M3 ; Pen down
+G1 X31.000 Y77.500
+M5 ; Pen up
+G0 X25.000 Y77.500
+M3 ; Pen down
+G1 X25.000 Y77.500
+M5 ; Pen up
+G0 X18.500 Y77.500
+M3 ; Pen down
+G1 X18.500 Y77.500
+M5 ; Pen up
+G0 X12.500 Y77.500
+M3 ; Pen down
+G1 X6.000 Y77.500
+M5 ; Pen up
+G0 X0.000 Y77.500
+M3 ; Pen down
+G1 X0.000 Y77.500
+M5 ; Pen up
+G0 X0.000 Y78.000
+M3 ; Pen down
+G1 X0.000 Y78.000
+M5 ; Pen up
+G0 X6.000 Y78.000
+M3 ; Pen down
+G1 X12.500 Y78.000
+M5 ; Pen up
+G0 X18.500 Y78.000
+M3 ; Pen down
+G1 X18.500 Y78.000
+M5 ; Pen up
+G0 X25.000 Y78.000
+M3 ; Pen down
+G1 X25.000 Y78.000
+M5 ; Pen up
+G0 X31.000 Y78.000
+M3 ; Pen down
+G1 X43.500 Y78.000
+M5 ; Pen up
+G0 X56.000 Y78.000
+M3 ; Pen down
+G1 X56.000 Y78.000
+M5 ; Pen up
+G0 X62.000 Y78.000
+M3 ; Pen down
+G1 X62.500 Y78.000
+M5 ; Pen up
+G0 X68.500 Y78.000
+M3 ; Pen down
+G1 X68.500 Y78.000
+M5 ; Pen up
+G0 X74.500 Y78.000
+M3 ; Pen down
+G1 X81.000 Y78.000
+M5 ; Pen up
+G0 X87.000 Y78.000
+M3 ; Pen down
+G1 X87.500 Y78.000
+M5 ; Pen up
+G0 X93.500 Y78.000
+M3 ; Pen down
+G1 X93.500 Y78.000
+M5 ; Pen up
+G0 X93.500 Y78.500
+M3 ; Pen down
+G1 X93.500 Y78.500
+M5 ; Pen up
+G0 X87.500 Y78.500
+M3 ; Pen down
+G1 X87.000 Y78.500
+M5 ; Pen up
+G0 X81.000 Y78.500
+M3 ; Pen down
+G1 X74.500 Y78.500
+M5 ; Pen up
+G0 X68.500 Y78.500
+M3 ; Pen down
+G1 X68.500 Y78.500
+M5 ; Pen up
+G0 X62.500 Y78.500
+M3 ; Pen down
+G1 X62.000 Y78.500
+M5 ; Pen up
+G0 X56.000 Y78.500
+M3 ; Pen down
+G1 X56.000 Y78.500
+M5 ; Pen up
+G0 X43.500 Y78.500
+M3 ; Pen down
+G1 X31.000 Y78.500
+M5 ; Pen up
+G0 X25.000 Y78.500
+M3 ; Pen down
+G1 X25.000 Y78.500
+M5 ; Pen up
+G0 X18.500 Y78.500
+M3 ; Pen down
+G1 X18.500 Y78.500
+M5 ; Pen up
+G0 X12.500 Y78.500
+M3 ; Pen down
+G1 X6.000 Y78.500
+M5 ; Pen up
+G0 X0.000 Y78.500
+M3 ; Pen down
+G1 X0.000 Y78.500
+M5 ; Pen up
+G0 X0.000 Y79.000
+M3 ; Pen down
+G1 X0.000 Y79.000
+M5 ; Pen up
+G0 X6.000 Y79.000
+M3 ; Pen down
+G1 X12.500 Y79.000
+M5 ; Pen up
+G0 X18.500 Y79.000
+M3 ; Pen down
+G1 X18.500 Y79.000
+M5 ; Pen up
+G0 X25.000 Y79.000
+M3 ; Pen down
+G1 X25.000 Y79.000
+M5 ; Pen up
+G0 X31.000 Y79.000
+M3 ; Pen down
+G1 X43.500 Y79.000
+M5 ; Pen up
+G0 X56.000 Y79.000
+M3 ; Pen down
+G1 X56.000 Y79.000
+M5 ; Pen up
+G0 X62.000 Y79.000
+M3 ; Pen down
+G1 X62.500 Y79.000
+M5 ; Pen up
+G0 X68.500 Y79.000
+M3 ; Pen down
+G1 X68.500 Y79.000
+M5 ; Pen up
+G0 X74.500 Y79.000
+M3 ; Pen down
+G1 X81.000 Y79.000
+M5 ; Pen up
+G0 X87.000 Y79.000
+M3 ; Pen down
+G1 X87.500 Y79.000
+M5 ; Pen up
+G0 X93.500 Y79.000
+M3 ; Pen down
+G1 X93.500 Y79.000
+M5 ; Pen up
+G0 X93.500 Y79.500
+M3 ; Pen down
+G1 X93.500 Y79.500
+M5 ; Pen up
+G0 X87.500 Y79.500
+M3 ; Pen down
+G1 X87.000 Y79.500
+M5 ; Pen up
+G0 X81.000 Y79.500
+M3 ; Pen down
+G1 X74.500 Y79.500
+M5 ; Pen up
+G0 X68.500 Y79.500
+M3 ; Pen down
+G1 X68.500 Y79.500
+M5 ; Pen up
+G0 X62.500 Y79.500
+M3 ; Pen down
+G1 X62.000 Y79.500
+M5 ; Pen up
+G0 X56.000 Y79.500
+M3 ; Pen down
+G1 X56.000 Y79.500
+M5 ; Pen up
+G0 X43.500 Y79.500
+M3 ; Pen down
+G1 X31.000 Y79.500
+M5 ; Pen up
+G0 X25.000 Y79.500
+M3 ; Pen down
+G1 X25.000 Y79.500
+M5 ; Pen up
+G0 X18.500 Y79.500
+M3 ; Pen down
+G1 X18.500 Y79.500
+M5 ; Pen up
+G0 X12.500 Y79.500
+M3 ; Pen down
+G1 X6.000 Y79.500
+M5 ; Pen up
+G0 X0.000 Y79.500
+M3 ; Pen down
+G1 X0.000 Y79.500
+M5 ; Pen up
+G0 X0.000 Y80.000
+M3 ; Pen down
+G1 X0.000 Y80.000
+M5 ; Pen up
+G0 X6.000 Y80.000
+M3 ; Pen down
+G1 X12.500 Y80.000
+M5 ; Pen up
+G0 X18.500 Y80.000
+M3 ; Pen down
+G1 X18.500 Y80.000
+M5 ; Pen up
+G0 X25.000 Y80.000
+M3 ; Pen down
+G1 X25.000 Y80.000
+M5 ; Pen up
+G0 X31.000 Y80.000
+M3 ; Pen down
+G1 X43.500 Y80.000
+M5 ; Pen up
+G0 X56.000 Y80.000
+M3 ; Pen down
+G1 X56.000 Y80.000
+M5 ; Pen up
+G0 X62.000 Y80.000
+M3 ; Pen down
+G1 X62.500 Y80.000
+M5 ; Pen up
+G0 X68.500 Y80.000
+M3 ; Pen down
+G1 X68.500 Y80.000
+M5 ; Pen up
+G0 X74.500 Y80.000
+M3 ; Pen down
+G1 X81.000 Y80.000
+M5 ; Pen up
+G0 X87.000 Y80.000
+M3 ; Pen down
+G1 X87.500 Y80.000
+M5 ; Pen up
+G0 X93.500 Y80.000
+M3 ; Pen down
+G1 X93.500 Y80.000
+M5 ; Pen up
+G0 X99.500 Y80.500
+M3 ; Pen down
+G1 X99.500 Y80.500
+M5 ; Pen up
+G0 X93.500 Y80.500
+M3 ; Pen down
+G1 X93.500 Y80.500
+M5 ; Pen up
+G0 X87.500 Y80.500
+M3 ; Pen down
+G1 X87.000 Y80.500
+M5 ; Pen up
+G0 X81.000 Y80.500
+M3 ; Pen down
+G1 X74.500 Y80.500
+M5 ; Pen up
+G0 X68.500 Y80.500
+M3 ; Pen down
+G1 X68.500 Y80.500
+M5 ; Pen up
+G0 X62.500 Y80.500
+M3 ; Pen down
+G1 X62.000 Y80.500
+M5 ; Pen up
+G0 X56.000 Y80.500
+M3 ; Pen down
+G1 X56.000 Y80.500
+M5 ; Pen up
+G0 X50.000 Y80.500
+M3 ; Pen down
+G1 X49.500 Y80.500
+M5 ; Pen up
+G0 X43.500 Y80.500
+M3 ; Pen down
+G1 X31.000 Y80.500
+M5 ; Pen up
+G0 X25.000 Y80.500
+M3 ; Pen down
+G1 X24.500 Y80.500
+M5 ; Pen up
+G0 X18.500 Y80.500
+M3 ; Pen down
+G1 X18.500 Y80.500
+M5 ; Pen up
+G0 X12.500 Y80.500
+M3 ; Pen down
+G1 X6.000 Y80.500
+M5 ; Pen up
+G0 X0.000 Y80.500
+M3 ; Pen down
+G1 X0.000 Y80.500
+M5 ; Pen up
+G0 X0.000 Y81.000
+M3 ; Pen down
+G1 X99.500 Y81.000
+M5 ; Pen up
+G0 X99.500 Y81.500
+M3 ; Pen down
+G1 X99.500 Y81.500
+M5 ; Pen up
+G0 X93.500 Y81.500
+M3 ; Pen down
+G1 X93.500 Y81.500
+M5 ; Pen up
+G0 X87.500 Y81.500
+M3 ; Pen down
+G1 X87.000 Y81.500
+M5 ; Pen up
+G0 X81.000 Y81.500
+M3 ; Pen down
+G1 X68.500 Y81.500
+M5 ; Pen up
+G0 X62.500 Y81.500
+M3 ; Pen down
+G1 X62.000 Y81.500
+M5 ; Pen up
+G0 X56.000 Y81.500
+M3 ; Pen down
+G1 X56.000 Y81.500
+M5 ; Pen up
+G0 X50.000 Y81.500
+M3 ; Pen down
+G1 X49.500 Y81.500
+M5 ; Pen up
+G0 X43.500 Y81.500
+M3 ; Pen down
+G1 X43.500 Y81.500
+M5 ; Pen up
+G0 X37.500 Y81.500
+M3 ; Pen down
+G1 X12.000 Y81.500
+M5 ; Pen up
+G0 X6.000 Y81.500
+M3 ; Pen down
+G1 X6.000 Y81.500
+M5 ; Pen up
+G0 X0.000 Y81.500
+M3 ; Pen down
+G1 X0.000 Y81.500
+M5 ; Pen up
+G0 X0.000 Y82.000
+M3 ; Pen down
+G1 X0.000 Y82.000
+M5 ; Pen up
+G0 X6.000 Y82.000
+M3 ; Pen down
+G1 X6.000 Y82.000
+M5 ; Pen up
+G0 X12.000 Y82.000
+M3 ; Pen down
+G1 X37.500 Y82.000
+M5 ; Pen up
+G0 X43.500 Y82.000
+M3 ; Pen down
+G1 X43.500 Y82.000
+M5 ; Pen up
+G0 X56.000 Y82.000
+M3 ; Pen down
+G1 X56.000 Y82.000
+M5 ; Pen up
+G0 X62.000 Y82.000
+M3 ; Pen down
+G1 X62.000 Y82.000
+M5 ; Pen up
+G0 X68.500 Y82.000
+M3 ; Pen down
+G1 X81.000 Y82.000
+M5 ; Pen up
+G0 X87.000 Y82.000
+M3 ; Pen down
+G1 X87.500 Y82.000
+M5 ; Pen up
+G0 X93.500 Y82.000
+M3 ; Pen down
+G1 X93.500 Y82.000
+M5 ; Pen up
+G0 X93.500 Y82.500
+M3 ; Pen down
+G1 X93.500 Y82.500
+M5 ; Pen up
+G0 X87.500 Y82.500
+M3 ; Pen down
+G1 X87.000 Y82.500
+M5 ; Pen up
+G0 X81.000 Y82.500
+M3 ; Pen down
+G1 X68.500 Y82.500
+M5 ; Pen up
+G0 X62.500 Y82.500
+M3 ; Pen down
+G1 X62.000 Y82.500
+M5 ; Pen up
+G0 X56.000 Y82.500
+M3 ; Pen down
+G1 X56.000 Y82.500
+M5 ; Pen up
+G0 X43.500 Y82.500
+M3 ; Pen down
+G1 X43.500 Y82.500
+M5 ; Pen up
+G0 X37.500 Y82.500
+M3 ; Pen down
+G1 X12.000 Y82.500
+M5 ; Pen up
+G0 X6.000 Y82.500
+M3 ; Pen down
+G1 X6.000 Y82.500
+M5 ; Pen up
+G0 X0.000 Y82.500
+M3 ; Pen down
+G1 X0.000 Y82.500
+M5 ; Pen up
+G0 X0.000 Y83.000
+M3 ; Pen down
+G1 X0.000 Y83.000
+M5 ; Pen up
+G0 X6.000 Y83.000
+M3 ; Pen down
+G1 X6.000 Y83.000
+M5 ; Pen up
+G0 X12.000 Y83.000
+M3 ; Pen down
+G1 X37.500 Y83.000
+M5 ; Pen up
+G0 X43.500 Y83.000
+M3 ; Pen down
+G1 X43.500 Y83.000
+M5 ; Pen up
+G0 X56.000 Y83.000
+M3 ; Pen down
+G1 X56.000 Y83.000
+M5 ; Pen up
+G0 X62.000 Y83.000
+M3 ; Pen down
+G1 X62.500 Y83.000
+M5 ; Pen up
+G0 X68.500 Y83.000
+M3 ; Pen down
+G1 X81.000 Y83.000
+M5 ; Pen up
+G0 X87.000 Y83.000
+M3 ; Pen down
+G1 X87.500 Y83.000
+M5 ; Pen up
+G0 X93.500 Y83.000
+M3 ; Pen down
+G1 X93.500 Y83.000
+M5 ; Pen up
+G0 X93.500 Y83.500
+M3 ; Pen down
+G1 X93.500 Y83.500
+M5 ; Pen up
+G0 X87.500 Y83.500
+M3 ; Pen down
+G1 X87.000 Y83.500
+M5 ; Pen up
+G0 X81.000 Y83.500
+M3 ; Pen down
+G1 X68.500 Y83.500
+M5 ; Pen up
+G0 X62.500 Y83.500
+M3 ; Pen down
+G1 X62.000 Y83.500
+M5 ; Pen up
+G0 X56.000 Y83.500
+M3 ; Pen down
+G1 X56.000 Y83.500
+M5 ; Pen up
+G0 X43.500 Y83.500
+M3 ; Pen down
+G1 X43.500 Y83.500
+M5 ; Pen up
+G0 X37.500 Y83.500
+M3 ; Pen down
+G1 X12.000 Y83.500
+M5 ; Pen up
+G0 X6.000 Y83.500
+M3 ; Pen down
+G1 X6.000 Y83.500
+M5 ; Pen up
+G0 X0.000 Y83.500
+M3 ; Pen down
+G1 X0.000 Y83.500
+M5 ; Pen up
+G0 X0.000 Y84.000
+M3 ; Pen down
+G1 X0.000 Y84.000
+M5 ; Pen up
+G0 X6.000 Y84.000
+M3 ; Pen down
+G1 X6.000 Y84.000
+M5 ; Pen up
+G0 X12.000 Y84.000
+M3 ; Pen down
+G1 X37.500 Y84.000
+M5 ; Pen up
+G0 X43.500 Y84.000
+M3 ; Pen down
+G1 X43.500 Y84.000
+M5 ; Pen up
+G0 X56.000 Y84.000
+M3 ; Pen down
+G1 X56.000 Y84.000
+M5 ; Pen up
+G0 X62.000 Y84.000
+M3 ; Pen down
+G1 X62.500 Y84.000
+M5 ; Pen up
+G0 X68.500 Y84.000
+M3 ; Pen down
+G1 X81.000 Y84.000
+M5 ; Pen up
+G0 X87.000 Y84.000
+M3 ; Pen down
+G1 X87.500 Y84.000
+M5 ; Pen up
+G0 X93.500 Y84.000
+M3 ; Pen down
+G1 X93.500 Y84.000
+M5 ; Pen up
+G0 X93.500 Y84.500
+M3 ; Pen down
+G1 X93.500 Y84.500
+M5 ; Pen up
+G0 X87.500 Y84.500
+M3 ; Pen down
+G1 X87.000 Y84.500
+M5 ; Pen up
+G0 X81.000 Y84.500
+M3 ; Pen down
+G1 X68.500 Y84.500
+M5 ; Pen up
+G0 X62.500 Y84.500
+M3 ; Pen down
+G1 X62.000 Y84.500
+M5 ; Pen up
+G0 X56.000 Y84.500
+M3 ; Pen down
+G1 X56.000 Y84.500
+M5 ; Pen up
+G0 X43.500 Y84.500
+M3 ; Pen down
+G1 X43.500 Y84.500
+M5 ; Pen up
+G0 X37.500 Y84.500
+M3 ; Pen down
+G1 X12.000 Y84.500
+M5 ; Pen up
+G0 X6.000 Y84.500
+M3 ; Pen down
+G1 X6.000 Y84.500
+M5 ; Pen up
+G0 X0.000 Y84.500
+M3 ; Pen down
+G1 X0.000 Y84.500
+M5 ; Pen up
+G0 X0.000 Y85.000
+M3 ; Pen down
+G1 X0.000 Y85.000
+M5 ; Pen up
+G0 X6.000 Y85.000
+M3 ; Pen down
+G1 X6.000 Y85.000
+M5 ; Pen up
+G0 X12.000 Y85.000
+M3 ; Pen down
+G1 X37.500 Y85.000
+M5 ; Pen up
+G0 X43.500 Y85.000
+M3 ; Pen down
+G1 X43.500 Y85.000
+M5 ; Pen up
+G0 X56.000 Y85.000
+M3 ; Pen down
+G1 X56.000 Y85.000
+M5 ; Pen up
+G0 X62.000 Y85.000
+M3 ; Pen down
+G1 X62.500 Y85.000
+M5 ; Pen up
+G0 X68.500 Y85.000
+M3 ; Pen down
+G1 X81.000 Y85.000
+M5 ; Pen up
+G0 X87.000 Y85.000
+M3 ; Pen down
+G1 X87.500 Y85.000
+M5 ; Pen up
+G0 X93.500 Y85.000
+M3 ; Pen down
+G1 X93.500 Y85.000
+M5 ; Pen up
+G0 X93.500 Y85.500
+M3 ; Pen down
+G1 X93.500 Y85.500
+M5 ; Pen up
+G0 X87.500 Y85.500
+M3 ; Pen down
+G1 X87.000 Y85.500
+M5 ; Pen up
+G0 X81.000 Y85.500
+M3 ; Pen down
+G1 X68.500 Y85.500
+M5 ; Pen up
+G0 X62.500 Y85.500
+M3 ; Pen down
+G1 X62.000 Y85.500
+M5 ; Pen up
+G0 X56.000 Y85.500
+M3 ; Pen down
+G1 X56.000 Y85.500
+M5 ; Pen up
+G0 X43.500 Y85.500
+M3 ; Pen down
+G1 X43.500 Y85.500
+M5 ; Pen up
+G0 X37.500 Y85.500
+M3 ; Pen down
+G1 X12.000 Y85.500
+M5 ; Pen up
+G0 X6.000 Y85.500
+M3 ; Pen down
+G1 X6.000 Y85.500
+M5 ; Pen up
+G0 X0.000 Y85.500
+M3 ; Pen down
+G1 X0.000 Y85.500
+M5 ; Pen up
+G0 X0.000 Y86.000
+M3 ; Pen down
+G1 X0.000 Y86.000
+M5 ; Pen up
+G0 X6.000 Y86.000
+M3 ; Pen down
+G1 X6.000 Y86.000
+M5 ; Pen up
+G0 X12.000 Y86.000
+M3 ; Pen down
+G1 X37.500 Y86.000
+M5 ; Pen up
+G0 X43.500 Y86.000
+M3 ; Pen down
+G1 X43.500 Y86.000
+M5 ; Pen up
+G0 X56.000 Y86.000
+M3 ; Pen down
+G1 X56.000 Y86.000
+M5 ; Pen up
+G0 X62.000 Y86.000
+M3 ; Pen down
+G1 X62.500 Y86.000
+M5 ; Pen up
+G0 X68.500 Y86.000
+M3 ; Pen down
+G1 X81.000 Y86.000
+M5 ; Pen up
+G0 X87.000 Y86.000
+M3 ; Pen down
+G1 X87.500 Y86.000
+M5 ; Pen up
+G0 X93.500 Y86.000
+M3 ; Pen down
+G1 X93.500 Y86.000
+M5 ; Pen up
+G0 X93.500 Y86.500
+M3 ; Pen down
+G1 X93.500 Y86.500
+M5 ; Pen up
+G0 X87.500 Y86.500
+M3 ; Pen down
+G1 X87.000 Y86.500
+M5 ; Pen up
+G0 X81.000 Y86.500
+M3 ; Pen down
+G1 X68.500 Y86.500
+M5 ; Pen up
+G0 X62.500 Y86.500
+M3 ; Pen down
+G1 X62.000 Y86.500
+M5 ; Pen up
+G0 X56.000 Y86.500
+M3 ; Pen down
+G1 X56.000 Y86.500
+M5 ; Pen up
+G0 X50.000 Y86.500
+M3 ; Pen down
+G1 X49.500 Y86.500
+M5 ; Pen up
+G0 X43.500 Y86.500
+M3 ; Pen down
+G1 X43.500 Y86.500
+M5 ; Pen up
+G0 X37.500 Y86.500
+M3 ; Pen down
+G1 X12.000 Y86.500
+M5 ; Pen up
+G0 X6.000 Y86.500
+M3 ; Pen down
+G1 X6.000 Y86.500
+M5 ; Pen up
+G0 X0.000 Y86.500
+M3 ; Pen down
+G1 X0.000 Y86.500
+M5 ; Pen up
+G0 X0.000 Y87.000
+M3 ; Pen down
+G1 X99.500 Y87.000
+M5 ; Pen up
+G0 X99.500 Y87.500
+M3 ; Pen down
+G1 X99.500 Y87.500
+M5 ; Pen up
+G0 X94.000 Y87.500
+M3 ; Pen down
+G1 X93.500 Y87.500
+M5 ; Pen up
+G0 X87.500 Y87.500
+M3 ; Pen down
+G1 X87.000 Y87.500
+M5 ; Pen up
+G0 X81.500 Y87.500
+M3 ; Pen down
+G1 X81.000 Y87.500
+M5 ; Pen up
+G0 X75.000 Y87.500
+M3 ; Pen down
+G1 X74.500 Y87.500
+M5 ; Pen up
+G0 X69.000 Y87.500
+M3 ; Pen down
+G1 X49.500 Y87.500
+M5 ; Pen up
+G0 X43.500 Y87.500
+M3 ; Pen down
+G1 X43.500 Y87.500
+M5 ; Pen up
+G0 X37.500 Y87.500
+M3 ; Pen down
+G1 X30.500 Y87.500
+M5 ; Pen up
+G0 X25.000 Y87.500
+M3 ; Pen down
+G1 X24.500 Y87.500
+M5 ; Pen up
+G0 X18.500 Y87.500
+M3 ; Pen down
+G1 X18.500 Y87.500
+M5 ; Pen up
+G0 X12.500 Y87.500
+M3 ; Pen down
+G1 X12.000 Y87.500
+M5 ; Pen up
+G0 X6.500 Y87.500
+M3 ; Pen down
+G1 X5.500 Y87.500
+M5 ; Pen up
+G0 X0.000 Y87.500
+M3 ; Pen down
+G1 X0.000 Y87.500
+M5 ; Pen up
+G0 X0.000 Y88.000
+M3 ; Pen down
+G1 X0.000 Y88.000
+M5 ; Pen up
+G0 X6.000 Y88.000
+M3 ; Pen down
+G1 X6.000 Y88.000
+M5 ; Pen up
+G0 X12.000 Y88.000
+M3 ; Pen down
+G1 X12.500 Y88.000
+M5 ; Pen up
+G0 X18.500 Y88.000
+M3 ; Pen down
+G1 X18.500 Y88.000
+M5 ; Pen up
+G0 X25.000 Y88.000
+M3 ; Pen down
+G1 X25.000 Y88.000
+M5 ; Pen up
+G0 X31.000 Y88.000
+M3 ; Pen down
+G1 X37.500 Y88.000
+M5 ; Pen up
+G0 X43.500 Y88.000
+M3 ; Pen down
+G1 X43.500 Y88.000
+M5 ; Pen up
+G0 X50.000 Y88.000
+M3 ; Pen down
+G1 X68.500 Y88.000
+M5 ; Pen up
+G0 X74.500 Y88.000
+M3 ; Pen down
+G1 X74.500 Y88.000
+M5 ; Pen up
+G0 X81.000 Y88.000
+M3 ; Pen down
+G1 X81.000 Y88.000
+M5 ; Pen up
+G0 X87.000 Y88.000
+M3 ; Pen down
+G1 X87.500 Y88.000
+M5 ; Pen up
+G0 X93.500 Y88.000
+M3 ; Pen down
+G1 X93.500 Y88.000
+M5 ; Pen up
+G0 X93.500 Y88.500
+M3 ; Pen down
+G1 X93.500 Y88.500
+M5 ; Pen up
+G0 X87.500 Y88.500
+M3 ; Pen down
+G1 X87.000 Y88.500
+M5 ; Pen up
+G0 X81.000 Y88.500
+M3 ; Pen down
+G1 X81.000 Y88.500
+M5 ; Pen up
+G0 X74.500 Y88.500
+M3 ; Pen down
+G1 X74.500 Y88.500
+M5 ; Pen up
+G0 X68.500 Y88.500
+M3 ; Pen down
+G1 X50.000 Y88.500
+M5 ; Pen up
+G0 X43.500 Y88.500
+M3 ; Pen down
+G1 X43.500 Y88.500
+M5 ; Pen up
+G0 X37.500 Y88.500
+M3 ; Pen down
+G1 X31.000 Y88.500
+M5 ; Pen up
+G0 X25.000 Y88.500
+M3 ; Pen down
+G1 X25.000 Y88.500
+M5 ; Pen up
+G0 X18.500 Y88.500
+M3 ; Pen down
+G1 X18.500 Y88.500
+M5 ; Pen up
+G0 X12.500 Y88.500
+M3 ; Pen down
+G1 X12.000 Y88.500
+M5 ; Pen up
+G0 X6.000 Y88.500
+M3 ; Pen down
+G1 X6.000 Y88.500
+M5 ; Pen up
+G0 X0.000 Y88.500
+M3 ; Pen down
+G1 X0.000 Y88.500
+M5 ; Pen up
+G0 X0.000 Y89.000
+M3 ; Pen down
+G1 X0.000 Y89.000
+M5 ; Pen up
+G0 X6.000 Y89.000
+M3 ; Pen down
+G1 X6.000 Y89.000
+M5 ; Pen up
+G0 X12.000 Y89.000
+M3 ; Pen down
+G1 X12.500 Y89.000
+M5 ; Pen up
+G0 X18.500 Y89.000
+M3 ; Pen down
+G1 X18.500 Y89.000
+M5 ; Pen up
+G0 X25.000 Y89.000
+M3 ; Pen down
+G1 X25.000 Y89.000
+M5 ; Pen up
+G0 X31.000 Y89.000
+M3 ; Pen down
+G1 X37.500 Y89.000
+M5 ; Pen up
+G0 X43.500 Y89.000
+M3 ; Pen down
+G1 X43.500 Y89.000
+M5 ; Pen up
+G0 X50.000 Y89.000
+M3 ; Pen down
+G1 X68.500 Y89.000
+M5 ; Pen up
+G0 X74.500 Y89.000
+M3 ; Pen down
+G1 X74.500 Y89.000
+M5 ; Pen up
+G0 X81.000 Y89.000
+M3 ; Pen down
+G1 X81.000 Y89.000
+M5 ; Pen up
+G0 X87.000 Y89.000
+M3 ; Pen down
+G1 X87.500 Y89.000
+M5 ; Pen up
+G0 X93.500 Y89.000
+M3 ; Pen down
+G1 X93.500 Y89.000
+M5 ; Pen up
+G0 X93.500 Y89.500
+M3 ; Pen down
+G1 X93.500 Y89.500
+M5 ; Pen up
+G0 X87.500 Y89.500
+M3 ; Pen down
+G1 X87.000 Y89.500
+M5 ; Pen up
+G0 X81.000 Y89.500
+M3 ; Pen down
+G1 X81.000 Y89.500
+M5 ; Pen up
+G0 X74.500 Y89.500
+M3 ; Pen down
+G1 X74.500 Y89.500
+M5 ; Pen up
+G0 X68.500 Y89.500
+M3 ; Pen down
+G1 X50.000 Y89.500
+M5 ; Pen up
+G0 X43.500 Y89.500
+M3 ; Pen down
+G1 X43.500 Y89.500
+M5 ; Pen up
+G0 X37.500 Y89.500
+M3 ; Pen down
+G1 X31.000 Y89.500
+M5 ; Pen up
+G0 X25.000 Y89.500
+M3 ; Pen down
+G1 X25.000 Y89.500
+M5 ; Pen up
+G0 X18.500 Y89.500
+M3 ; Pen down
+G1 X18.500 Y89.500
+M5 ; Pen up
+G0 X12.500 Y89.500
+M3 ; Pen down
+G1 X12.000 Y89.500
+M5 ; Pen up
+G0 X6.000 Y89.500
+M3 ; Pen down
+G1 X6.000 Y89.500
+M5 ; Pen up
+G0 X0.000 Y89.500
+M3 ; Pen down
+G1 X0.000 Y89.500
+M5 ; Pen up
+G0 X0.000 Y90.000
+M3 ; Pen down
+G1 X0.000 Y90.000
+M5 ; Pen up
+G0 X6.000 Y90.000
+M3 ; Pen down
+G1 X6.000 Y90.000
+M5 ; Pen up
+G0 X12.000 Y90.000
+M3 ; Pen down
+G1 X12.500 Y90.000
+M5 ; Pen up
+G0 X18.500 Y90.000
+M3 ; Pen down
+G1 X18.500 Y90.000
+M5 ; Pen up
+G0 X25.000 Y90.000
+M3 ; Pen down
+G1 X25.000 Y90.000
+M5 ; Pen up
+G0 X31.000 Y90.000
+M3 ; Pen down
+G1 X37.500 Y90.000
+M5 ; Pen up
+G0 X43.500 Y90.000
+M3 ; Pen down
+G1 X43.500 Y90.000
+M5 ; Pen up
+G0 X50.000 Y90.000
+M3 ; Pen down
+G1 X68.500 Y90.000
+M5 ; Pen up
+G0 X74.500 Y90.000
+M3 ; Pen down
+G1 X74.500 Y90.000
+M5 ; Pen up
+G0 X81.000 Y90.000
+M3 ; Pen down
+G1 X81.000 Y90.000
+M5 ; Pen up
+G0 X87.000 Y90.000
+M3 ; Pen down
+G1 X87.500 Y90.000
+M5 ; Pen up
+G0 X93.500 Y90.000
+M3 ; Pen down
+G1 X93.500 Y90.000
+M5 ; Pen up
+G0 X93.500 Y90.500
+M3 ; Pen down
+G1 X93.500 Y90.500
+M5 ; Pen up
+G0 X87.500 Y90.500
+M3 ; Pen down
+G1 X87.000 Y90.500
+M5 ; Pen up
+G0 X81.000 Y90.500
+M3 ; Pen down
+G1 X81.000 Y90.500
+M5 ; Pen up
+G0 X74.500 Y90.500
+M3 ; Pen down
+G1 X74.500 Y90.500
+M5 ; Pen up
+G0 X68.500 Y90.500
+M3 ; Pen down
+G1 X50.000 Y90.500
+M5 ; Pen up
+G0 X43.500 Y90.500
+M3 ; Pen down
+G1 X43.500 Y90.500
+M5 ; Pen up
+G0 X37.500 Y90.500
+M3 ; Pen down
+G1 X31.000 Y90.500
+M5 ; Pen up
+G0 X25.000 Y90.500
+M3 ; Pen down
+G1 X25.000 Y90.500
+M5 ; Pen up
+G0 X18.500 Y90.500
+M3 ; Pen down
+G1 X18.500 Y90.500
+M5 ; Pen up
+G0 X12.500 Y90.500
+M3 ; Pen down
+G1 X12.000 Y90.500
+M5 ; Pen up
+G0 X6.000 Y90.500
+M3 ; Pen down
+G1 X6.000 Y90.500
+M5 ; Pen up
+G0 X0.000 Y90.500
+M3 ; Pen down
+G1 X0.000 Y90.500
+M5 ; Pen up
+G0 X0.000 Y91.000
+M3 ; Pen down
+G1 X0.000 Y91.000
+M5 ; Pen up
+G0 X6.000 Y91.000
+M3 ; Pen down
+G1 X6.000 Y91.000
+M5 ; Pen up
+G0 X12.000 Y91.000
+M3 ; Pen down
+G1 X12.500 Y91.000
+M5 ; Pen up
+G0 X18.500 Y91.000
+M3 ; Pen down
+G1 X18.500 Y91.000
+M5 ; Pen up
+G0 X25.000 Y91.000
+M3 ; Pen down
+G1 X25.000 Y91.000
+M5 ; Pen up
+G0 X31.000 Y91.000
+M3 ; Pen down
+G1 X37.500 Y91.000
+M5 ; Pen up
+G0 X43.500 Y91.000
+M3 ; Pen down
+G1 X43.500 Y91.000
+M5 ; Pen up
+G0 X50.000 Y91.000
+M3 ; Pen down
+G1 X68.500 Y91.000
+M5 ; Pen up
+G0 X74.500 Y91.000
+M3 ; Pen down
+G1 X74.500 Y91.000
+M5 ; Pen up
+G0 X81.000 Y91.000
+M3 ; Pen down
+G1 X81.000 Y91.000
+M5 ; Pen up
+G0 X87.000 Y91.000
+M3 ; Pen down
+G1 X87.500 Y91.000
+M5 ; Pen up
+G0 X93.500 Y91.000
+M3 ; Pen down
+G1 X93.500 Y91.000
+M5 ; Pen up
+G0 X93.500 Y91.500
+M3 ; Pen down
+G1 X93.500 Y91.500
+M5 ; Pen up
+G0 X87.500 Y91.500
+M3 ; Pen down
+G1 X87.000 Y91.500
+M5 ; Pen up
+G0 X81.000 Y91.500
+M3 ; Pen down
+G1 X81.000 Y91.500
+M5 ; Pen up
+G0 X74.500 Y91.500
+M3 ; Pen down
+G1 X74.500 Y91.500
+M5 ; Pen up
+G0 X68.500 Y91.500
+M3 ; Pen down
+G1 X50.000 Y91.500
+M5 ; Pen up
+G0 X43.500 Y91.500
+M3 ; Pen down
+G1 X43.500 Y91.500
+M5 ; Pen up
+G0 X37.500 Y91.500
+M3 ; Pen down
+G1 X31.000 Y91.500
+M5 ; Pen up
+G0 X25.000 Y91.500
+M3 ; Pen down
+G1 X25.000 Y91.500
+M5 ; Pen up
+G0 X18.500 Y91.500
+M3 ; Pen down
+G1 X18.500 Y91.500
+M5 ; Pen up
+G0 X12.500 Y91.500
+M3 ; Pen down
+G1 X12.000 Y91.500
+M5 ; Pen up
+G0 X6.000 Y91.500
+M3 ; Pen down
+G1 X6.000 Y91.500
+M5 ; Pen up
+G0 X0.000 Y91.500
+M3 ; Pen down
+G1 X0.000 Y91.500
+M5 ; Pen up
+G0 X0.000 Y92.000
+M3 ; Pen down
+G1 X0.000 Y92.000
+M5 ; Pen up
+G0 X6.000 Y92.000
+M3 ; Pen down
+G1 X6.000 Y92.000
+M5 ; Pen up
+G0 X12.000 Y92.000
+M3 ; Pen down
+G1 X12.500 Y92.000
+M5 ; Pen up
+G0 X18.500 Y92.000
+M3 ; Pen down
+G1 X18.500 Y92.000
+M5 ; Pen up
+G0 X25.000 Y92.000
+M3 ; Pen down
+G1 X25.000 Y92.000
+M5 ; Pen up
+G0 X31.000 Y92.000
+M3 ; Pen down
+G1 X37.500 Y92.000
+M5 ; Pen up
+G0 X43.500 Y92.000
+M3 ; Pen down
+G1 X43.500 Y92.000
+M5 ; Pen up
+G0 X50.000 Y92.000
+M3 ; Pen down
+G1 X68.500 Y92.000
+M5 ; Pen up
+G0 X74.500 Y92.000
+M3 ; Pen down
+G1 X74.500 Y92.000
+M5 ; Pen up
+G0 X81.000 Y92.000
+M3 ; Pen down
+G1 X81.000 Y92.000
+M5 ; Pen up
+G0 X87.000 Y92.000
+M3 ; Pen down
+G1 X87.500 Y92.000
+M5 ; Pen up
+G0 X93.500 Y92.000
+M3 ; Pen down
+G1 X93.500 Y92.000
+M5 ; Pen up
+G0 X93.500 Y92.500
+M3 ; Pen down
+G1 X93.500 Y92.500
+M5 ; Pen up
+G0 X87.500 Y92.500
+M3 ; Pen down
+G1 X87.000 Y92.500
+M5 ; Pen up
+G0 X81.000 Y92.500
+M3 ; Pen down
+G1 X81.000 Y92.500
+M5 ; Pen up
+G0 X74.500 Y92.500
+M3 ; Pen down
+G1 X74.500 Y92.500
+M5 ; Pen up
+G0 X68.500 Y92.500
+M3 ; Pen down
+G1 X49.500 Y92.500
+M5 ; Pen up
+G0 X43.500 Y92.500
+M3 ; Pen down
+G1 X43.500 Y92.500
+M5 ; Pen up
+G0 X37.500 Y92.500
+M3 ; Pen down
+G1 X31.000 Y92.500
+M5 ; Pen up
+G0 X25.000 Y92.500
+M3 ; Pen down
+G1 X25.000 Y92.500
+M5 ; Pen up
+G0 X18.500 Y92.500
+M3 ; Pen down
+G1 X18.500 Y92.500
+M5 ; Pen up
+G0 X12.500 Y92.500
+M3 ; Pen down
+G1 X12.000 Y92.500
+M5 ; Pen up
+G0 X6.000 Y92.500
+M3 ; Pen down
+G1 X6.000 Y92.500
+M5 ; Pen up
+G0 X0.000 Y92.500
+M3 ; Pen down
+G1 X0.000 Y92.500
+M5 ; Pen up
+G0 X0.000 Y93.000
+M3 ; Pen down
+G1 X0.000 Y93.000
+M5 ; Pen up
+G0 X6.000 Y93.000
+M3 ; Pen down
+G1 X6.000 Y93.000
+M5 ; Pen up
+G0 X12.000 Y93.000
+M3 ; Pen down
+G1 X12.500 Y93.000
+M5 ; Pen up
+G0 X18.500 Y93.000
+M3 ; Pen down
+G1 X18.500 Y93.000
+M5 ; Pen up
+G0 X24.500 Y93.000
+M3 ; Pen down
+G1 X25.000 Y93.000
+M5 ; Pen up
+G0 X31.000 Y93.000
+M3 ; Pen down
+G1 X37.500 Y93.000
+M5 ; Pen up
+G0 X43.500 Y93.000
+M3 ; Pen down
+G1 X43.500 Y93.000
+M5 ; Pen up
+G0 X49.500 Y93.000
+M3 ; Pen down
+G1 X68.500 Y93.000
+M5 ; Pen up
+G0 X74.500 Y93.000
+M3 ; Pen down
+G1 X75.000 Y93.000
+M5 ; Pen up
+G0 X81.000 Y93.000
+M3 ; Pen down
+G1 X81.000 Y93.000
+M5 ; Pen up
+G0 X87.000 Y93.000
+M3 ; Pen down
+G1 X87.500 Y93.000
+M5 ; Pen up
+G0 X93.500 Y93.000
+M3 ; Pen down
+G1 X93.500 Y93.000
+M5 ; Pen up
+G0 X99.500 Y93.000
+M3 ; Pen down
+G1 X99.500 Y93.000
+M5 ; Pen up
+G0 X99.500 Y93.500
+M3 ; Pen down
+G1 X0.000 Y93.500
+M5 ; Pen up
+G0 X0.000 Y94.000
+M3 ; Pen down
+G1 X0.000 Y94.000
+M5 ; Pen up
+G0 X6.000 Y94.000
+M3 ; Pen down
+G1 X6.000 Y94.000
+M5 ; Pen up
+G0 X12.000 Y94.000
+M3 ; Pen down
+G1 X12.500 Y94.000
+M5 ; Pen up
+G0 X18.500 Y94.000
+M3 ; Pen down
+G1 X18.500 Y94.000
+M5 ; Pen up
+G0 X24.500 Y94.000
+M3 ; Pen down
+G1 X25.000 Y94.000
+M5 ; Pen up
+G0 X31.000 Y94.000
+M3 ; Pen down
+G1 X31.000 Y94.000
+M5 ; Pen up
+G0 X37.000 Y94.000
+M3 ; Pen down
+G1 X37.500 Y94.000
+M5 ; Pen up
+G0 X43.500 Y94.000
+M3 ; Pen down
+G1 X43.500 Y94.000
+M5 ; Pen up
+G0 X49.500 Y94.000
+M3 ; Pen down
+G1 X50.000 Y94.000
+M5 ; Pen up
+G0 X56.000 Y94.000
+M3 ; Pen down
+G1 X56.000 Y94.000
+M5 ; Pen up
+G0 X62.000 Y94.000
+M3 ; Pen down
+G1 X62.500 Y94.000
+M5 ; Pen up
+G0 X68.500 Y94.000
+M3 ; Pen down
+G1 X68.500 Y94.000
+M5 ; Pen up
+G0 X74.500 Y94.000
+M3 ; Pen down
+G1 X75.000 Y94.000
+M5 ; Pen up
+G0 X81.000 Y94.000
+M3 ; Pen down
+G1 X81.000 Y94.000
+M5 ; Pen up
+G0 X87.000 Y94.000
+M3 ; Pen down
+G1 X87.500 Y94.000
+M5 ; Pen up
+G0 X93.500 Y94.000
+M3 ; Pen down
+G1 X93.500 Y94.000
+M5 ; Pen up
+G0 X99.500 Y94.000
+M3 ; Pen down
+G1 X99.500 Y94.000
+M5 ; Pen up
+G0 X93.500 Y94.500
+M3 ; Pen down
+G1 X93.500 Y94.500
+M5 ; Pen up
+G0 X87.500 Y94.500
+M3 ; Pen down
+G1 X87.000 Y94.500
+M5 ; Pen up
+G0 X81.000 Y94.500
+M3 ; Pen down
+G1 X81.000 Y94.500
+M5 ; Pen up
+G0 X74.500 Y94.500
+M3 ; Pen down
+G1 X74.500 Y94.500
+M5 ; Pen up
+G0 X68.500 Y94.500
+M3 ; Pen down
+G1 X68.500 Y94.500
+M5 ; Pen up
+G0 X62.000 Y94.500
+M3 ; Pen down
+G1 X62.000 Y94.500
+M5 ; Pen up
+G0 X56.000 Y94.500
+M3 ; Pen down
+G1 X56.000 Y94.500
+M5 ; Pen up
+G0 X43.500 Y94.500
+M3 ; Pen down
+G1 X43.500 Y94.500
+M5 ; Pen up
+G0 X37.500 Y94.500
+M3 ; Pen down
+G1 X37.500 Y94.500
+M5 ; Pen up
+G0 X31.000 Y94.500
+M3 ; Pen down
+G1 X31.000 Y94.500
+M5 ; Pen up
+G0 X25.000 Y94.500
+M3 ; Pen down
+G1 X25.000 Y94.500
+M5 ; Pen up
+G0 X18.500 Y94.500
+M3 ; Pen down
+G1 X18.500 Y94.500
+M5 ; Pen up
+G0 X12.500 Y94.500
+M3 ; Pen down
+G1 X12.000 Y94.500
+M5 ; Pen up
+G0 X6.000 Y94.500
+M3 ; Pen down
+G1 X6.000 Y94.500
+M5 ; Pen up
+G0 X0.000 Y94.500
+M3 ; Pen down
+G1 X0.000 Y94.500
+M5 ; Pen up
+G0 X0.000 Y95.000
+M3 ; Pen down
+G1 X0.000 Y95.000
+M5 ; Pen up
+G0 X6.000 Y95.000
+M3 ; Pen down
+G1 X6.000 Y95.000
+M5 ; Pen up
+G0 X12.000 Y95.000
+M3 ; Pen down
+G1 X12.500 Y95.000
+M5 ; Pen up
+G0 X18.500 Y95.000
+M3 ; Pen down
+G1 X18.500 Y95.000
+M5 ; Pen up
+G0 X25.000 Y95.000
+M3 ; Pen down
+G1 X25.000 Y95.000
+M5 ; Pen up
+G0 X31.000 Y95.000
+M3 ; Pen down
+G1 X31.000 Y95.000
+M5 ; Pen up
+G0 X37.000 Y95.000
+M3 ; Pen down
+G1 X37.500 Y95.000
+M5 ; Pen up
+G0 X43.500 Y95.000
+M3 ; Pen down
+G1 X43.500 Y95.000
+M5 ; Pen up
+G0 X56.000 Y95.000
+M3 ; Pen down
+G1 X56.000 Y95.000
+M5 ; Pen up
+G0 X62.000 Y95.000
+M3 ; Pen down
+G1 X62.500 Y95.000
+M5 ; Pen up
+G0 X68.500 Y95.000
+M3 ; Pen down
+G1 X68.500 Y95.000
+M5 ; Pen up
+G0 X74.500 Y95.000
+M3 ; Pen down
+G1 X74.500 Y95.000
+M5 ; Pen up
+G0 X81.000 Y95.000
+M3 ; Pen down
+G1 X81.000 Y95.000
+M5 ; Pen up
+G0 X87.000 Y95.000
+M3 ; Pen down
+G1 X87.500 Y95.000
+M5 ; Pen up
+G0 X93.500 Y95.000
+M3 ; Pen down
+G1 X93.500 Y95.000
+M5 ; Pen up
+G0 X93.500 Y95.500
+M3 ; Pen down
+G1 X93.500 Y95.500
+M5 ; Pen up
+G0 X87.500 Y95.500
+M3 ; Pen down
+G1 X87.000 Y95.500
+M5 ; Pen up
+G0 X81.000 Y95.500
+M3 ; Pen down
+G1 X81.000 Y95.500
+M5 ; Pen up
+G0 X74.500 Y95.500
+M3 ; Pen down
+G1 X74.500 Y95.500
+M5 ; Pen up
+G0 X68.500 Y95.500
+M3 ; Pen down
+G1 X68.500 Y95.500
+M5 ; Pen up
+G0 X62.500 Y95.500
+M3 ; Pen down
+G1 X62.000 Y95.500
+M5 ; Pen up
+G0 X56.000 Y95.500
+M3 ; Pen down
+G1 X56.000 Y95.500
+M5 ; Pen up
+G0 X43.500 Y95.500
+M3 ; Pen down
+G1 X43.500 Y95.500
+M5 ; Pen up
+G0 X37.500 Y95.500
+M3 ; Pen down
+G1 X37.000 Y95.500
+M5 ; Pen up
+G0 X31.000 Y95.500
+M3 ; Pen down
+G1 X31.000 Y95.500
+M5 ; Pen up
+G0 X25.000 Y95.500
+M3 ; Pen down
+G1 X25.000 Y95.500
+M5 ; Pen up
+G0 X18.500 Y95.500
+M3 ; Pen down
+G1 X18.500 Y95.500
+M5 ; Pen up
+G0 X12.500 Y95.500
+M3 ; Pen down
+G1 X12.000 Y95.500
+M5 ; Pen up
+G0 X6.000 Y95.500
+M3 ; Pen down
+G1 X6.000 Y95.500
+M5 ; Pen up
+G0 X0.000 Y95.500
+M3 ; Pen down
+G1 X0.000 Y95.500
+M5 ; Pen up
+G0 X0.000 Y96.000
+M3 ; Pen down
+G1 X0.000 Y96.000
+M5 ; Pen up
+G0 X6.000 Y96.000
+M3 ; Pen down
+G1 X6.000 Y96.000
+M5 ; Pen up
+G0 X12.000 Y96.000
+M3 ; Pen down
+G1 X12.500 Y96.000
+M5 ; Pen up
+G0 X18.500 Y96.000
+M3 ; Pen down
+G1 X18.500 Y96.000
+M5 ; Pen up
+G0 X25.000 Y96.000
+M3 ; Pen down
+G1 X25.000 Y96.000
+M5 ; Pen up
+G0 X31.000 Y96.000
+M3 ; Pen down
+G1 X31.000 Y96.000
+M5 ; Pen up
+G0 X37.000 Y96.000
+M3 ; Pen down
+G1 X37.500 Y96.000
+M5 ; Pen up
+G0 X43.500 Y96.000
+M3 ; Pen down
+G1 X43.500 Y96.000
+M5 ; Pen up
+G0 X56.000 Y96.000
+M3 ; Pen down
+G1 X56.000 Y96.000
+M5 ; Pen up
+G0 X62.000 Y96.000
+M3 ; Pen down
+G1 X62.500 Y96.000
+M5 ; Pen up
+G0 X68.500 Y96.000
+M3 ; Pen down
+G1 X68.500 Y96.000
+M5 ; Pen up
+G0 X74.500 Y96.000
+M3 ; Pen down
+G1 X74.500 Y96.000
+M5 ; Pen up
+G0 X81.000 Y96.000
+M3 ; Pen down
+G1 X81.000 Y96.000
+M5 ; Pen up
+G0 X87.000 Y96.000
+M3 ; Pen down
+G1 X87.500 Y96.000
+M5 ; Pen up
+G0 X93.500 Y96.000
+M3 ; Pen down
+G1 X93.500 Y96.000
+M5 ; Pen up
+G0 X93.500 Y96.500
+M3 ; Pen down
+G1 X93.500 Y96.500
+M5 ; Pen up
+G0 X87.500 Y96.500
+M3 ; Pen down
+G1 X87.000 Y96.500
+M5 ; Pen up
+G0 X81.000 Y96.500
+M3 ; Pen down
+G1 X81.000 Y96.500
+M5 ; Pen up
+G0 X74.500 Y96.500
+M3 ; Pen down
+G1 X74.500 Y96.500
+M5 ; Pen up
+G0 X68.500 Y96.500
+M3 ; Pen down
+G1 X68.500 Y96.500
+M5 ; Pen up
+G0 X62.500 Y96.500
+M3 ; Pen down
+G1 X62.000 Y96.500
+M5 ; Pen up
+G0 X56.000 Y96.500
+M3 ; Pen down
+G1 X56.000 Y96.500
+M5 ; Pen up
+G0 X43.500 Y96.500
+M3 ; Pen down
+G1 X43.500 Y96.500
+M5 ; Pen up
+G0 X37.500 Y96.500
+M3 ; Pen down
+G1 X37.000 Y96.500
+M5 ; Pen up
+G0 X31.000 Y96.500
+M3 ; Pen down
+G1 X31.000 Y96.500
+M5 ; Pen up
+G0 X25.000 Y96.500
+M3 ; Pen down
+G1 X25.000 Y96.500
+M5 ; Pen up
+G0 X18.500 Y96.500
+M3 ; Pen down
+G1 X18.500 Y96.500
+M5 ; Pen up
+G0 X12.500 Y96.500
+M3 ; Pen down
+G1 X12.000 Y96.500
+M5 ; Pen up
+G0 X6.000 Y96.500
+M3 ; Pen down
+G1 X6.000 Y96.500
+M5 ; Pen up
+G0 X0.000 Y96.500
+M3 ; Pen down
+G1 X0.000 Y96.500
+M5 ; Pen up
+G0 X0.000 Y97.000
+M3 ; Pen down
+G1 X0.000 Y97.000
+M5 ; Pen up
+G0 X6.000 Y97.000
+M3 ; Pen down
+G1 X6.000 Y97.000
+M5 ; Pen up
+G0 X12.000 Y97.000
+M3 ; Pen down
+G1 X12.500 Y97.000
+M5 ; Pen up
+G0 X18.500 Y97.000
+M3 ; Pen down
+G1 X18.500 Y97.000
+M5 ; Pen up
+G0 X25.000 Y97.000
+M3 ; Pen down
+G1 X25.000 Y97.000
+M5 ; Pen up
+G0 X31.000 Y97.000
+M3 ; Pen down
+G1 X31.000 Y97.000
+M5 ; Pen up
+G0 X37.000 Y97.000
+M3 ; Pen down
+G1 X37.500 Y97.000
+M5 ; Pen up
+G0 X43.500 Y97.000
+M3 ; Pen down
+G1 X43.500 Y97.000
+M5 ; Pen up
+G0 X56.000 Y97.000
+M3 ; Pen down
+G1 X56.000 Y97.000
+M5 ; Pen up
+G0 X62.000 Y97.000
+M3 ; Pen down
+G1 X62.500 Y97.000
+M5 ; Pen up
+G0 X68.500 Y97.000
+M3 ; Pen down
+G1 X68.500 Y97.000
+M5 ; Pen up
+G0 X74.500 Y97.000
+M3 ; Pen down
+G1 X74.500 Y97.000
+M5 ; Pen up
+G0 X81.000 Y97.000
+M3 ; Pen down
+G1 X81.000 Y97.000
+M5 ; Pen up
+G0 X87.000 Y97.000
+M3 ; Pen down
+G1 X87.500 Y97.000
+M5 ; Pen up
+G0 X93.500 Y97.000
+M3 ; Pen down
+G1 X93.500 Y97.000
+M5 ; Pen up
+G0 X93.500 Y97.500
+M3 ; Pen down
+G1 X93.500 Y97.500
+M5 ; Pen up
+G0 X87.500 Y97.500
+M3 ; Pen down
+G1 X87.000 Y97.500
+M5 ; Pen up
+G0 X81.000 Y97.500
+M3 ; Pen down
+G1 X81.000 Y97.500
+M5 ; Pen up
+G0 X74.500 Y97.500
+M3 ; Pen down
+G1 X74.500 Y97.500
+M5 ; Pen up
+G0 X68.500 Y97.500
+M3 ; Pen down
+G1 X68.500 Y97.500
+M5 ; Pen up
+G0 X62.500 Y97.500
+M3 ; Pen down
+G1 X62.000 Y97.500
+M5 ; Pen up
+G0 X56.000 Y97.500
+M3 ; Pen down
+G1 X56.000 Y97.500
+M5 ; Pen up
+G0 X43.500 Y97.500
+M3 ; Pen down
+G1 X43.500 Y97.500
+M5 ; Pen up
+G0 X37.500 Y97.500
+M3 ; Pen down
+G1 X37.000 Y97.500
+M5 ; Pen up
+G0 X31.000 Y97.500
+M3 ; Pen down
+G1 X31.000 Y97.500
+M5 ; Pen up
+G0 X25.000 Y97.500
+M3 ; Pen down
+G1 X25.000 Y97.500
+M5 ; Pen up
+G0 X18.500 Y97.500
+M3 ; Pen down
+G1 X18.500 Y97.500
+M5 ; Pen up
+G0 X12.500 Y97.500
+M3 ; Pen down
+G1 X12.000 Y97.500
+M5 ; Pen up
+G0 X6.000 Y97.500
+M3 ; Pen down
+G1 X6.000 Y97.500
+M5 ; Pen up
+G0 X0.000 Y97.500
+M3 ; Pen down
+G1 X0.000 Y97.500
+M5 ; Pen up
+G0 X0.000 Y98.000
+M3 ; Pen down
+G1 X0.000 Y98.000
+M5 ; Pen up
+G0 X6.000 Y98.000
+M3 ; Pen down
+G1 X6.000 Y98.000
+M5 ; Pen up
+G0 X12.000 Y98.000
+M3 ; Pen down
+G1 X12.500 Y98.000
+M5 ; Pen up
+G0 X18.500 Y98.000
+M3 ; Pen down
+G1 X18.500 Y98.000
+M5 ; Pen up
+G0 X25.000 Y98.000
+M3 ; Pen down
+G1 X25.000 Y98.000
+M5 ; Pen up
+G0 X31.000 Y98.000
+M3 ; Pen down
+G1 X31.000 Y98.000
+M5 ; Pen up
+G0 X37.000 Y98.000
+M3 ; Pen down
+G1 X37.500 Y98.000
+M5 ; Pen up
+G0 X43.500 Y98.000
+M3 ; Pen down
+G1 X43.500 Y98.000
+M5 ; Pen up
+G0 X56.000 Y98.000
+M3 ; Pen down
+G1 X56.000 Y98.000
+M5 ; Pen up
+G0 X62.000 Y98.000
+M3 ; Pen down
+G1 X62.500 Y98.000
+M5 ; Pen up
+G0 X68.500 Y98.000
+M3 ; Pen down
+G1 X68.500 Y98.000
+M5 ; Pen up
+G0 X74.500 Y98.000
+M3 ; Pen down
+G1 X74.500 Y98.000
+M5 ; Pen up
+G0 X81.000 Y98.000
+M3 ; Pen down
+G1 X81.000 Y98.000
+M5 ; Pen up
+G0 X87.000 Y98.000
+M3 ; Pen down
+G1 X87.500 Y98.000
+M5 ; Pen up
+G0 X93.500 Y98.000
+M3 ; Pen down
+G1 X93.500 Y98.000
+M5 ; Pen up
+G0 X93.500 Y98.500
+M3 ; Pen down
+G1 X93.500 Y98.500
+M5 ; Pen up
+G0 X87.500 Y98.500
+M3 ; Pen down
+G1 X87.000 Y98.500
+M5 ; Pen up
+G0 X81.000 Y98.500
+M3 ; Pen down
+G1 X81.000 Y98.500
+M5 ; Pen up
+G0 X74.500 Y98.500
+M3 ; Pen down
+G1 X74.500 Y98.500
+M5 ; Pen up
+G0 X68.500 Y98.500
+M3 ; Pen down
+G1 X68.500 Y98.500
+M5 ; Pen up
+G0 X62.500 Y98.500
+M3 ; Pen down
+G1 X62.000 Y98.500
+M5 ; Pen up
+G0 X56.000 Y98.500
+M3 ; Pen down
+G1 X56.000 Y98.500
+M5 ; Pen up
+G0 X43.500 Y98.500
+M3 ; Pen down
+G1 X43.500 Y98.500
+M5 ; Pen up
+G0 X37.500 Y98.500
+M3 ; Pen down
+G1 X37.000 Y98.500
+M5 ; Pen up
+G0 X31.000 Y98.500
+M3 ; Pen down
+G1 X31.000 Y98.500
+M5 ; Pen up
+G0 X25.000 Y98.500
+M3 ; Pen down
+G1 X25.000 Y98.500
+M5 ; Pen up
+G0 X18.500 Y98.500
+M3 ; Pen down
+G1 X18.500 Y98.500
+M5 ; Pen up
+G0 X12.500 Y98.500
+M3 ; Pen down
+G1 X12.000 Y98.500
+M5 ; Pen up
+G0 X6.000 Y98.500
+M3 ; Pen down
+G1 X6.000 Y98.500
+M5 ; Pen up
+G0 X0.000 Y98.500
+M3 ; Pen down
+G1 X0.000 Y98.500
+M5 ; Pen up
+G0 X0.000 Y99.000
+M3 ; Pen down
+G1 X0.000 Y99.000
+M5 ; Pen up
+G0 X6.000 Y99.000
+M3 ; Pen down
+G1 X6.000 Y99.000
+M5 ; Pen up
+G0 X12.000 Y99.000
+M3 ; Pen down
+G1 X12.500 Y99.000
+M5 ; Pen up
+G0 X18.500 Y99.000
+M3 ; Pen down
+G1 X18.500 Y99.000
+M5 ; Pen up
+G0 X25.000 Y99.000
+M3 ; Pen down
+G1 X25.000 Y99.000
+M5 ; Pen up
+G0 X31.000 Y99.000
+M3 ; Pen down
+G1 X31.000 Y99.000
+M5 ; Pen up
+G0 X37.500 Y99.000
+M3 ; Pen down
+G1 X37.500 Y99.000
+M5 ; Pen up
+G0 X43.500 Y99.000
+M3 ; Pen down
+G1 X43.500 Y99.000
+M5 ; Pen up
+G0 X56.000 Y99.000
+M3 ; Pen down
+G1 X56.000 Y99.000
+M5 ; Pen up
+G0 X62.000 Y99.000
+M3 ; Pen down
+G1 X62.000 Y99.000
+M5 ; Pen up
+G0 X68.500 Y99.000
+M3 ; Pen down
+G1 X68.500 Y99.000
+M5 ; Pen up
+G0 X74.500 Y99.000
+M3 ; Pen down
+G1 X74.500 Y99.000
+M5 ; Pen up
+G0 X81.000 Y99.000
+M3 ; Pen down
+G1 X81.000 Y99.000
+M5 ; Pen up
+G0 X87.000 Y99.000
+M3 ; Pen down
+G1 X87.500 Y99.000
+M5 ; Pen up
+G0 X93.500 Y99.000
+M3 ; Pen down
+G1 X93.500 Y99.000
+M5 ; Pen up
+G0 X99.500 Y99.500
+M3 ; Pen down
+G1 X0.000 Y99.500
+M5 ; Pen up
+G0 X0 Y0 ; Return to home

@@ -2,14 +2,49 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useSerial } from '../contexts/SerialContext';
 import './Image2GCodePage.css';
 
+let savedState = {
+  imageSrc: null,
+  threshold: 128,
+  widthMm: 100,
+  resolution: 0.5,
+  gcodeLines: []
+};
+
 export default function Image2GCodePage() {
   const { connected, streaming, startStreaming } = useSerial();
-  const [imageSrc, setImageSrc] = useState(null);
-  const [threshold, setThreshold] = useState(128);
-  const [widthMm, setWidthMm] = useState(100);
-  const [resolution, setResolution] = useState(0.5); // mm per pixel
-  const [gcodeLines, setGcodeLines] = useState([]);
+  const [imageSrc, _setImageSrc] = useState(savedState.imageSrc);
+  const [threshold, _setThreshold] = useState(savedState.threshold);
+  const [widthMm, _setWidthMm] = useState(savedState.widthMm);
+  const [resolution, _setResolution] = useState(savedState.resolution);
+  const [gcodeLines, _setGcodeLines] = useState(savedState.gcodeLines);
   const canvasRef = useRef(null);
+
+  const setImageSrc = (v) => { _setImageSrc(v); savedState.imageSrc = v; };
+  const setThreshold = (v) => { _setThreshold(v); savedState.threshold = v; };
+  const setWidthMm = (v) => { _setWidthMm(v); savedState.widthMm = v; };
+  const setResolution = (v) => { _setResolution(v); savedState.resolution = v; };
+  const setGcodeLines = (v) => { _setGcodeLines(v); savedState.gcodeLines = v; };
+
+  const handleClearWork = () => {
+    setImageSrc(null);
+    setThreshold(128);
+    setWidthMm(100);
+    setResolution(0.5);
+    setGcodeLines([]);
+  };
+
+  const handleSaveGCode = () => {
+    if (gcodeLines.length === 0) return;
+    const blob = new Blob([gcodeLines.join('\n')], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'image_conversion.gcode';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
 
   useEffect(() => {
     if (imageSrc) {
@@ -172,11 +207,11 @@ export default function Image2GCodePage() {
           </div>
           
           <div className="form-group">
-            <label>Threshold (0-255): {threshold}</label>
+            <label>Threshold (0-255)</label>
             <input 
-              type="range" min="0" max="255" value={threshold} 
+              type="number" min="0" max="255" value={threshold} 
               onChange={(e) => setThreshold(Number(e.target.value))} 
-              className="slider"
+              className="number-input"
             />
             <span className="help-text">Pixels darker than this will be drawn.</span>
           </div>
@@ -207,6 +242,15 @@ export default function Image2GCodePage() {
             style={{ width: '100%', marginTop: '1rem' }}
           >
             Generate G-Code
+          </button>
+          
+          <button 
+            className="btn btn-secondary" 
+            onClick={handleClearWork} 
+            disabled={!imageSrc}
+            style={{ width: '100%', marginTop: '0.5rem' }}
+          >
+            Clear Work
           </button>
         </div>
 
@@ -241,14 +285,22 @@ export default function Image2GCodePage() {
               </div>
             )}
           </div>
-          <button 
-            className="btn btn-success" 
-            onClick={handleStart} 
-            disabled={!connected || gcodeLines.length === 0 || streaming}
-            style={{ marginTop: '1rem', width: '100%' }}
-          >
-            ▶ Run Job
-          </button>
+          <div className="button-group" style={{ marginTop: '1rem', flexDirection: 'column' }}>
+            <button 
+              className="btn btn-secondary full-width" 
+              onClick={handleSaveGCode} 
+              disabled={gcodeLines.length === 0}
+            >
+              Save G-Code
+            </button>
+            <button 
+              className="btn btn-success full-width" 
+              onClick={handleStart} 
+              disabled={!connected || gcodeLines.length === 0 || streaming}
+            >
+              ▶ Run Job
+            </button>
+          </div>
         </div>
       </div>
     </div>
