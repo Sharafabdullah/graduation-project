@@ -25,13 +25,16 @@
 // ---------------------------------------------------------------------------
 //  PIN MAP
 // ---------------------------------------------------------------------------
-#define X_STEP_PIN     2
-#define X_DIR_PIN      3
-#define X_ENABLE_PIN   4
+#define X1_STEP_PIN    2
+#define X1_DIR_PIN     3
 
-#define Y_STEP_PIN     5
-#define Y_DIR_PIN      6
-#define Y_ENABLE_PIN   7
+#define X2_STEP_PIN    4
+#define X2_DIR_PIN     5
+
+#define Y_STEP_PIN     6
+#define Y_DIR_PIN      7
+
+#define ENABLE_PIN     8 // Shared enable for all drivers
 
 #define Z_SERVO_PIN    9
 
@@ -70,7 +73,8 @@ String inputBuffer = "";
 // ---------------------------------------------------------------------------
 //  LIBRARY OBJECTS
 // ---------------------------------------------------------------------------
-AccelStepper stepperX(AccelStepper::DRIVER, X_STEP_PIN, X_DIR_PIN);
+AccelStepper stepperX1(AccelStepper::DRIVER, X1_STEP_PIN, X1_DIR_PIN);
+AccelStepper stepperX2(AccelStepper::DRIVER, X2_STEP_PIN, X2_DIR_PIN);
 AccelStepper stepperY(AccelStepper::DRIVER, Y_STEP_PIN, Y_DIR_PIN);
 MultiStepper steppers;
 GCodeParser GCode = GCodeParser();
@@ -94,10 +98,11 @@ void setup() {
   Serial.begin(115200);
   delay(100);
 
-  pinMode(X_ENABLE_PIN, OUTPUT);
-  pinMode(Y_ENABLE_PIN, OUTPUT);
-  digitalWrite(X_ENABLE_PIN, LOW);
-  digitalWrite(Y_ENABLE_PIN, LOW);
+  pinMode(ENABLE_PIN, OUTPUT);
+  digitalWrite(ENABLE_PIN, LOW);
+
+  // If your X2 motor spins the opposite direction due to how it's mounted, uncomment this:
+  // stepperX2.setPinsInverted(true, false, false);
 
   pinMode(X_MIN_PIN, INPUT_PULLUP);
   pinMode(Y_MIN_PIN, INPUT_PULLUP);
@@ -105,8 +110,9 @@ void setup() {
   penServo.attach(Z_SERVO_PIN);
   setServoAngle(servoHome);
 
-  steppers.addStepper(stepperX);
+  steppers.addStepper(stepperX1);
   steppers.addStepper(stepperY);
+  steppers.addStepper(stepperX2); // Add X2 third so it's at index 2
 
   recalcStepsPerMm();
 
@@ -155,10 +161,12 @@ void recalcStepsPerMm() {
   float maxSpsX = (maxFeedrate / 60.0) * stepsPerMmX;
   float maxSpsY = (maxFeedrate / 60.0) * stepsPerMmY;
 
-  stepperX.setMaxSpeed(maxSpsX);
+  stepperX1.setMaxSpeed(maxSpsX);
+  stepperX2.setMaxSpeed(maxSpsX);
   stepperY.setMaxSpeed(maxSpsY);
 
-  stepperX.setAcceleration(maxSpsX * 2.0);
+  stepperX1.setAcceleration(maxSpsX * 2.0);
+  stepperX2.setAcceleration(maxSpsX * 2.0);
   stepperY.setAcceleration(maxSpsY * 2.0);
 }
 
@@ -231,7 +239,7 @@ void processParsedGCode() {
           if (f > 0.0) currentFeedRate = constrain(f, minFeedrate, maxFeedrate);
         }
 
-        float targetX = (float)stepperX.currentPosition() / stepsPerMmX;
+        float targetX = (float)stepperX1.currentPosition() / stepsPerMmX;
         float targetY = (float)stepperY.currentPosition() / stepsPerMmY;
 
         if (isAbsoluteMode) {
@@ -280,12 +288,15 @@ void processParsedGCode() {
         bool hasY = GCode.HasWord('Y');
 
         if (!hasX && !hasY) {
-          stepperX.setCurrentPosition(0);
+          stepperX1.setCurrentPosition(0);
+          stepperX2.setCurrentPosition(0);
           stepperY.setCurrentPosition(0);
         } else {
           if (hasX) {
             float xVal = GCode.GetWordValue('X');
-            stepperX.setCurrentPosition(round(xVal * stepsPerMmX));
+            long xSteps = round(xVal * stepsPerMmX);
+            stepperX1.setCurrentPosition(xSteps);
+            stepperX2.setCurrentPosition(xSteps);
           }
           if (hasY) {
             float yVal = GCode.GetWordValue('Y');
@@ -419,7 +430,7 @@ void setServoAngle(int angle) {
 }
 
 void reportPosition() {
-  float cx = (float)stepperX.currentPosition() / stepsPerMmX;
+  float cx = (float)stepperX1.currentPosition() / stepsPerMmX;
   float cy = (float)stepperY.currentPosition() / stepsPerMmY;
 
   Serial.print("X:");
@@ -432,11 +443,12 @@ void reportPosition() {
 //  MOTION CONTROL
 // ---------------------------------------------------------------------------
 void moveLinear(float targetXMm, float targetYMm, float feedRate) {
-  long positions[2];
+  long positions[3];
   positions[0] = round(targetXMm * stepsPerMmX);
   positions[1] = round(targetYMm * stepsPerMmY);
+  positions[2] = positions[0]; // X2 exactly mirrors X1
 
-  long currentXSteps = stepperX.currentPosition();
+  long currentXSteps = stepperX1.currentPosition();
   long currentYSteps = stepperY.currentPosition();
 
   long dxSteps = abs(positions[0] - currentXSteps);
@@ -459,7 +471,8 @@ void moveLinear(float targetXMm, float targetYMm, float feedRate) {
   float requiredSpsX = (float)dxSteps / totalTimeSec;
   float requiredSpsY = (float)dySteps / totalTimeSec;
 
-  stepperX.setMaxSpeed(requiredSpsX > 0.0 ? requiredSpsX : 1.0);
+  stepperX1.setMaxSpeed(requiredSpsX > 0.0 ? requiredSpsX : 1.0);
+  stepperX2.setMaxSpeed(requiredSpsX > 0.0 ? requiredSpsX : 1.0);
   stepperY.setMaxSpeed(requiredSpsY > 0.0 ? requiredSpsY : 1.0);
 
   steppers.moveTo(positions);
@@ -467,7 +480,8 @@ void moveLinear(float targetXMm, float targetYMm, float feedRate) {
 
   float maxSpsX = (maxFeedrate / 60.0) * stepsPerMmX;
   float maxSpsY = (maxFeedrate / 60.0) * stepsPerMmY;
-  stepperX.setMaxSpeed(maxSpsX);
+  stepperX1.setMaxSpeed(maxSpsX);
+  stepperX2.setMaxSpeed(maxSpsX);
   stepperY.setMaxSpeed(maxSpsY);
 
   reportPosition();
@@ -484,28 +498,43 @@ void homeAxis() {
   if (homeSpsX < 1.0) homeSpsX = 1.0;
   if (homeSpsY < 1.0) homeSpsY = 1.0;
 
-  stepperX.setMaxSpeed(homeSpsX);
+  stepperX1.setMaxSpeed(homeSpsX);
+  stepperX2.setMaxSpeed(homeSpsX);
   stepperY.setMaxSpeed(homeSpsY);
 
   bool xHit = false;
   long maxSearchX = (long)(-500.0 * stepsPerMmX);
-  stepperX.setCurrentPosition(0);
-  stepperX.moveTo(maxSearchX);
+  stepperX1.setCurrentPosition(0);
+  stepperX2.setCurrentPosition(0);
+  stepperX1.moveTo(maxSearchX);
+  stepperX2.moveTo(maxSearchX);
 
-  while (stepperX.distanceToGo() != 0) {
+  while (stepperX1.distanceToGo() != 0 || stepperX2.distanceToGo() != 0) {
     if (digitalRead(X_MIN_PIN) == LOW) {
       xHit = true;
-      stepperX.stop();
-      stepperX.runToPosition();
+      stepperX1.stop();
+      stepperX2.stop();
+      // Wait for both to finish decelerating
+      while (stepperX1.distanceToGo() != 0 || stepperX2.distanceToGo() != 0) {
+        stepperX1.run();
+        stepperX2.run();
+      }
       break;
     }
-    stepperX.run();
+    stepperX1.run();
+    stepperX2.run();
   }
 
   if (xHit) {
-    stepperX.setCurrentPosition(0);
+    stepperX1.setCurrentPosition(0);
+    stepperX2.setCurrentPosition(0);
     long backoffStepsX = (long)(homingBackoffMm * stepsPerMmX);
-    stepperX.runToNewPosition(backoffStepsX);
+    stepperX1.moveTo(backoffStepsX);
+    stepperX2.moveTo(backoffStepsX);
+    while (stepperX1.distanceToGo() != 0 || stepperX2.distanceToGo() != 0) {
+      stepperX1.run();
+      stepperX2.run();
+    }
   }
 
   bool yHit = false;
@@ -529,7 +558,8 @@ void homeAxis() {
     stepperY.runToNewPosition(backoffStepsY);
   }
 
-  stepperX.setCurrentPosition(0);
+  stepperX1.setCurrentPosition(0);
+  stepperX2.setCurrentPosition(0);
   stepperY.setCurrentPosition(0);
   recalcStepsPerMm();
 

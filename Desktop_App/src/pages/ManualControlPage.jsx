@@ -118,7 +118,7 @@ export default function ManualControlPage() {
 
         {/* Pen Control */}
         <div className="card">
-          <h2 className="section-header">Head / Servo Control</h2>
+          <h2 className="section-header">Head Control</h2>
           <div className="button-group" style={{ flexDirection: 'column' }}>
             <button className="btn btn-primary full-width" onClick={penUp} disabled={!connected}>
               <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z" /></svg>
