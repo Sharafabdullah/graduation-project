@@ -476,7 +476,22 @@ void moveLinear(float targetXMm, float targetYMm, float feedRate) {
   stepperY.setMaxSpeed(requiredSpsY > 0.0 ? requiredSpsY : 1.0);
 
   steppers.moveTo(positions);
-  steppers.runSpeedToPosition();
+  while (steppers.run()) {
+    if (digitalRead(X_MIN_PIN) == HIGH) {
+      Serial.println("error:Hard limit X triggered! Motor stopped.");
+      stepperX1.stop();
+      stepperX2.stop();
+      stepperY.stop();
+      break;
+    }
+    if (digitalRead(Y_MIN_PIN) == HIGH) {
+      Serial.println("error:Hard limit Y triggered! Motor stopped.");
+      stepperX1.stop();
+      stepperX2.stop();
+      stepperY.stop();
+      break;
+    }
+  }
 
   float maxSpsX = (maxFeedrate / 60.0) * stepsPerMmX;
   float maxSpsY = (maxFeedrate / 60.0) * stepsPerMmY;
@@ -510,7 +525,7 @@ void homeAxis() {
   stepperX2.moveTo(maxSearchX);
 
   while (stepperX1.distanceToGo() != 0 || stepperX2.distanceToGo() != 0) {
-    if (digitalRead(X_MIN_PIN) == LOW) {
+    if (digitalRead(X_MIN_PIN) == HIGH) { // NC switch opens, pull-up makes it HIGH
       xHit = true;
       stepperX1.stop();
       stepperX2.stop();
@@ -543,7 +558,7 @@ void homeAxis() {
   stepperY.moveTo(maxSearchY);
 
   while (stepperY.distanceToGo() != 0) {
-    if (digitalRead(Y_MIN_PIN) == LOW) {
+    if (digitalRead(Y_MIN_PIN) == HIGH) { // NC switch opens, pull-up makes it HIGH
       yHit = true;
       stepperY.stop();
       stepperY.runToPosition();
