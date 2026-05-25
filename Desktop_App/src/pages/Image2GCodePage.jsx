@@ -126,52 +126,131 @@ export default function Image2GCodePage() {
       const imgData = ctx.getImageData(0, 0, widthPx, heightPx);
       const data = imgData.data;
       
+      // Helper to check if a pixel is dark
+      const isDark = (x, y) => {
+        if (x < 0 || x >= widthPx || y < 0 || y >= heightPx) return false;
+        const i = (y * widthPx + x) * 4;
+        const alpha = data[i+3];
+        if (alpha < 128) return false;
+        const brightness = (data[i] + data[i+1] + data[i+2]) / 3;
+        return brightness < threshold;
+      };
+
+      // Helper to determine if a dark pixel is an edge (boundary)
+      const isEdge = (x, y) => {
+        if (!isDark(x, y)) return false;
+        // 8-connected neighbor check for a more continuous edge
+        if (!isDark(x-1, y) || !isDark(x+1, y) || 
+            !isDark(x, y-1) || !isDark(x, y+1) ||
+            !isDark(x-1, y-1) || !isDark(x+1, y-1) ||
+            !isDark(x-1, y+1) || !isDark(x+1, y+1)) {
+          return true;
+        }
+        return false;
+      };
+
+      // Store unvisited edges
+      const unvisitedEdges = new Uint8Array(widthPx * heightPx);
+      for (let y = 0; y < heightPx; y++) {
+        for (let x = 0; x < widthPx; x++) {
+          if (isEdge(x, y)) {
+            unvisitedEdges[y * widthPx + x] = 1;
+          }
+        }
+      }
+
       const newGcode = [];
-      newGcode.push('; Image to G-Code Generated');
+      newGcode.push('; Image to G-Code Generated (Vector/Contour Plotting)');
       newGcode.push('G21 ; Set units to millimeters');
       newGcode.push('G90 ; Absolute positioning');
       newGcode.push('F1000 ; Set default feed rate');
       newGcode.push('M5 ; Pen up');
-      
+
+      // 8 directions for neighbor search
+      const dirs = [
+        [1, 0], [1, 1], [0, 1], [-1, 1],
+        [-1, 0], [-1, -1], [0, -1], [1, -1]
+      ];
+
       for (let y = 0; y < heightPx; y++) {
-        let drawingSegment = false;
-        const reverse = y % 2 !== 0; 
-        const physicalY = (y * resolution).toFixed(3);
-        
-        for (let xInt = 0; xInt < widthPx; xInt++) {
-          const x = reverse ? widthPx - 1 - xInt : xInt;
-          const i = (y * widthPx + x) * 4;
-          
-          const alpha = data[i+3];
-          let brightness = 255;
-          if (alpha > 128) {
-            brightness = (data[i] + data[i+1] + data[i+2]) / 3;
-          }
-          const isDark = brightness < threshold;
-          
-          const physicalX = (x * resolution).toFixed(3);
-          
-          if (isDark) {
-            if (!drawingSegment) {
-              newGcode.push(`G0 X${physicalX} Y${physicalY}`);
-              newGcode.push('M3 ; Pen down');
-              drawingSegment = true;
+        for (let x = 0; x < widthPx; x++) {
+          if (unvisitedEdges[y * widthPx + x]) {
+            let cx = x;
+            let cy = y;
+            const startX = cx;
+            const startY = cy;
+            
+            const path = [{ x: cx, y: cy }];
+            unvisitedEdges[cy * widthPx + cx] = 0;
+            
+            // Greedily trace the continuous contour
+            let tracing = true;
+            while (tracing) {
+              tracing = false;
+              for (const [dx, dy] of dirs) {
+                const nx = cx + dx;
+                const ny = cy + dy;
+                if (nx >= 0 && nx < widthPx && ny >= 0 && ny < heightPx) {
+                  if (unvisitedEdges[ny * widthPx + nx]) {
+                    cx = nx;
+                    cy = ny;
+                    unvisitedEdges[cy * widthPx + cx] = 0;
+                    path.push({ x: cx, y: cy });
+                    tracing = true;
+                    break;
+                  }
+                }
+              }
             }
-          } else {
-            if (drawingSegment) {
-              const prevX = reverse ? x + 1 : x - 1;
-              const prevPhysicalX = (prevX * resolution).toFixed(3);
-              newGcode.push(`G1 X${prevPhysicalX} Y${physicalY}`);
-              newGcode.push('M5 ; Pen up');
-              drawingSegment = false;
+            
+            // Close loop if it finishes adjacent to the start point
+            if (path.length > 2) {
+              let isClosed = false;
+              for (const [dx, dy] of dirs) {
+                if (cx + dx === startX && cy + dy === startY) {
+                  isClosed = true;
+                  break;
+                }
+              }
+              if (isClosed) {
+                path.push({ x: startX, y: startY });
+              }
             }
+            
+            // Simplify collinear points using cross product
+            const simplifiedPath = [path[0]];
+            for (let i = 1; i < path.length - 1; i++) {
+              const prev = simplifiedPath[simplifiedPath.length - 1];
+              const curr = path[i];
+              const next = path[i+1];
+              
+              const dx1 = curr.x - prev.x;
+              const dy1 = curr.y - prev.y;
+              const dx2 = next.x - curr.x;
+              const dy2 = next.y - curr.y;
+              
+              // If cross product is not 0, they are not collinear
+              if (dx1 * dy2 !== dy1 * dx2) {
+                simplifiedPath.push(curr);
+              }
+            }
+            if (path.length > 1) {
+              simplifiedPath.push(path[path.length - 1]);
+            }
+            
+            // Emit GCode for this path
+            const px = (simplifiedPath[0].x * resolution).toFixed(3);
+            const py = (simplifiedPath[0].y * resolution).toFixed(3);
+            newGcode.push(`G0 X${px} Y${py}`);
+            newGcode.push('M3 ; Pen down');
+            
+            for (let i = 1; i < simplifiedPath.length; i++) {
+              const npx = (simplifiedPath[i].x * resolution).toFixed(3);
+              const npy = (simplifiedPath[i].y * resolution).toFixed(3);
+              newGcode.push(`G1 X${npx} Y${npy}`);
+            }
+            newGcode.push('M5 ; Pen up');
           }
-        }
-        if (drawingSegment) {
-          const lastX = reverse ? 0 : widthPx - 1;
-          const physicalX = (lastX * resolution).toFixed(3);
-          newGcode.push(`G1 X${physicalX} Y${physicalY}`);
-          newGcode.push('M5 ; Pen up');
         }
       }
       
