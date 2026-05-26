@@ -101,11 +101,12 @@ void setup() {
   pinMode(ENABLE_PIN, OUTPUT);
   digitalWrite(ENABLE_PIN, LOW);
 
-  // If your X2 motor spins the opposite direction due to how it's mounted, uncomment this:
-  // stepperX2.setPinsInverted(true, false, false);
-
   pinMode(X_MIN_PIN, INPUT_PULLUP);
   pinMode(Y_MIN_PIN, INPUT_PULLUP);
+
+  // Invert motor directions because they were moving backwards physically
+  stepperX1.setPinsInverted(true, false, false);
+  stepperX2.setPinsInverted(true, false, false);
 
   penServo.attach(Z_SERVO_PIN);
   setServoAngle(servoHome);
