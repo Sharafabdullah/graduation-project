@@ -303,11 +303,18 @@ export function SerialProvider({ children }) {
     setPosition({ x, y });
   }, [sendCommand]);
 
-  const goHome = useCallback(() => {
+  const findLimits = useCallback(() => {
     sendCommand('G28');
     setPosition({ x: 0, y: 0 });
     setMachineState('Homing');
-    logConsole('Homing initiated...', 'info');
+    logConsole('Finding physical limit switches...', 'info');
+  }, [sendCommand, logConsole]);
+
+  const goToOrigin = useCallback(() => {
+    sendCommand('G90');
+    sendCommand('G0 X0 Y0 F1000');
+    setPosition({ x: 0, y: 0 });
+    logConsole('Returning to work origin (X0 Y0)...', 'info');
   }, [sendCommand, logConsole]);
 
   const setZero = useCallback(() => {
@@ -358,7 +365,8 @@ export function SerialProvider({ children }) {
     sendCommand,
     jogWithIncrement,
     goToPosition,
-    goHome,
+    goToOrigin,
+    findLimits,
     setZero,
     penUp,
     penDown,

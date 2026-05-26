@@ -4,7 +4,7 @@ import './ManualControlPage.css';
 
 export default function ManualControlPage() {
   const {
-    connected, position, feedRate, jogWithIncrement, goToPosition, goHome, setZero,
+    connected, position, feedRate, jogWithIncrement, goToPosition, goToOrigin, findLimits, setZero,
     penUp, penDown, setServoAngle,
   } = useSerial();
 
@@ -54,7 +54,7 @@ export default function ManualControlPage() {
               <button className="btn btn-primary jog-btn" onClick={() => handleJog('X', -1)} disabled={!connected} title="X-">
                 <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" /></svg>
               </button>
-              <button className="btn btn-secondary jog-btn jog-center" onClick={goHome} disabled={!connected} title="Home">
+              <button className="btn btn-secondary jog-btn jog-center" onClick={goToOrigin} disabled={!connected} title="Go to Origin">
                 <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8M3.05,13H1V11H3.05C3.5,6.83 6.83,3.5 11,3.05V1H13V3.05C17.17,3.5 20.5,6.83 20.95,11H23V13H20.95C20.5,17.17 17.17,20.5 13,20.95V23H11V20.95C6.83,20.5 3.5,17.17 3.05,13M12,5A7,7 0 0,0 5,12A7,7 0 0,0 12,19A7,7 0 0,0 19,12A7,7 0 0,0 12,5Z" /></svg>
               </button>
               <button className="btn btn-primary jog-btn" onClick={() => handleJog('X', 1)} disabled={!connected} title="X+">
@@ -107,13 +107,12 @@ export default function ManualControlPage() {
               <input type="number" value={goY} step="0.01" onChange={e => setGoY(parseFloat(e.target.value) || 0)} />
             </div>
           </div>
-          <div className="button-group">
-            <button className="btn btn-primary full-width" onClick={handleGoTo} disabled={!connected}>Go</button>
-            <button className="btn btn-secondary full-width" onClick={goHome} disabled={!connected}>Home</button>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+            <button className="btn btn-primary full-width" onClick={handleGoTo} disabled={!connected}>Go To Custom X/Y</button>
+            <button className="btn btn-secondary full-width" onClick={goToOrigin} disabled={!connected}>Go to Origin</button>
+            <button className="btn btn-ghost full-width" onClick={findLimits} disabled={!connected}>Find Limits (G28)</button>
+            <button className="btn btn-ghost full-width" onClick={setZero} disabled={!connected}>Set Origin (G92)</button>
           </div>
-          <button className="btn btn-ghost full-width" onClick={setZero} disabled={!connected}>
-            Set Current as Origin (G92)
-          </button>
         </div>
 
         {/* Pen Control */}

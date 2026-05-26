@@ -475,16 +475,19 @@ void moveLinear(float targetXMm, float targetYMm, float feedRate) {
   stepperX2.setMaxSpeed(requiredSpsX > 0.0 ? requiredSpsX : 1.0);
   stepperY.setMaxSpeed(requiredSpsY > 0.0 ? requiredSpsY : 1.0);
 
+  bool xMovingMin = positions[0] < currentXSteps;
+  bool yMovingMin = positions[1] < currentYSteps;
+
   steppers.moveTo(positions);
   while (steppers.run()) {
-    if (digitalRead(X_MIN_PIN) == HIGH) {
+    if (xMovingMin && digitalRead(X_MIN_PIN) == HIGH) {
       Serial.println("error:Hard limit X triggered! Motor stopped.");
       stepperX1.stop();
       stepperX2.stop();
       stepperY.stop();
       break;
     }
-    if (digitalRead(Y_MIN_PIN) == HIGH) {
+    if (yMovingMin && digitalRead(Y_MIN_PIN) == HIGH) {
       Serial.println("error:Hard limit Y triggered! Motor stopped.");
       stepperX1.stop();
       stepperX2.stop();
