@@ -186,7 +186,16 @@ void processLine(String rawCmd) {
     return;
   }
 
-  if (cmd == "!" || cmd == "~" || cmd == "\x18") {
+  if (cmd == "\x18") {
+    stepperX1.stop();
+    stepperX2.stop();
+    stepperY.stop();
+    penServo.write(servoPenUp);
+    currentServoAngle = servoPenUp;
+    Serial.println("error:Emergency Stop triggered! Motor stopped.");
+    return;
+  }
+  if (cmd == "!" || cmd == "~") {
     Serial.println("ok");
     return;
   }
@@ -443,6 +452,25 @@ void reportPosition() {
 // ---------------------------------------------------------------------------
 //  MOTION CONTROL
 // ---------------------------------------------------------------------------
+
+bool checkEStop() {
+  if (Serial.available() > 0) {
+    char c = Serial.peek();
+    if (c == '\x18') {
+      Serial.read(); // Consume the \x18
+      stepperX1.stop();
+      stepperX2.stop();
+      stepperY.stop();
+      penServo.write(servoPenUp);
+      currentServoAngle = servoPenUp;
+      Serial.println("error:Emergency Stop triggered! Motor stopped.");
+      inputBuffer = "";
+      return true;
+    }
+  }
+  return false;
+}
+
 void moveLinear(float targetXMm, float targetYMm, float feedRate) {
   long positions[3];
   positions[0] = round(targetXMm * stepsPerMmX);
@@ -481,6 +509,8 @@ void moveLinear(float targetXMm, float targetYMm, float feedRate) {
 
   steppers.moveTo(positions);
   while (steppers.run()) {
+    if (checkEStop()) break;
+
     if (xMovingMin && digitalRead(X_MIN_PIN) == HIGH) {
       Serial.println("error:Hard limit X triggered! Motor stopped.");
       stepperX1.stop();
@@ -529,12 +559,14 @@ void homeAxis() {
   stepperX2.moveTo(maxSearchX);
 
   while (stepperX1.distanceToGo() != 0 || stepperX2.distanceToGo() != 0) {
+    if (checkEStop()) return;
     if (digitalRead(X_MIN_PIN) == HIGH) { // NC switch opens, pull-up makes it HIGH
       xHit = true;
       stepperX1.stop();
       stepperX2.stop();
       // Wait for both to finish decelerating
       while (stepperX1.distanceToGo() != 0 || stepperX2.distanceToGo() != 0) {
+        if (checkEStop()) return;
         stepperX1.run();
         stepperX2.run();
       }
@@ -551,6 +583,7 @@ void homeAxis() {
     stepperX1.moveTo(backoffStepsX);
     stepperX2.moveTo(backoffStepsX);
     while (stepperX1.distanceToGo() != 0 || stepperX2.distanceToGo() != 0) {
+      if (checkEStop()) return;
       stepperX1.run();
       stepperX2.run();
     }
@@ -562,10 +595,14 @@ void homeAxis() {
   stepperY.moveTo(maxSearchY);
 
   while (stepperY.distanceToGo() != 0) {
+    if (checkEStop()) return;
     if (digitalRead(Y_MIN_PIN) == HIGH) { // NC switch opens, pull-up makes it HIGH
       yHit = true;
       stepperY.stop();
-      stepperY.runToPosition();
+      while (stepperY.distanceToGo() != 0) {
+        if (checkEStop()) return;
+        stepperY.run();
+      }
       break;
     }
     stepperY.run();
@@ -574,7 +611,11 @@ void homeAxis() {
   if (yHit) {
     stepperY.setCurrentPosition(0);
     long backoffStepsY = (long)(homingBackoffMm * stepsPerMmY);
-    stepperY.runToNewPosition(backoffStepsY);
+    stepperY.moveTo(backoffStepsY);
+    while (stepperY.distanceToGo() != 0) {
+      if (checkEStop()) return;
+      stepperY.run();
+    }
   }
 
   stepperX1.setCurrentPosition(0);
