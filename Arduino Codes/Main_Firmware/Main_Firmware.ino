@@ -25,21 +25,20 @@
 // ---------------------------------------------------------------------------
 //  PIN MAP
 // ---------------------------------------------------------------------------
-#define X1_STEP_PIN    2
-#define X1_DIR_PIN     3
+#define Y1_STEP_PIN    6
+#define Y1_DIR_PIN     7
 
-#define X2_STEP_PIN    4
-#define X2_DIR_PIN     5
+#define Y2_STEP_PIN    4
+#define Y2_DIR_PIN     5
 
-#define Y_STEP_PIN     6
-#define Y_DIR_PIN      7
+#define X_STEP_PIN     2
+#define X_DIR_PIN      3
 
 #define ENABLE_PIN     8 // Shared enable for all drivers
 
 #define Z_SERVO_PIN    9
-
-#define X_MIN_PIN      18
-#define Y_MIN_PIN      19
+#define X_MIN_PIN      19
+#define Y_MIN_PIN      18
 
 // ---------------------------------------------------------------------------
 //  MACHINE CONFIGURATION (runtime mutable via $ commands)
@@ -59,7 +58,7 @@ float homingBackoffMm = 2.0;
 
 int servoPenUp = 75;
 int servoPenDown = 30;
-int servoHome = 90;
+int servoHome = 75;
 int servoSettleMs = 150;
 
 // ---------------------------------------------------------------------------
@@ -73,9 +72,9 @@ String inputBuffer = "";
 // ---------------------------------------------------------------------------
 //  LIBRARY OBJECTS
 // ---------------------------------------------------------------------------
-AccelStepper stepperX1(AccelStepper::DRIVER, X1_STEP_PIN, X1_DIR_PIN);
-AccelStepper stepperX2(AccelStepper::DRIVER, X2_STEP_PIN, X2_DIR_PIN);
-AccelStepper stepperY(AccelStepper::DRIVER, Y_STEP_PIN, Y_DIR_PIN);
+AccelStepper stepperY1(AccelStepper::DRIVER, Y1_STEP_PIN, Y1_DIR_PIN);
+AccelStepper stepperY2(AccelStepper::DRIVER, Y2_STEP_PIN, Y2_DIR_PIN);
+AccelStepper stepperX(AccelStepper::DRIVER, X_STEP_PIN, X_DIR_PIN);
 MultiStepper steppers;
 GCodeParser GCode = GCodeParser();
 
@@ -105,15 +104,16 @@ void setup() {
   pinMode(Y_MIN_PIN, INPUT_PULLUP);
 
   // Invert motor directions because they were moving backwards physically
-  stepperX1.setPinsInverted(true, false, false);
-  stepperX2.setPinsInverted(true, false, false);
+  stepperY1.setPinsInverted(false, false, false);
+  stepperY2.setPinsInverted(false, false, false);
+  stepperX.setPinsInverted(true, false, false);
 
   penServo.attach(Z_SERVO_PIN);
   setServoAngle(servoHome);
 
-  steppers.addStepper(stepperX1);
-  steppers.addStepper(stepperY);
-  steppers.addStepper(stepperX2); // Add X2 third so it's at index 2
+  steppers.addStepper(stepperY1);
+  steppers.addStepper(stepperX);
+  steppers.addStepper(stepperY2); // Add X2 third so it's at index 2
 
   recalcStepsPerMm();
 
@@ -162,13 +162,13 @@ void recalcStepsPerMm() {
   float maxSpsX = (maxFeedrate / 60.0) * stepsPerMmX;
   float maxSpsY = (maxFeedrate / 60.0) * stepsPerMmY;
 
-  stepperX1.setMaxSpeed(maxSpsX);
-  stepperX2.setMaxSpeed(maxSpsX);
-  stepperY.setMaxSpeed(maxSpsY);
+  stepperY1.setMaxSpeed(maxSpsY);
+  stepperY2.setMaxSpeed(maxSpsY);
+  stepperX.setMaxSpeed(maxSpsX);
 
-  stepperX1.setAcceleration(maxSpsX * 2.0);
-  stepperX2.setAcceleration(maxSpsX * 2.0);
-  stepperY.setAcceleration(maxSpsY * 2.0);
+  stepperY1.setAcceleration(maxSpsY * 2.0);
+  stepperY2.setAcceleration(maxSpsY * 2.0);
+  stepperX.setAcceleration(maxSpsX * 2.0);
 }
 
 // ---------------------------------------------------------------------------
@@ -187,9 +187,9 @@ void processLine(String rawCmd) {
   }
 
   if (cmd == "\x18") {
-    stepperX1.stop();
-    stepperX2.stop();
-    stepperY.stop();
+    stepperY1.stop();
+    stepperY2.stop();
+    stepperX.stop();
     penServo.write(servoPenUp);
     currentServoAngle = servoPenUp;
     Serial.println("error:Emergency Stop triggered! Motor stopped.");
@@ -207,7 +207,11 @@ void processLine(String rawCmd) {
     Serial.print(" F:");
     Serial.print(currentFeedRate, 0);
     Serial.print(" Servo:");
-    Serial.println(currentServoAngle);
+    Serial.print(currentServoAngle);
+    Serial.print(" LimX:");
+    Serial.print(digitalRead(X_MIN_PIN));
+    Serial.print(" LimY:");
+    Serial.println(digitalRead(Y_MIN_PIN));
     Serial.println("ok");
     return;
   }
@@ -249,8 +253,8 @@ void processParsedGCode() {
           if (f > 0.0) currentFeedRate = constrain(f, minFeedrate, maxFeedrate);
         }
 
-        float targetX = (float)stepperX1.currentPosition() / stepsPerMmX;
-        float targetY = (float)stepperY.currentPosition() / stepsPerMmY;
+        float targetX = (float)stepperX.currentPosition() / stepsPerMmX;
+        float targetY = (float)stepperY1.currentPosition() / stepsPerMmY;
 
         if (isAbsoluteMode) {
           if (GCode.HasWord('X')) targetX = GCode.GetWordValue('X');
@@ -298,19 +302,20 @@ void processParsedGCode() {
         bool hasY = GCode.HasWord('Y');
 
         if (!hasX && !hasY) {
-          stepperX1.setCurrentPosition(0);
-          stepperX2.setCurrentPosition(0);
-          stepperY.setCurrentPosition(0);
+          stepperY1.setCurrentPosition(0);
+          stepperY2.setCurrentPosition(0);
+          stepperX.setCurrentPosition(0);
         } else {
           if (hasX) {
             float xVal = GCode.GetWordValue('X');
             long xSteps = round(xVal * stepsPerMmX);
-            stepperX1.setCurrentPosition(xSteps);
-            stepperX2.setCurrentPosition(xSteps);
+            stepperX.setCurrentPosition(xSteps);
           }
           if (hasY) {
             float yVal = GCode.GetWordValue('Y');
-            stepperY.setCurrentPosition(round(yVal * stepsPerMmY));
+            long ySteps = round(yVal * stepsPerMmY);
+            stepperY1.setCurrentPosition(ySteps);
+            stepperY2.setCurrentPosition(ySteps);
           }
         }
 
@@ -440,8 +445,8 @@ void setServoAngle(int angle) {
 }
 
 void reportPosition() {
-  float cx = (float)stepperX1.currentPosition() / stepsPerMmX;
-  float cy = (float)stepperY.currentPosition() / stepsPerMmY;
+  float cx = (float)stepperX.currentPosition() / stepsPerMmX;
+  float cy = (float)stepperY1.currentPosition() / stepsPerMmY;
 
   Serial.print("X:");
   Serial.print(cx, 2);
@@ -458,9 +463,9 @@ bool checkEStop() {
     char c = Serial.peek();
     if (c == '\x18') {
       Serial.read(); // Consume the \x18
-      stepperX1.stop();
-      stepperX2.stop();
-      stepperY.stop();
+      stepperY1.stop();
+      stepperY2.stop();
+      stepperX.stop();
       penServo.write(servoPenUp);
       currentServoAngle = servoPenUp;
       Serial.println("error:Emergency Stop triggered! Motor stopped.");
@@ -473,15 +478,15 @@ bool checkEStop() {
 
 void moveLinear(float targetXMm, float targetYMm, float feedRate) {
   long positions[3];
-  positions[0] = round(targetXMm * stepsPerMmX);
-  positions[1] = round(targetYMm * stepsPerMmY);
-  positions[2] = positions[0]; // X2 exactly mirrors X1
+  positions[0] = round(targetYMm * stepsPerMmY); // Y1
+  positions[1] = round(targetXMm * stepsPerMmX); // X
+  positions[2] = positions[0]; // Y2 exactly mirrors Y1
 
-  long currentXSteps = stepperX1.currentPosition();
-  long currentYSteps = stepperY.currentPosition();
+  long currentXSteps = stepperX.currentPosition();
+  long currentYSteps = stepperY1.currentPosition();
 
-  long dxSteps = abs(positions[0] - currentXSteps);
-  long dySteps = abs(positions[1] - currentYSteps);
+  long dxSteps = abs(positions[1] - currentXSteps);
+  long dySteps = abs(positions[0] - currentYSteps);
 
   if (dxSteps == 0 && dySteps == 0) return;
 
@@ -500,38 +505,51 @@ void moveLinear(float targetXMm, float targetYMm, float feedRate) {
   float requiredSpsX = (float)dxSteps / totalTimeSec;
   float requiredSpsY = (float)dySteps / totalTimeSec;
 
-  stepperX1.setMaxSpeed(requiredSpsX > 0.0 ? requiredSpsX : 1.0);
-  stepperX2.setMaxSpeed(requiredSpsX > 0.0 ? requiredSpsX : 1.0);
-  stepperY.setMaxSpeed(requiredSpsY > 0.0 ? requiredSpsY : 1.0);
+  float vX = requiredSpsX > 1.0 ? requiredSpsX : 1.0;
+  float vY = requiredSpsY > 1.0 ? requiredSpsY : 1.0;
 
-  bool xMovingMin = positions[0] < currentXSteps;
-  bool yMovingMin = positions[1] < currentYSteps;
+  bool xMovingMin = positions[1] < currentXSteps;
+  bool yMovingMin = positions[0] < currentYSteps;
 
-  steppers.moveTo(positions);
-  while (steppers.run()) {
+  stepperX.moveTo(positions[1]);
+  stepperY1.moveTo(positions[0]);
+  stepperY2.moveTo(positions[2]);
+
+  while (stepperX.distanceToGo() != 0 || stepperY1.distanceToGo() != 0) {
     if (checkEStop()) break;
 
     if (xMovingMin && digitalRead(X_MIN_PIN) == HIGH) {
       Serial.println("error:Hard limit X triggered! Motor stopped.");
-      stepperX1.stop();
-      stepperX2.stop();
-      stepperY.stop();
+      stepperX.stop();
+      stepperY1.stop();
+      stepperY2.stop();
       break;
     }
-    if (yMovingMin && digitalRead(Y_MIN_PIN) == HIGH) {
+    if (!yMovingMin && digitalRead(Y_MIN_PIN) == HIGH) {
       Serial.println("error:Hard limit Y triggered! Motor stopped.");
-      stepperX1.stop();
-      stepperX2.stop();
-      stepperY.stop();
+      stepperX.stop();
+      stepperY1.stop();
+      stepperY2.stop();
       break;
+    }
+
+    if (stepperX.distanceToGo() != 0) {
+      stepperX.setSpeed(xMovingMin ? -vX : vX);
+      stepperX.runSpeed();
+    }
+    if (stepperY1.distanceToGo() != 0) {
+      stepperY1.setSpeed(yMovingMin ? -vY : vY);
+      stepperY2.setSpeed(yMovingMin ? -vY : vY);
+      stepperY1.runSpeed();
+      stepperY2.runSpeed();
     }
   }
 
   float maxSpsX = (maxFeedrate / 60.0) * stepsPerMmX;
   float maxSpsY = (maxFeedrate / 60.0) * stepsPerMmY;
-  stepperX1.setMaxSpeed(maxSpsX);
-  stepperX2.setMaxSpeed(maxSpsX);
-  stepperY.setMaxSpeed(maxSpsY);
+  stepperY1.setMaxSpeed(maxSpsY);
+  stepperY2.setMaxSpeed(maxSpsY);
+  stepperX.setMaxSpeed(maxSpsX);
 
   reportPosition();
 }
@@ -547,80 +565,79 @@ void homeAxis() {
   if (homeSpsX < 1.0) homeSpsX = 1.0;
   if (homeSpsY < 1.0) homeSpsY = 1.0;
 
-  stepperX1.setMaxSpeed(homeSpsX);
-  stepperX2.setMaxSpeed(homeSpsX);
-  stepperY.setMaxSpeed(homeSpsY);
+  stepperY1.setMaxSpeed(homeSpsY);
+  stepperY2.setMaxSpeed(homeSpsY);
+  stepperX.setMaxSpeed(homeSpsX);
 
   bool xHit = false;
   long maxSearchX = (long)(-500.0 * stepsPerMmX);
-  stepperX1.setCurrentPosition(0);
-  stepperX2.setCurrentPosition(0);
-  stepperX1.moveTo(maxSearchX);
-  stepperX2.moveTo(maxSearchX);
+  stepperX.setCurrentPosition(0);
+  stepperX.moveTo(maxSearchX);
 
-  while (stepperX1.distanceToGo() != 0 || stepperX2.distanceToGo() != 0) {
+  while (stepperX.distanceToGo() != 0) {
     if (checkEStop()) return;
-    if (digitalRead(X_MIN_PIN) == HIGH) { // NC switch opens, pull-up makes it HIGH
+    if (digitalRead(X_MIN_PIN) == HIGH) {
       xHit = true;
-      stepperX1.stop();
-      stepperX2.stop();
-      // Wait for both to finish decelerating
-      while (stepperX1.distanceToGo() != 0 || stepperX2.distanceToGo() != 0) {
+      stepperX.stop();
+      while (stepperX.distanceToGo() != 0) {
         if (checkEStop()) return;
-        stepperX1.run();
-        stepperX2.run();
+        stepperX.run();
       }
       break;
     }
-    stepperX1.run();
-    stepperX2.run();
+    stepperX.run();
   }
 
   if (xHit) {
-    stepperX1.setCurrentPosition(0);
-    stepperX2.setCurrentPosition(0);
+    stepperX.setCurrentPosition(0);
     long backoffStepsX = (long)(homingBackoffMm * stepsPerMmX);
-    stepperX1.moveTo(backoffStepsX);
-    stepperX2.moveTo(backoffStepsX);
-    while (stepperX1.distanceToGo() != 0 || stepperX2.distanceToGo() != 0) {
+    stepperX.moveTo(backoffStepsX);
+    while (stepperX.distanceToGo() != 0) {
       if (checkEStop()) return;
-      stepperX1.run();
-      stepperX2.run();
+      stepperX.run();
     }
   }
 
   bool yHit = false;
-  long maxSearchY = (long)(-500.0 * stepsPerMmY);
-  stepperY.setCurrentPosition(0);
-  stepperY.moveTo(maxSearchY);
+  long maxSearchY = (long)(500.0 * stepsPerMmY);
+  stepperY1.setCurrentPosition(0);
+  stepperY2.setCurrentPosition(0);
+  stepperY1.moveTo(maxSearchY);
+  stepperY2.moveTo(maxSearchY);
 
-  while (stepperY.distanceToGo() != 0) {
+  while (stepperY1.distanceToGo() != 0 || stepperY2.distanceToGo() != 0) {
     if (checkEStop()) return;
-    if (digitalRead(Y_MIN_PIN) == HIGH) { // NC switch opens, pull-up makes it HIGH
+    if (digitalRead(Y_MIN_PIN) == HIGH) {
       yHit = true;
-      stepperY.stop();
-      while (stepperY.distanceToGo() != 0) {
+      stepperY1.stop();
+      stepperY2.stop();
+      while (stepperY1.distanceToGo() != 0 || stepperY2.distanceToGo() != 0) {
         if (checkEStop()) return;
-        stepperY.run();
+        stepperY1.run();
+        stepperY2.run();
       }
       break;
     }
-    stepperY.run();
+    stepperY1.run();
+    stepperY2.run();
   }
 
   if (yHit) {
-    stepperY.setCurrentPosition(0);
-    long backoffStepsY = (long)(homingBackoffMm * stepsPerMmY);
-    stepperY.moveTo(backoffStepsY);
-    while (stepperY.distanceToGo() != 0) {
+    stepperY1.setCurrentPosition(0);
+    stepperY2.setCurrentPosition(0);
+    long backoffStepsY = (long)(-homingBackoffMm * stepsPerMmY);
+    stepperY1.moveTo(backoffStepsY);
+    stepperY2.moveTo(backoffStepsY);
+    while (stepperY1.distanceToGo() != 0 || stepperY2.distanceToGo() != 0) {
       if (checkEStop()) return;
-      stepperY.run();
+      stepperY1.run();
+      stepperY2.run();
     }
   }
 
-  stepperX1.setCurrentPosition(0);
-  stepperX2.setCurrentPosition(0);
-  stepperY.setCurrentPosition(0);
+  stepperY1.setCurrentPosition(0);
+  stepperY2.setCurrentPosition(0);
+  stepperX.setCurrentPosition(0);
   recalcStepsPerMm();
 
   Serial.print("Debug: Homing Complete (XHit:");

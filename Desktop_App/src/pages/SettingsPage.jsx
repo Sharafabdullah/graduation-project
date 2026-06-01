@@ -201,6 +201,27 @@ export default function SettingsPage() {
             <label htmlFor="limitY">Enable Y Limit Switch</label>
           </div>
         </div>
+
+        {/* Machine Dimensions */}
+        <div className="card">
+          <h2 className="section-header">Machine Boundaries (Soft Limits)</h2>
+          <div className="form-row">
+            <label>Max X Travel (mm)</label>
+            <input
+              type="number"
+              value={settings.bedMaxX}
+              onChange={e => updateSetting('bedMaxX', parseFloat(e.target.value) || 100)}
+            />
+          </div>
+          <div className="form-row">
+            <label>Max Y Travel (mm)</label>
+            <input
+              type="number"
+              value={settings.bedMaxY}
+              onChange={e => updateSetting('bedMaxY', parseFloat(e.target.value) || 100)}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Action Bar */}

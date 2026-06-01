@@ -271,8 +271,13 @@ export function SerialProvider({ children }) {
       }
     };
 
-    window.platform.onData(handleData);
-    window.platform.onStatus(handleStatus);
+    const removeDataListener = window.platform.onData(handleData);
+    const removeStatusListener = window.platform.onStatus(handleStatus);
+
+    return () => {
+      removeDataListener();
+      removeStatusListener();
+    };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Jog

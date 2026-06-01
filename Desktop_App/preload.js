@@ -18,9 +18,13 @@ contextBridge.exposeInMainWorld('platform', {
 
   // Receive data and status events from main process
   onData: (callback) => {
-    ipcRenderer.on('serial:data', (_event, data) => callback(data));
+    const listener = (_event, data) => callback(data);
+    ipcRenderer.on('serial:data', listener);
+    return () => ipcRenderer.removeListener('serial:data', listener);
   },
   onStatus: (callback) => {
-    ipcRenderer.on('serial:status', (_event, status) => callback(status));
+    const listener = (_event, status) => callback(status);
+    ipcRenderer.on('serial:status', listener);
+    return () => ipcRenderer.removeListener('serial:status', listener);
   },
 });

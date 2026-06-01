@@ -37,6 +37,10 @@ const DEFAULT_SETTINGS = {
 
   // Connection defaults
   defaultBaudRate: '115200',
+
+  // Machine Boundaries (Soft Limits)
+  bedMaxX: 200,
+  bedMaxY: 200,
 };
 
 export function SettingsProvider({ children }) {

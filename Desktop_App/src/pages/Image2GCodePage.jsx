@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSerial } from '../contexts/SerialContext';
+import { useSettings } from '../contexts/SettingsContext';
 import './Image2GCodePage.css';
 
 let savedState = {
@@ -12,6 +13,10 @@ let savedState = {
 
 export default function Image2GCodePage() {
   const { connected, streaming, startStreaming } = useSerial();
+  const { settings } = useSettings();
+  const maxBedX = settings?.bedMaxX || 200;
+  const maxBedY = settings?.bedMaxY || 200;
+
   const [imageSrc, _setImageSrc] = useState(savedState.imageSrc);
   const [threshold, _setThreshold] = useState(savedState.threshold);
   const [widthMm, _setWidthMm] = useState(savedState.widthMm);
@@ -298,10 +303,15 @@ export default function Image2GCodePage() {
           <div className="form-group">
             <label>Target Width (mm): {widthMm}</label>
             <input 
-              type="number" min="10" max="1000" value={widthMm} 
-              onChange={(e) => setWidthMm(Number(e.target.value))} 
+              type="number" min="10" max={maxBedX} value={widthMm} 
+              onChange={(e) => {
+                let val = Number(e.target.value);
+                if (val > maxBedX) val = maxBedX;
+                setWidthMm(val);
+              }} 
               className="number-input"
             />
+            {widthMm >= maxBedX && <span className="help-text" style={{color: 'orange'}}>Max X dimension reached.</span>}
           </div>
           
           <div className="form-group">
