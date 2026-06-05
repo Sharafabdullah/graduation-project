@@ -18,6 +18,7 @@
   --bg-hover: #2A2D2E;
   --bg-sidebar: #1B1B1B;
   --border: #3F3F3F;
+  --border-color: #3F3F3F;
   --border-focus: #007ACC;
   --accent: #007ACC;
   --accent-hover: #005F99;
@@ -31,6 +32,7 @@
   --success-glow: rgba(78, 201, 176, 0.3);
   --danger: #F14C4C;
   --danger-glow: rgba(241, 76, 76, 0.3);
+  --error-color: #F14C4C;
   --warning: #CCA700;
   --btn-secondary: #3F3F3F;
   --btn-secondary-hover: #505050;
