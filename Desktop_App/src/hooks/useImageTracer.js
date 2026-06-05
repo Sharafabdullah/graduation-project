@@ -7,11 +7,13 @@ export function useImageTracer() {
   const workerRef = useRef(null);
 
   useEffect(() => {
+    let isMounted = true;
     const worker = new Worker(
       new URL('../workers/tracerWorker.js', import.meta.url),
       { type: 'module' }
     );
     worker.onmessage = (e) => {
+      if (!isMounted) return;
       setLoading(false);
       if (e.data.error) {
         setError(e.data.error);
@@ -21,11 +23,13 @@ export function useImageTracer() {
       }
     };
     worker.onerror = (e) => {
+      if (!isMounted) return;
       setLoading(false);
       setError(e.message || 'Worker error');
     };
     workerRef.current = worker;
     return () => {
+      isMounted = false;
       worker.onmessage = null;
       worker.onerror = null;
       worker.terminate();

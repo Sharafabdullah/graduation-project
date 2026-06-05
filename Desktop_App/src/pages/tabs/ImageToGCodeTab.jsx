@@ -16,6 +16,14 @@ export default function ImageToGCodeTab({ onSendToDrawer }) {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    if (file.size > 10 * 1024 * 1024) {
+      // 10 MB limit — imagetracerjs can be slow on very large images
+      // Note: error state is in useImageTracer, so we'd need local error state
+      // Instead just alert the user
+      alert('Image file too large. Please use an image under 10 MB.');
+      e.target.value = '';
+      return;
+    }
     const reader = new FileReader();
     reader.onload = (ev) => {
       setPreviewSrc(ev.target.result);
@@ -51,28 +59,28 @@ export default function ImageToGCodeTab({ onSendToDrawer }) {
           <label>Colors: {options.numberofcolors}</label>
           <input type="range" min="2" max="16" value={options.numberofcolors}
             onChange={(e) => setOpt('numberofcolors', Number(e.target.value))}
-            className="slider" />
+            className="slider" disabled={loading} />
         </div>
 
         <div className="form-group">
           <label>Line Threshold (ltres): {options.ltres}</label>
           <input type="range" min="0.1" max="5" step="0.1" value={options.ltres}
             onChange={(e) => setOpt('ltres', Number(e.target.value))}
-            className="slider" />
+            className="slider" disabled={loading} />
         </div>
 
         <div className="form-group">
           <label>Spline Threshold (qtres): {options.qtres}</label>
           <input type="range" min="0.1" max="5" step="0.1" value={options.qtres}
             onChange={(e) => setOpt('qtres', Number(e.target.value))}
-            className="slider" />
+            className="slider" disabled={loading} />
         </div>
 
         <div className="form-group">
           <label>Min Path Length (pathomit): {options.pathomit}</label>
           <input type="range" min="1" max="32" value={options.pathomit}
             onChange={(e) => setOpt('pathomit', Number(e.target.value))}
-            className="slider" />
+            className="slider" disabled={loading} />
         </div>
 
         <button
