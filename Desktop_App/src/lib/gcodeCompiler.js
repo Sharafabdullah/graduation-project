@@ -1,3 +1,4 @@
+// Runs in Electron renderer process only — uses DOMParser (browser API).
 import { parseSVG, makeAbsolute } from 'svg-path-parser';
 
 function extractPaths(svgString) {
@@ -20,9 +21,11 @@ function pathToPoints(d) {
         points.push({ type: cmd.code, x: cmd.x, y: cmd.y });
         break;
       case 'C':
+        // Approximate bezier to endpoint — sufficient for pen plotter linear moves
         points.push({ type: 'L', x: cmd.x, y: cmd.y });
         break;
       case 'Q':
+        // Approximate quadratic to endpoint
         points.push({ type: 'L', x: cmd.x, y: cmd.y });
         break;
       case 'Z':
@@ -39,12 +42,14 @@ function pathToPoints(d) {
   return points;
 }
 
-export function compileSVGToGCode(svgString, settings) {
+export function compileSVGToGCode(svgString, settings = {}) {
   const {
     maxFeedrate = 1000,
     servoPenDown = 30,
     servoPenUp = 75,
   } = settings;
+
+  if (maxFeedrate <= 0) throw new RangeError('maxFeedrate must be positive');
 
   const paths = extractPaths(svgString);
   const lines = [];
