@@ -23,7 +23,8 @@ const VectorEditor = forwardRef(function VectorEditor(
       if (!fabricRef.current) return;
       fabric.loadSVGFromString(svgString, (objects, options) => {
         const group = fabric.util.groupSVGElements(objects, options);
-        group.scaleToWidth(Math.min(bedW * 0.9, group.width));
+        group.scaleToWidth(Math.min(bedW * 0.9, group.width ?? bedW));
+        group.set({ left: bedW / 2, top: bedH / 2, originX: 'center', originY: 'center' });
         fabricRef.current.add(group);
         fabricRef.current.renderAll();
       });
@@ -54,7 +55,8 @@ const VectorEditor = forwardRef(function VectorEditor(
     canvas.sendToBack(border);
 
     const handleKeyDown = (e) => {
-      if ((e.key === 'Delete' || e.key === 'Backspace') && document.activeElement.tagName !== 'INPUT') {
+      const activeObj = canvas.getActiveObject();
+      if ((e.key === 'Delete' || e.key === 'Backspace') && document.activeElement.tagName !== 'INPUT' && !activeObj?.isEditing) {
         const active = canvas.getActiveObjects();
         canvas.discardActiveObject();
         active.forEach((obj) => {
@@ -64,6 +66,9 @@ const VectorEditor = forwardRef(function VectorEditor(
       }
     };
     window.addEventListener('keydown', handleKeyDown);
+
+    // Apply the initial tool after canvas is ready
+    setTool(activeToolRef.current);
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
@@ -175,8 +180,10 @@ const VectorEditor = forwardRef(function VectorEditor(
   }, [lineWidth, bedW, bedH]);
 
   useEffect(() => {
-    setTool(activeTool);
-  }, [lineWidth]);
+    if (fabricRef.current) {
+      setTool(activeToolRef.current);
+    }
+  }, [lineWidth, setTool]);
 
   const deleteSelected = useCallback(() => {
     const canvas = fabricRef.current;
