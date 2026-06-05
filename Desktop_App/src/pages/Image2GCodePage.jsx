@@ -19,7 +19,7 @@ export default function Image2GCodePage() {
   const [injectedSVG, setInjectedSVG] = useState(null);
   const [tracedSVG, setTracedSVG] = useState(null);
   const [compiledGCode, setCompiledGCode] = useState([]);
-  const [compiling, setCompiling] = useState(false);
+  const [compileError, setCompileError] = useState('');
   const editorRef = useRef(null);
 
   const handleSendToDrawer = useCallback((svgString) => {
@@ -29,23 +29,27 @@ export default function Image2GCodePage() {
   }, []);
 
   const handleCompile = useCallback(() => {
-    setCompiling(true);
+    let svgSource = '';
+    if (activeTab === 'drawer' && editorRef.current) {
+      svgSource = editorRef.current.toSVG();
+    } else if (tracedSVG) {
+      svgSource = tracedSVG;
+    }
+    if (!svgSource) {
+      setCompileError('Nothing to compile. Draw something or trace an image first.');
+      return;
+    }
+    setCompileError('');
     try {
-      let svgSource = '';
-      if (activeTab === 'drawer' && editorRef.current) {
-        svgSource = editorRef.current.toSVG();
-      } else if (tracedSVG) {
-        svgSource = tracedSVG;
-      }
-      if (!svgSource) return;
       const lines = compileSVGToGCode(svgSource, {
         maxFeedrate: settings?.maxFeedrate || 1000,
         servoPenDown: settings?.servoPenDown || 30,
         servoPenUp: settings?.servoPenUp || 75,
       });
       setCompiledGCode(lines);
-    } finally {
-      setCompiling(false);
+      setCompileError('');
+    } catch (err) {
+      setCompileError(`Compile error: ${err.message}`);
     }
   }, [activeTab, tracedSVG, settings]);
 
@@ -86,10 +90,10 @@ export default function Image2GCodePage() {
 
         {/* ── Tab content ─────────────────────────────────── */}
         <div className="i2g-tab-body">
-          {activeTab === 'image' && (
+          <div style={{ display: activeTab === 'image' ? 'flex' : 'none', height: '100%' }}>
             <ImageToGCodeTab onSendToDrawer={handleSendToDrawer} />
-          )}
-          {activeTab === 'drawer' && (
+          </div>
+          <div style={{ display: activeTab === 'drawer' ? 'flex' : 'none', height: '100%' }}>
             <VectorDrawerTab
               editorRef={editorRef}
               bedW={bedW}
@@ -97,7 +101,7 @@ export default function Image2GCodePage() {
               lineWidth={lineWidth}
               injectedSVG={injectedSVG}
             />
-          )}
+          </div>
         </div>
 
         {/* ── Shared bottom bar ────────────────────────────── */}
@@ -116,11 +120,12 @@ export default function Image2GCodePage() {
             <button
               className="btn btn-primary"
               onClick={handleCompile}
-              disabled={!canCompile || compiling}
+              disabled={!canCompile}
             >
               <Zap size={14} style={{ marginRight: 6 }} />
-              {compiling ? 'Compiling…' : 'Compile Job'}
+              Compile Job
             </button>
+            {compileError && <span className="error-text" style={{ marginLeft: 8 }}>{compileError}</span>}
           </div>
 
           <div className="bottom-bar-preview">

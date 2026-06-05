@@ -79,12 +79,17 @@ const VectorEditor = forwardRef(function VectorEditor(
   // Inject SVG from tracer when prop changes
   useEffect(() => {
     if (!injectedSVG || !fabricRef.current) return;
+    // Clear existing user objects (keep bed boundary)
+    const canvas = fabricRef.current;
+    canvas.getObjects().forEach((obj) => {
+      if (!obj.excludeFromExport) canvas.remove(obj);
+    });
     fabric.loadSVGFromString(injectedSVG, (objects, options) => {
       const group = fabric.util.groupSVGElements(objects, options);
       group.scaleToWidth(Math.min(bedW * 0.9, group.width ?? bedW));
       group.set({ left: bedW / 2, top: bedH / 2, originX: 'center', originY: 'center' });
-      fabricRef.current.add(group);
-      fabricRef.current.renderAll();
+      canvas.add(group);
+      canvas.renderAll();
     });
   }, [injectedSVG, bedW, bedH]);
 

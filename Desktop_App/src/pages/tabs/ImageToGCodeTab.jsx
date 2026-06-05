@@ -11,6 +11,7 @@ export default function ImageToGCodeTab({ onSendToDrawer }) {
     pathomit: 8,
   });
   const [previewSrc, setPreviewSrc] = useState(null);
+  const [sizeError, setSizeError] = useState('');
   const fileInputRef = useRef(null);
 
   const handleFileChange = (e) => {
@@ -18,15 +19,14 @@ export default function ImageToGCodeTab({ onSendToDrawer }) {
     if (!file) return;
     if (file.size > 10 * 1024 * 1024) {
       // 10 MB limit — imagetracerjs can be slow on very large images
-      // Note: error state is in useImageTracer, so we'd need local error state
-      // Instead just alert the user
-      alert('Image file too large. Please use an image under 10 MB.');
+      setSizeError('Image file too large. Please use an image under 10 MB.');
       e.target.value = '';
       return;
     }
     const reader = new FileReader();
     reader.onload = (ev) => {
       setPreviewSrc(ev.target.result);
+      setSizeError('');
       trace(ev.target.result, options);
     };
     reader.readAsDataURL(file);
@@ -53,6 +53,7 @@ export default function ImageToGCodeTab({ onSendToDrawer }) {
             className="file-input"
             onChange={handleFileChange}
           />
+          {sizeError && <p className="error-text">{sizeError}</p>}
         </div>
 
         <div className="form-group">
