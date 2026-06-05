@@ -202,6 +202,25 @@ ipcMain.handle('file:save-log', async (_event, content) => {
   }
 });
 
+// ── IPC: Save G-Code file ─────────────────────────────────────────────────────
+ipcMain.handle('file:save-gcode', async (_event, lines) => {
+  const result = await dialog.showSaveDialog(mainWindow, {
+    title: 'Save G-Code',
+    defaultPath: `job-${Date.now()}.gcode`,
+    filters: [
+      { name: 'G-Code Files', extensions: ['gcode', 'nc'] },
+      { name: 'All Files', extensions: ['*'] },
+    ],
+  });
+  if (result.canceled) return { success: false };
+  try {
+    fs.writeFileSync(result.filePath, lines.join('\n'), 'utf-8');
+    return { success: true, path: result.filePath };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+});
+
 // ── IPC: Settings persistence ─────────────────────────────────────────────────
 ipcMain.handle('settings:load', async () => {
   try {

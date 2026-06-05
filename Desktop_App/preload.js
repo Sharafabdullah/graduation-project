@@ -11,6 +11,7 @@ contextBridge.exposeInMainWorld('platform', {
   // File operations
   loadGCodeFile: () => ipcRenderer.invoke('file:load-gcode'),
   saveLog: (content) => ipcRenderer.invoke('file:save-log', content),
+  saveGCode: (lines) => ipcRenderer.invoke('file:save-gcode', lines),
 
   // Settings persistence
   loadSettings: () => ipcRenderer.invoke('settings:load'),

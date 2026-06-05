@@ -13,11 +13,14 @@
   "author": "Graduation Project Team",
   "license": "MIT",
   "dependencies": {
+    "fabric": "^5.5.2",
+    "imagetracerjs": "^1.2.6",
     "lucide-react": "^1.17.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.0",
-    "serialport": "^12.0.0"
+    "serialport": "^12.0.0",
+    "svg-path-parser": "^1.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
