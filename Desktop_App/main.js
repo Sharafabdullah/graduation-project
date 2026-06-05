@@ -204,6 +204,7 @@ ipcMain.handle('file:save-log', async (_event, content) => {
 
 // ── IPC: Save G-Code file ─────────────────────────────────────────────────────
 ipcMain.handle('file:save-gcode', async (_event, lines) => {
+  if (!Array.isArray(lines)) return { success: false, error: 'lines must be an array' };
   const result = await dialog.showSaveDialog(mainWindow, {
     title: 'Save G-Code',
     defaultPath: `job-${Date.now()}.gcode`,
@@ -212,7 +213,7 @@ ipcMain.handle('file:save-gcode', async (_event, lines) => {
       { name: 'All Files', extensions: ['*'] },
     ],
   });
-  if (result.canceled) return { success: false };
+  if (result.canceled) return { success: false, error: 'Save canceled' };
   try {
     fs.writeFileSync(result.filePath, lines.join('\n'), 'utf-8');
     return { success: true, path: result.filePath };
