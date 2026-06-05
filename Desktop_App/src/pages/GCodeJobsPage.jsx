@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { useSerial } from '../contexts/SerialContext';
 import { BUILTIN_GCODES, builtinToFile } from '../data/builtinGcodes';
 import { FileUp } from 'lucide-react';
@@ -10,20 +10,61 @@ function formatSize(bytes) {
   return (bytes / (1024 * 1024)).toFixed(1) + 'MB';
 }
 
+function formatTimestamp(ts) {
+  const d = new Date(ts);
+  return `${d.toTimeString().slice(0, 8)}.${String(d.getMilliseconds()).padStart(3, '0')}`;
+}
+
 const CATEGORY_LABELS = { shapes: 'Basic Shapes', calibration: 'Calibration', demo: 'Demo' };
 
 export default function GCodeJobsPage() {
   const {
     connected, streaming, paused, currentLine, totalLines,
     startStreaming, pauseStreaming, resumeStreaming, stopStreaming, logConsole,
+    commandLog,
   } = useSerial();
 
-  const [tab, setTab] = useState('builtin'); // 'builtin' | 'loaded'
+  const [tab, setTab] = useState('builtin');
   const [loadedFiles, setLoadedFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewLines, setPreviewLines] = useState([]);
+  const [hoveredCmd, setHoveredCmd] = useState(null);
+  const previewRef = useRef(null);
 
   const progressPct = totalLines > 0 ? Math.round((currentLine / totalLines) * 100) : 0;
+
+  // Map lineNum → commandEntry for O(1) status lookups during streaming
+  const streamCommandMap = useMemo(() => {
+    const map = new Map();
+    commandLog.forEach((cmd) => {
+      if (cmd.source === 'stream' && cmd.lineNum != null) {
+        map.set(cmd.lineNum, cmd);
+      }
+    });
+    return map;
+  }, [commandLog]);
+
+  const getLineStatus = (i) => {
+    const cmd = streamCommandMap.get(i);
+    if (!cmd) return streaming ? 'queued' : '';
+    return cmd.status;
+  };
+
+  const scrollToExecuting = () => {
+    let execIdx = null;
+    streamCommandMap.forEach((cmd, idx) => { if (cmd.status === 'executing') execIdx = idx; });
+    if (execIdx == null) return;
+    previewRef.current?.querySelector(`[data-line="${execIdx}"]`)
+      ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  const scrollToLastDone = () => {
+    let lastIdx = -1;
+    streamCommandMap.forEach((cmd, idx) => { if (cmd.status === 'done' && idx > lastIdx) lastIdx = idx; });
+    if (lastIdx === -1) return;
+    previewRef.current?.querySelector(`[data-line="${lastIdx}"]`)
+      ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
 
   // ── File selection ──────────────────────────────────────────────────────────
   const selectFile = (file) => {
@@ -35,12 +76,10 @@ export default function GCodeJobsPage() {
     setPreviewLines(lines);
   };
 
-  // ── Load external file ──────────────────────────────────────────────────────
   const loadExternalFile = async () => {
     const file = await window.platform.loadGCodeFile();
     if (!file) return;
     setLoadedFiles(prev => {
-      // avoid duplicates by path
       if (prev.some(f => f.path === file.path)) return prev;
       return [...prev, file];
     });
@@ -58,13 +97,11 @@ export default function GCodeJobsPage() {
     }
   };
 
-  // ── Streaming ───────────────────────────────────────────────────────────────
   const handleStart = () => {
     if (previewLines.length === 0) return;
     startStreaming(previewLines);
   };
 
-  // ── Group built-in by category ──────────────────────────────────────────────
   const builtinByCategory = BUILTIN_GCODES.reduce((acc, f) => {
     (acc[f.category] = acc[f.category] || []).push(f);
     return acc;
@@ -80,7 +117,6 @@ export default function GCodeJobsPage() {
       <div className="gcode-grid">
         {/* Left panel: file browser */}
         <div className="card gcode-files-card">
-          {/* Tabs */}
           <div className="gcode-tabs">
             <button
               className={`gcode-tab ${tab === 'builtin' ? 'active' : ''}`}
@@ -102,7 +138,6 @@ export default function GCodeJobsPage() {
             </button>
           </div>
 
-          {/* Built-in tab */}
           {tab === 'builtin' && (
             <div className="file-list builtin-list">
               {Object.entries(builtinByCategory).map(([cat, files]) => (
@@ -130,7 +165,6 @@ export default function GCodeJobsPage() {
             </div>
           )}
 
-          {/* Loaded tab */}
           {tab === 'loaded' && (
             <div className="file-list">
               {loadedFiles.length === 0 ? (
@@ -160,7 +194,6 @@ export default function GCodeJobsPage() {
             </div>
           )}
 
-          {/* Progress */}
           <div className="progress-section">
             <div className="progress-label">
               <span>Job Progress</span>
@@ -171,7 +204,6 @@ export default function GCodeJobsPage() {
             </div>
           </div>
 
-          {/* Controls */}
           <div className="button-group gcode-controls">
             <button className="btn btn-primary btn-sm" onClick={handleStart}
               disabled={!connected || !selectedFile || streaming}>
@@ -194,27 +226,80 @@ export default function GCodeJobsPage() {
 
         {/* Right panel: G-code preview */}
         <div className="card gcode-preview-card">
-          <h2 className="section-header">
-            G-Code Preview
-            {selectedFile && (
-              <span className="preview-filename"> — {selectedFile.name}</span>
+          <div className="preview-header">
+            <h2 className="section-header" style={{ margin: 0 }}>
+              G-Code Preview
+              {selectedFile && <span className="preview-filename"> — {selectedFile.name}</span>}
+            </h2>
+            {streaming && (
+              <div className="preview-nav-buttons">
+                <button className="btn btn-sm btn-ghost" onClick={scrollToExecuting}>
+                  ↑ Executing
+                </button>
+                <button className="btn btn-sm btn-ghost" onClick={scrollToLastDone}>
+                  ↑ Last Done
+                </button>
+              </div>
             )}
-          </h2>
-          <div className="gcode-preview">
+          </div>
+          <div className="gcode-preview" ref={previewRef}>
             {previewLines.length === 0 ? (
               <div className="preview-placeholder">Select a file to preview its G-code content</div>
             ) : (
-              previewLines.map((line, i) => (
-                <div
-                  key={i}
-                  className={`preview-line ${streaming && i < currentLine ? 'executed' : ''} ${streaming && i === currentLine ? 'current' : ''}`}
-                >
-                  <span className="line-number">{i + 1}</span>
-                  <span className="line-content">{line}</span>
-                </div>
-              ))
+              previewLines.map((line, i) => {
+                const status = getLineStatus(i);
+                const cmd = streamCommandMap.get(i);
+                return (
+                  <div
+                    key={i}
+                    data-line={i}
+                    className={`preview-line${status ? ` status-${status}` : ''}`}
+                    onMouseEnter={(e) => {
+                      if (!cmd || cmd.status === 'queued') return;
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      setHoveredCmd({ cmd, x: rect.right + 8, y: rect.top });
+                    }}
+                    onMouseLeave={() => setHoveredCmd(null)}
+                  >
+                    <span className="line-number">{i + 1}</span>
+                    <span className="line-content">{line}</span>
+                  </div>
+                );
+              })
             )}
           </div>
+
+          {hoveredCmd && (
+            <div
+              className="preview-tooltip"
+              style={{ position: 'fixed', left: hoveredCmd.x, top: hoveredCmd.y, zIndex: 1000 }}
+            >
+              <div className="tooltip-cmd">{hoveredCmd.cmd.cmd}</div>
+              <div className="tooltip-row">
+                <span>Sent:</span><span>{formatTimestamp(hoveredCmd.cmd.sentAt)}</span>
+              </div>
+              {hoveredCmd.cmd.ackedAt ? (
+                <>
+                  <div className="tooltip-row">
+                    <span>Acked:</span><span>{formatTimestamp(hoveredCmd.cmd.ackedAt)}</span>
+                  </div>
+                  <div className="tooltip-row">
+                    <span>Duration:</span><span>{hoveredCmd.cmd.duration}ms</span>
+                  </div>
+                </>
+              ) : (
+                <div className="tooltip-row">
+                  <span>Acked:</span><span className="tooltip-pending">Pending…</span>
+                </div>
+              )}
+              {hoveredCmd.cmd.response && hoveredCmd.cmd.response.length > 0 && (
+                <div className="tooltip-row">
+                  <span>Response:</span>
+                  <span>{hoveredCmd.cmd.response.join(' | ')}</span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

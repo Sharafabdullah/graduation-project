@@ -1,6 +1,8 @@
-.console-page {
+/* ── Page shell ─────────────────────────────────────────────────────────────── */
+.console-page-v2 {
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .console-toolbar {
@@ -23,23 +25,240 @@
   height: 14px;
 }
 
+.filter-select {
+  height: 24px;
+  font-size: 11px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  padding: 0 4px;
+  cursor: pointer;
+}
+
 .quick-commands {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
   margin-bottom: 12px;
+  flex-shrink: 0;
 }
 
 .quick-commands .btn:disabled {
   opacity: 0.35;
 }
 
-.console-full {
+/* ── 3-column grid ───────────────────────────────────────────────────────────── */
+.console-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
   flex: 1;
   min-height: 0;
-  font-size: 12px;
 }
 
+.console-col {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ── Column header ───────────────────────────────────────────────────────────── */
+.col-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-secondary);
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.col-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.col-filters {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* ── Column body (scrollable) ────────────────────────────────────────────────── */
+.col-body {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  font-size: 12px;
+  font-family: var(--font-mono);
+}
+
+/* ── Serial terminal lines ───────────────────────────────────────────────────── */
+.console-line {
+  padding: 2px 12px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--text-secondary);
+}
+
+.console-line.sent     { color: #60a5fa; }
+.console-line.received { color: #4ade80; }
+.console-line.info     { color: var(--text-muted); }
+.console-line.error    { color: #f87171; }
+
+/* ── Command queue entries ───────────────────────────────────────────────────── */
+.cmd-entry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  border-left: 3px solid transparent;
+  cursor: default;
+  transition: background 0.1s;
+}
+
+.cmd-entry:hover {
+  background: var(--bg-hover);
+}
+
+.cmd-entry.type-gcode   { border-left-color: #3b82f6; }
+.cmd-entry.type-control { border-left-color: #f97316; }
+.cmd-entry.type-config  { border-left-color: #a855f7; }
+.cmd-entry.type-query   { border-left-color: #6b7280; }
+
+.cmd-badge {
+  font-size: 11px;
+  flex-shrink: 0;
+  width: 14px;
+  text-align: center;
+}
+
+.badge-executing { color: #fbbf24; }
+.badge-done      { color: #4ade80; }
+.badge-error     { color: #f87171; }
+.badge-skipped   { color: var(--text-muted); }
+
+.cmd-entry.status-executing { background: rgba(251, 191, 36, 0.07); }
+.cmd-entry.status-error     { background: rgba(239, 68, 68, 0.08); }
+
+.cmd-text {
+  flex: 1;
+  color: var(--text-primary);
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cmd-duration {
+  font-size: 10px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* ── Event log entries ───────────────────────────────────────────────────────── */
+.event-entry {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 12px;
+  border-left: 3px solid transparent;
+}
+
+.event-entry.level-info     { border-left-color: #6b7280; }
+.event-entry.level-warning  { border-left-color: #f59e0b; background: rgba(245, 158, 11, 0.05); }
+.event-entry.level-critical { border-left-color: #ef4444; background: rgba(239, 68, 68, 0.08); }
+
+.event-icon {
+  font-size: 12px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.event-entry.level-info     .event-icon { color: var(--text-muted); }
+.event-entry.level-warning  .event-icon { color: #f59e0b; }
+.event-entry.level-critical .event-icon { color: #ef4444; }
+
+.event-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.event-message {
+  font-size: 12px;
+  color: var(--text-primary);
+  font-family: var(--font);
+  word-break: break-word;
+}
+
+.event-time {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* ── Command tooltip (fixed position) ───────────────────────────────────────── */
+.cmd-tooltip {
+  position: fixed;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  min-width: 220px;
+  max-width: 340px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.tooltip-cmd {
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-bottom: 8px;
+  word-break: break-all;
+}
+
+.tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--text-secondary);
+  margin-top: 3px;
+}
+
+.tooltip-row span:first-child {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.tooltip-pending {
+  color: #fbbf24;
+  font-style: italic;
+}
+
+.tooltip-response {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── Input row ───────────────────────────────────────────────────────────────── */
 .console-input-row {
   display: flex;
   gap: 8px;
@@ -51,4 +270,14 @@
   flex: 1;
   height: 36px;
   font-family: var(--font-mono);
+}
+
+/* ── Responsive collapse ─────────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .console-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .console-col:last-child {
+    grid-column: 1 / -1;
+  }
 }
