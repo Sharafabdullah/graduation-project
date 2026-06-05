@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSerial } from '../contexts/SerialContext';
+import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Crosshair } from 'lucide-react';
 import './ManualControlPage.css';
 
 export default function ManualControlPage() {
@@ -46,25 +47,25 @@ export default function ManualControlPage() {
             <div className="jog-row">
               <div className="jog-spacer" />
               <button className="btn btn-primary jog-btn" onClick={() => handleJog('Y', 1)} disabled={!connected} title="Y+">
-                <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z" /></svg>
+                <ChevronUp size={20} />
               </button>
               <div className="jog-spacer" />
             </div>
             <div className="jog-row">
               <button className="btn btn-primary jog-btn" onClick={() => handleJog('X', -1)} disabled={!connected} title="X-">
-                <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" /></svg>
+                <ChevronLeft size={20} />
               </button>
               <button className="btn btn-secondary jog-btn jog-center" onClick={goToOrigin} disabled={!connected} title="Go to Origin">
-                <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8M3.05,13H1V11H3.05C3.5,6.83 6.83,3.5 11,3.05V1H13V3.05C17.17,3.5 20.5,6.83 20.95,11H23V13H20.95C20.5,17.17 17.17,20.5 13,20.95V23H11V20.95C6.83,20.5 3.5,17.17 3.05,13M12,5A7,7 0 0,0 5,12A7,7 0 0,0 12,19A7,7 0 0,0 19,12A7,7 0 0,0 12,5Z" /></svg>
+                <Crosshair size={18} />
               </button>
               <button className="btn btn-primary jog-btn" onClick={() => handleJog('X', 1)} disabled={!connected} title="X+">
-                <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>
+                <ChevronRight size={20} />
               </button>
             </div>
             <div className="jog-row">
               <div className="jog-spacer" />
               <button className="btn btn-primary jog-btn" onClick={() => handleJog('Y', -1)} disabled={!connected} title="Y-">
-                <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" /></svg>
+                <ChevronDown size={20} />
               </button>
               <div className="jog-spacer" />
             </div>
@@ -120,11 +121,11 @@ export default function ManualControlPage() {
           <h2 className="section-header">Head Control</h2>
           <div className="button-group" style={{ flexDirection: 'column' }}>
             <button className="btn btn-primary full-width" onClick={penUp} disabled={!connected}>
-              <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z" /></svg>
+              <ChevronUp size={16} />
               Head Up (M5)
             </button>
             <button className="btn btn-primary full-width" onClick={penDown} disabled={!connected}>
-              <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" /></svg>
+              <ChevronDown size={16} />
               Head Down (M3)
             </button>
           </div>

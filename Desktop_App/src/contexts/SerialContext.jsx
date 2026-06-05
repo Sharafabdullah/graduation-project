@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from 'react';
 
 const SerialContext = createContext(null);
 
@@ -42,13 +49,23 @@ export function SerialProvider({ children }) {
   }, []);
 
   // Log to console
-  const logConsole = useCallback((message, type = '') => {
-    setConsoleLog(prev => {
-      const newLog = [...prev, { message: `${timestamp()} ${message}`, type, id: Date.now() + Math.random() }];
-      // Keep only last 500 lines
-      return newLog.length > 500 ? newLog.slice(-500) : newLog;
-    });
-  }, [timestamp]);
+  const logConsole = useCallback(
+    (message, type = '') => {
+      setConsoleLog((prev) => {
+        const newLog = [
+          ...prev,
+          {
+            message: `${timestamp()} ${message}`,
+            type,
+            id: Date.now() + Math.random(),
+          },
+        ];
+        // Keep only last 500 lines
+        return newLog.length > 500 ? newLog.slice(-500) : newLog;
+      });
+    },
+    [timestamp],
+  );
 
   // Clear console
   const clearConsole = useCallback(() => {
@@ -68,23 +85,26 @@ export function SerialProvider({ children }) {
   }, [logConsole]);
 
   // Connect
-  const connect = useCallback(async (port, baudRate) => {
-    if (!port) {
-      logConsole('Please select a serial port.', 'error');
-      return false;
-    }
-    logConsole(`Connecting to ${port} at ${baudRate} baud...`);
-    const result = await window.platform.connect(port, baudRate);
-    if (result.success) {
-      setConnected(true);
-      setPortPath(port);
-      logConsole('Connection successful.', 'received');
-      return true;
-    } else {
-      logConsole(`Connection failed: ${result.error}`, 'error');
-      return false;
-    }
-  }, [logConsole]);
+  const connect = useCallback(
+    async (port, baudRate) => {
+      if (!port) {
+        logConsole('Please select a serial port.', 'error');
+        return false;
+      }
+      logConsole(`Connecting to ${port} at ${baudRate} baud...`);
+      const result = await window.platform.connect(port, baudRate);
+      if (result.success) {
+        setConnected(true);
+        setPortPath(port);
+        logConsole('Connection successful.', 'received');
+        return true;
+      } else {
+        logConsole(`Connection failed: ${result.error}`, 'error');
+        return false;
+      }
+    },
+    [logConsole],
+  );
 
   // Disconnect
   const disconnect = useCallback(async () => {
@@ -101,19 +121,22 @@ export function SerialProvider({ children }) {
   }, [logConsole]);
 
   // Send command
-  const sendCommand = useCallback(async (cmd) => {
-    if (!connected) {
-      logConsole('Not connected. Cannot send command.', 'error');
-      return false;
-    }
-    logConsole(`> ${cmd}`, 'sent');
-    const result = await window.platform.send(cmd);
-    if (!result.success) {
-      logConsole(`Send error: ${result.error}`, 'error');
-      return false;
-    }
-    return true;
-  }, [connected, logConsole]);
+  const sendCommand = useCallback(
+    async (cmd) => {
+      if (!connected) {
+        logConsole('Not connected. Cannot send command.', 'error');
+        return false;
+      }
+      logConsole(`> ${cmd}`, 'sent');
+      const result = await window.platform.send(cmd);
+      if (!result.success) {
+        logConsole(`Send error: ${result.error}`, 'error');
+        return false;
+      }
+      return true;
+    },
+    [connected, logConsole],
+  );
 
   // Send next G-code line
   const sendNextGCodeLine = useCallback(() => {
@@ -144,33 +167,36 @@ export function SerialProvider({ children }) {
   }, [logConsole]);
 
   // Start streaming
-  const startStreaming = useCallback((lines) => {
-    if (lines.length === 0) {
-      logConsole('No G-code file loaded.', 'error');
-      return;
-    }
-    if (!connected) {
-      logConsole('Not connected. Cannot start job.', 'error');
-      return;
-    }
+  const startStreaming = useCallback(
+    (lines) => {
+      if (lines.length === 0) {
+        logConsole('No G-code file loaded.', 'error');
+        return;
+      }
+      if (!connected) {
+        logConsole('Not connected. Cannot start job.', 'error');
+        return;
+      }
 
-    gcodeLinesRef.current = lines;
-    totalLinesRef.current = lines.length;
-    currentLineRef.current = 0;
-    waitingForOkRef.current = false;
-    streamingRef.current = true;
-    pausedRef.current = false;
+      gcodeLinesRef.current = lines;
+      totalLinesRef.current = lines.length;
+      currentLineRef.current = 0;
+      waitingForOkRef.current = false;
+      streamingRef.current = true;
+      pausedRef.current = false;
 
-    setGcodeLines(lines);
-    setTotalLines(lines.length);
-    setCurrentLine(0);
-    setStreaming(true);
-    setPaused(false);
-    setMachineState('Streaming');
+      setGcodeLines(lines);
+      setTotalLines(lines.length);
+      setCurrentLine(0);
+      setStreaming(true);
+      setPaused(false);
+      setMachineState('Streaming');
 
-    logConsole('Starting job...', 'info');
-    sendNextGCodeLine();
-  }, [connected, logConsole, sendNextGCodeLine]);
+      logConsole('Starting job...', 'info');
+      sendNextGCodeLine();
+    },
+    [connected, logConsole, sendNextGCodeLine],
+  );
 
   // Pause
   const pauseStreaming = useCallback(() => {
@@ -238,7 +264,9 @@ export function SerialProvider({ children }) {
       }
 
       // GRBL-style status: <Idle|MPos:0.000,0.000,0.000|FS:0,0>
-      const grblMatch = data.match(/<(\w+)\|MPos:([\d.-]+),([\d.-]+),([\d.-]+)\|.*?FS?:([\d.]+)/);
+      const grblMatch = data.match(
+        /<(\w+)\|MPos:([\d.-]+),([\d.-]+),([\d.-]+)\|.*?FS?:([\d.]+)/,
+      );
       if (grblMatch) {
         setPosition({
           x: parseFloat(grblMatch[2]),
@@ -281,32 +309,41 @@ export function SerialProvider({ children }) {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Jog
-  const jog = useCallback((axis, direction) => {
-    const increment = 1; // Default, will be overridden by caller
-    const value = increment * direction;
-    sendCommand('G91');
-    sendCommand(`G0 ${axis}${value.toFixed(3)} F1000`);
-    sendCommand('G90');
-  }, [sendCommand]);
+  const jog = useCallback(
+    (axis, direction) => {
+      const increment = 1; // Default, will be overridden by caller
+      const value = increment * direction;
+      sendCommand('G91');
+      sendCommand(`G0 ${axis}${value.toFixed(3)} F1000`);
+      sendCommand('G90');
+    },
+    [sendCommand],
+  );
 
-  const jogWithIncrement = useCallback((axis, direction, increment) => {
-    const value = increment * direction;
-    sendCommand('G91');
-    sendCommand(`G0 ${axis}${value.toFixed(3)} F1000`);
-    sendCommand('G90');
+  const jogWithIncrement = useCallback(
+    (axis, direction, increment) => {
+      const value = increment * direction;
+      sendCommand('G91');
+      sendCommand(`G0 ${axis}${value.toFixed(3)} F1000`);
+      sendCommand('G90');
 
-    // Optimistically update position
-    setPosition(prev => ({
-      x: axis === 'X' ? prev.x + value : prev.x,
-      y: axis === 'Y' ? prev.y + value : prev.y,
-    }));
-  }, [sendCommand]);
+      // Optimistically update position
+      setPosition((prev) => ({
+        x: axis === 'X' ? prev.x + value : prev.x,
+        y: axis === 'Y' ? prev.y + value : prev.y,
+      }));
+    },
+    [sendCommand],
+  );
 
-  const goToPosition = useCallback((x, y) => {
-    sendCommand('G90');
-    sendCommand(`G0 X${x.toFixed(3)} Y${y.toFixed(3)} F1000`);
-    setPosition({ x, y });
-  }, [sendCommand]);
+  const goToPosition = useCallback(
+    (x, y) => {
+      sendCommand('G90');
+      sendCommand(`G0 X${x.toFixed(3)} Y${y.toFixed(3)} F1000`);
+      setPosition({ x, y });
+    },
+    [sendCommand],
+  );
 
   const findLimits = useCallback(() => {
     sendCommand('G28');
@@ -336,9 +373,12 @@ export function SerialProvider({ children }) {
     sendCommand('M3');
   }, [sendCommand]);
 
-  const setServoAngle = useCallback((angle) => {
-    sendCommand(`M280 S${angle}`);
-  }, [sendCommand]);
+  const setServoAngle = useCallback(
+    (angle) => {
+      sendCommand(`M280 S${angle}`);
+    },
+    [sendCommand],
+  );
 
   const value = {
     // Connection state
@@ -383,8 +423,6 @@ export function SerialProvider({ children }) {
   };
 
   return (
-    <SerialContext.Provider value={value}>
-      {children}
-    </SerialContext.Provider>
+    <SerialContext.Provider value={value}>{children}</SerialContext.Provider>
   );
 }

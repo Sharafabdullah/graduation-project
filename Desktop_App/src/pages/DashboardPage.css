@@ -52,10 +52,18 @@
   gap: 8px;
 }
 
-.state-idle { color: var(--text-primary); }
-.state-streaming { color: var(--accent); }
-.state-paused { color: var(--warning); }
-.state-homing { color: var(--success); }
+.state-idle {
+  color: var(--text-primary);
+}
+.state-streaming {
+  color: var(--accent);
+}
+.state-paused {
+  color: var(--warning);
+}
+.state-homing {
+  color: var(--success);
+}
 
 @media (max-width: 900px) {
   .dashboard-grid {

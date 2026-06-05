@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react';
 
 const SettingsContext = createContext(null);
 
@@ -52,18 +58,19 @@ export function SettingsProvider({ children }) {
     (async () => {
       const saved = await window.platform.loadSettings();
       if (saved) {
-        setSettings(prev => ({ ...prev, ...saved }));
+        setSettings((prev) => ({ ...prev, ...saved }));
       }
       setLoaded(true);
     })();
   }, []);
 
   // Calculate steps/mm
-  const stepsPerMm = (settings.stepsPerRev * settings.microsteps) / settings.leadScrewPitch;
+  const stepsPerMm =
+    (settings.stepsPerRev * settings.microsteps) / settings.leadScrewPitch;
 
   // Update a single setting
   const updateSetting = useCallback((key, value) => {
-    setSettings(prev => ({ ...prev, [key]: value }));
+    setSettings((prev) => ({ ...prev, [key]: value }));
   }, []);
 
   // Save to disk
@@ -73,26 +80,29 @@ export function SettingsProvider({ children }) {
   }, [settings]);
 
   // Send settings to Arduino via $ commands
-  const applyToArduino = useCallback(async (sendCommand) => {
-    const commands = [
-      `$MS=${settings.microsteps}`,
-      `$SPR=${settings.stepsPerRev}`,
-      `$LP=${settings.leadScrewPitch}`,
-      `$MF=${settings.maxFeedrate}`,
-      `$HF=${settings.homingFeedrate}`,
-      `$HB=${settings.homingBackoff}`,
-      `$SU=${settings.servoPenUp}`,
-      `$SD=${settings.servoPenDown}`,
-      `$SH=${settings.servoHome}`,
-      `$ST=${settings.servoSettleMs}`,
-    ];
+  const applyToArduino = useCallback(
+    async (sendCommand) => {
+      const commands = [
+        `$MS=${settings.microsteps}`,
+        `$SPR=${settings.stepsPerRev}`,
+        `$LP=${settings.leadScrewPitch}`,
+        `$MF=${settings.maxFeedrate}`,
+        `$HF=${settings.homingFeedrate}`,
+        `$HB=${settings.homingBackoff}`,
+        `$SU=${settings.servoPenUp}`,
+        `$SD=${settings.servoPenDown}`,
+        `$SH=${settings.servoHome}`,
+        `$ST=${settings.servoSettleMs}`,
+      ];
 
-    for (const cmd of commands) {
-      await sendCommand(cmd);
-      // Small delay between commands
-      await new Promise(r => setTimeout(r, 50));
-    }
-  }, [settings]);
+      for (const cmd of commands) {
+        await sendCommand(cmd);
+        // Small delay between commands
+        await new Promise((r) => setTimeout(r, 50));
+      }
+    },
+    [settings],
+  );
 
   const value = {
     settings,

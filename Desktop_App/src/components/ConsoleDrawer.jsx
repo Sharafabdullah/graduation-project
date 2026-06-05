@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSerial } from '../contexts/SerialContext';
+import { Terminal, ChevronUp } from 'lucide-react';
 import './ConsoleDrawer.css';
 
 export default function ConsoleDrawer() {
@@ -46,9 +47,7 @@ export default function ConsoleDrawer() {
       {/* Tab / header — always visible, acts as toggle when closed */}
       <div className="console-drawer-tab" onClick={() => setOpen(o => !o)}>
         <span className="console-drawer-tab-left">
-          <svg viewBox="0 0 24 24" width="14" height="14" style={{ flexShrink: 0 }}>
-            <path fill="currentColor" d="M20,19V7H4V19H20M20,3A2,2 0 0,1 22,5V19A2,2 0 0,1 20,21H4A2,2 0 0,1 2,19V5C2,3.89 2.9,3 4,3H20M13,17V15H18V17H13M9.58,13L5.57,9L7,7.59L12,12.59L7,17.59L5.57,16.17L9.58,13Z" />
-          </svg>
+          <Terminal size={14} style={{ flexShrink: 0 }} />
           <span>Console</span>
           {!open && consoleLog.length > 0 && (
             <span className="console-badge">{consoleLog.length > 99 ? '99+' : consoleLog.length}</span>
@@ -67,12 +66,7 @@ export default function ConsoleDrawer() {
               Clear
             </button>
           )}
-          <svg
-            viewBox="0 0 24 24" width="13" height="13"
-            style={{ transform: open ? 'rotate(0deg)' : 'rotate(180deg)', transition: 'transform 0.2s', flexShrink: 0 }}
-          >
-            <path fill="currentColor" d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z" />
-          </svg>
+          <ChevronUp size={13} style={{ transform: open ? 'rotate(0deg)' : 'rotate(180deg)', transition: 'transform 0.2s', flexShrink: 0 }} />
         </span>
       </div>
 
