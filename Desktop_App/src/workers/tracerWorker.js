@@ -5,7 +5,13 @@ self.onmessage = function (e) {
   try {
     ImageTracer.imageToSVG(
       imageData,
-      (svgString) => self.postMessage({ svg: svgString }),
+      (svgString) => {
+        try {
+          self.postMessage({ svg: svgString });
+        } catch (err) {
+          self.postMessage({ error: err.message });
+        }
+      },
       options
     );
   } catch (err) {
