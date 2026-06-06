@@ -91,9 +91,9 @@ export default function GCodeJobsPage() {
       .filter(l => l && !l.startsWith(';') && !l.startsWith('('));
     setPreviewLines(lines);
     const violations = scanGCodeBounds(lines, {
-      bedMaxX: settings.bedMaxX,
-      bedMaxY: settings.bedMaxY,
-      softLimitMargin: settings.softLimitMargin,
+      bedMaxX: settings.bedMaxX ?? 200,
+      bedMaxY: settings.bedMaxY ?? 200,
+      softLimitMargin: settings.softLimitMargin ?? 10,
     });
     setBoundsWarning(violations.length > 0 ? { count: violations.length, violations } : null);
   };
@@ -140,21 +140,21 @@ export default function GCodeJobsPage() {
           <div className="gcode-tabs">
             <button
               className={`gcode-tab ${tab === 'builtin' ? 'active' : ''}`}
-              onClick={() => setTab('builtin')}
+              onClick={() => { setTab('builtin'); setBoundsWarning(null); }}
             >
               Built-in
               <span className="tab-count">{BUILTIN_GCODES.length}</span>
             </button>
             <button
               className={`gcode-tab ${tab === 'loaded' ? 'active' : ''}`}
-              onClick={() => setTab('loaded')}
+              onClick={() => { setTab('loaded'); setBoundsWarning(null); }}
             >
               Loaded
               <span className="tab-count">{loadedFiles.length}</span>
             </button>
             <button
               className={`gcode-tab ${tab === 'history' ? 'active' : ''}`}
-              onClick={() => setTab('history')}
+              onClick={() => { setTab('history'); setBoundsWarning(null); }}
             >
               History
               <span className="tab-count">{jobHistory.length}</span>

@@ -71,9 +71,9 @@ export default function Image2GCodePage() {
       setCompiledGCode(lines);
       setCompileError('');
       const violations = scanGCodeBounds(lines, {
-        bedMaxX: settings.bedMaxX,
-        bedMaxY: settings.bedMaxY,
-        softLimitMargin: settings.softLimitMargin,
+        bedMaxX: settings.bedMaxX ?? 200,
+        bedMaxY: settings.bedMaxY ?? 200,
+        softLimitMargin: settings.softLimitMargin ?? 10,
       });
       setCompileWarning(violations.length > 0 ? violations.length : null);
     } catch (err) {
