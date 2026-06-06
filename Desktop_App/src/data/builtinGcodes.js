@@ -126,14 +126,7 @@ G0 X0 Y0 F1000
 G90
 M5
 
-; Vertical lines (X = 0 to 50, spaced 10mm)
-G0 X10 Y10 F1000
-M3 S30
-G4 P200
-G1 Y50 F800
-M5
-G4 P200
-
+; Vertical lines (X = 10 to 60, spaced 10mm)
 G0 X10 Y10 F1000
 M3 S30
 G4 P200
@@ -169,14 +162,14 @@ G1 Y50 F800
 M5
 G4 P200
 
-; Horizontal lines (Y = 10 to 50, spaced 10mm)
-G0 X10 Y10 F1000
+G0 X60 Y10 F1000
 M3 S30
 G4 P200
-G1 X50 F800
+G1 X60 Y60 F800
 M5
 G4 P200
 
+; Horizontal lines (Y = 10 to 60, spaced 10mm)
 G0 X10 Y10 F1000
 M3 S30
 G4 P200
@@ -209,6 +202,13 @@ G0 X10 Y50 F1000
 M3 S30
 G4 P200
 G1 X50 F800
+M5
+G4 P200
+
+G0 X10 Y60 F1000
+M3 S30
+G4 P200
+G1 X60 Y60 F800
 M5
 G4 P500
 
