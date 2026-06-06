@@ -221,6 +221,16 @@ export default function SettingsPage() {
               onChange={e => updateSetting('bedMaxY', parseFloat(e.target.value) || 100)}
             />
           </div>
+          <div className="form-row">
+            <label>Safe Working Margin (mm)</label>
+            <input
+              type="number"
+              value={settings.softLimitMargin}
+              min="0"
+              step="1"
+              onChange={e => updateSetting('softLimitMargin', parseFloat(e.target.value) || 0)}
+            />
+          </div>
         </div>
       </div>
 

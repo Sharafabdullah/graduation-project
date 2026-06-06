@@ -47,6 +47,7 @@ const DEFAULT_SETTINGS = {
   // Machine Boundaries (Soft Limits)
   bedMaxX: 200,
   bedMaxY: 200,
+  softLimitMargin: 10,
 };
 
 export function SettingsProvider({ children }) {
