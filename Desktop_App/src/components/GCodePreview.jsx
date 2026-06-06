@@ -89,7 +89,7 @@ export default function GCodePreview({ lines = [], bedW = 200, bedH = 200, softL
     let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
     lines.forEach(line => {
       const upper = line.trim().toUpperCase();
-      if (!upper.startsWith('G0') && !upper.startsWith('G1')) return;
+      if (!upper.startsWith('G1')) return;  // only drawing moves
       const xM = upper.match(/X([-\d.]+)/);
       const yM = upper.match(/Y([-\d.]+)/);
       const x = xM ? parseFloat(xM[1]) : null;
