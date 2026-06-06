@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSerial } from '../contexts/SerialContext';
 import { useSettings } from '../contexts/SettingsContext';
@@ -39,7 +39,13 @@ export default function Image2GCodePage() {
     setCompileWarning(null);
   }, [setTracedSVG, setActiveTab]);
 
+  // Clear stale compile warning when a new image is loaded
+  useEffect(() => {
+    setCompileWarning(null);
+  }, [tracedSVG]);
+
   const handleCompile = useCallback(() => {
+    setCompileWarning(null);
     let svgSource = '';
     if (activeTab === 'drawer' && editorRef.current) {
       svgSource = editorRef.current.toSVG();
