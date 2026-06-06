@@ -44,6 +44,7 @@ export function useImageTracer() {
     setLoading(true);
     setResult(null);
     setError(null);
+
     const defaultOptions = {
       numberofcolors: 2,
       colorquantcycles: 1,
@@ -52,10 +53,29 @@ export function useImageTracer() {
       pathomit: 8,
       blurradius: 0,
     };
-    workerRef.current.postMessage({
-      imageData: base64DataUrl,
-      options: { ...defaultOptions, ...options },
-    });
+
+    // Decode the image on the main thread (DOM available here) so the
+    // worker receives raw RGBA pixels instead of a data URL — workers
+    // cannot call new Image() because they have no DOM access.
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const buffer = imageData.data.buffer.slice(0);
+      workerRef.current.postMessage(
+        { width: canvas.width, height: canvas.height, buffer, options: { ...defaultOptions, ...options } },
+        [buffer]
+      );
+    };
+    img.onerror = () => {
+      setLoading(false);
+      setError('Failed to load image');
+    };
+    img.src = base64DataUrl;
   }, []);
 
   return { trace, result, loading, error };

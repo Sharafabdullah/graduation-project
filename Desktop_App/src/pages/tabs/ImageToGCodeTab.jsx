@@ -1,43 +1,42 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { useImageTracer } from '../../hooks/useImageTracer';
+import { useImage2GCode } from '../../contexts/Image2GCodeContext';
 
 export default function ImageToGCodeTab({ onSendToDrawer }) {
-  const { trace, result: tracedSVG, loading, error } = useImageTracer();
-  const [options, setOptions] = useState({
-    numberofcolors: 2,
-    ltres: 1,
-    qtres: 1,
-    pathomit: 8,
-  });
-  const [previewSrc, setPreviewSrc] = useState(null);
-  const [sizeError, setSizeError] = useState('');
+  const { trace, result: tracerResult, loading, error } = useImageTracer();
+  const {
+    previewSrc, setPreviewSrc,
+    tracedSVG, setTracedSVG,
+    tracerOptions, setTracerOptions,
+  } = useImage2GCode();
+
   const fileInputRef = useRef(null);
+
+  // Sync worker result into context so it survives navigation
+  useEffect(() => {
+    if (tracerResult) setTracedSVG(tracerResult);
+  }, [tracerResult, setTracedSVG]);
+
+  const setOpt = (key, val) =>
+    setTracerOptions((prev) => ({ ...prev, [key]: val }));
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    if (file.size > 10 * 1024 * 1024) {
-      // 10 MB limit — imagetracerjs can be slow on very large images
-      setSizeError('Image file too large. Please use an image under 10 MB.');
-      e.target.value = '';
-      return;
-    }
+    if (file.size > 10 * 1024 * 1024) return;
     const reader = new FileReader();
     reader.onload = (ev) => {
       setPreviewSrc(ev.target.result);
-      setSizeError('');
-      trace(ev.target.result, options);
+      setTracedSVG(null);
+      trace(ev.target.result, tracerOptions);
     };
     reader.readAsDataURL(file);
   };
 
   const handleRetrace = () => {
-    if (previewSrc) trace(previewSrc, options);
+    if (previewSrc) trace(previewSrc, tracerOptions);
   };
-
-  const setOpt = (key, val) =>
-    setOptions((prev) => ({ ...prev, [key]: val }));
 
   return (
     <div className="tab-content image-tab">
@@ -53,33 +52,32 @@ export default function ImageToGCodeTab({ onSendToDrawer }) {
             className="file-input"
             onChange={handleFileChange}
           />
-          {sizeError && <p className="error-text">{sizeError}</p>}
         </div>
 
         <div className="form-group">
-          <label>Colors: {options.numberofcolors}</label>
-          <input type="range" min="2" max="16" value={options.numberofcolors}
+          <label>Colors: {tracerOptions.numberofcolors}</label>
+          <input type="range" min="2" max="16" value={tracerOptions.numberofcolors}
             onChange={(e) => setOpt('numberofcolors', Number(e.target.value))}
             className="slider" disabled={loading} />
         </div>
 
         <div className="form-group">
-          <label>Line Threshold (ltres): {options.ltres}</label>
-          <input type="range" min="0.1" max="5" step="0.1" value={options.ltres}
+          <label>Line Threshold (ltres): {tracerOptions.ltres}</label>
+          <input type="range" min="0.1" max="5" step="0.1" value={tracerOptions.ltres}
             onChange={(e) => setOpt('ltres', Number(e.target.value))}
             className="slider" disabled={loading} />
         </div>
 
         <div className="form-group">
-          <label>Spline Threshold (qtres): {options.qtres}</label>
-          <input type="range" min="0.1" max="5" step="0.1" value={options.qtres}
+          <label>Spline Threshold (qtres): {tracerOptions.qtres}</label>
+          <input type="range" min="0.1" max="5" step="0.1" value={tracerOptions.qtres}
             onChange={(e) => setOpt('qtres', Number(e.target.value))}
             className="slider" disabled={loading} />
         </div>
 
         <div className="form-group">
-          <label>Min Path Length (pathomit): {options.pathomit}</label>
-          <input type="range" min="1" max="32" value={options.pathomit}
+          <label>Min Path Length (pathomit): {tracerOptions.pathomit}</label>
+          <input type="range" min="1" max="32" value={tracerOptions.pathomit}
             onChange={(e) => setOpt('pathomit', Number(e.target.value))}
             className="slider" disabled={loading} />
         </div>

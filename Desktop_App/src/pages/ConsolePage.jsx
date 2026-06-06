@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useSerial } from '../contexts/SerialContext';
 import './ConsolePage.css';
 
@@ -60,9 +61,11 @@ function CmdTooltip({ cmd, x, y }) {
 
 export default function ConsolePage() {
   const {
-    consoleLog, commandLog, eventLog,
+    consoleLog, commandLog, eventLog, jobHistory,
     logConsole, clearConsole, sendCommand, connected,
   } = useSerial();
+
+  const [searchParams] = useSearchParams();
 
   const [input, setInput] = useState('');
   const [showOk, setShowOk] = useState(false);
@@ -70,7 +73,14 @@ export default function ConsolePage() {
   const [cmdTypeFilter, setCmdTypeFilter] = useState('all');
   const [cmdStatusFilter, setCmdStatusFilter] = useState('all');
   const [eventLevelFilter, setEventLevelFilter] = useState('all');
+  const [jobFilter, setJobFilter] = useState('all');
   const [hoveredCmd, setHoveredCmd] = useState(null);
+
+  // Pre-select job filter from URL param (?jobId=xxx)
+  useEffect(() => {
+    const jobId = searchParams.get('jobId');
+    if (jobId) setJobFilter(jobId);
+  }, [searchParams]);
 
   const terminalRef = useRef(null);
   const commandRef = useRef(null);
@@ -83,8 +93,9 @@ export default function ConsolePage() {
   const filteredConsole = useMemo(() => consoleLog.filter((e) => {
     if (!showOk && e.message.includes('< ok')) return false;
     if (!showDebug && e.message.includes('Debug:')) return false;
+    if (jobFilter !== 'all' && e.jobId !== jobFilter) return false;
     return true;
-  }), [consoleLog, showOk, showDebug]);
+  }), [consoleLog, showOk, showDebug, jobFilter]);
 
   const filteredCommands = useMemo(() => commandLog.filter((cmd) => {
     if (cmdTypeFilter !== 'all' && cmd.type !== cmdTypeFilter) return false;
@@ -128,7 +139,6 @@ export default function ConsolePage() {
     if (nearestEl) nearestEl.scrollIntoView({ block: 'start' });
   };
 
-  // Ref-backed scroll handlers so debounce timer survives re-renders
   const terminalScrollFn = useRef(null);
   terminalScrollFn.current = () => {
     if (isSyncingRef.current) return;
@@ -229,6 +239,19 @@ export default function ConsolePage() {
                 <input type="checkbox" checked={showDebug} onChange={(e) => setShowDebug(e.target.checked)} />
                 <span>Debug</span>
               </label>
+              <select
+                value={jobFilter}
+                onChange={(e) => setJobFilter(e.target.value)}
+                className="filter-select"
+                title="Filter by job"
+              >
+                <option value="all">All jobs</option>
+                {[...jobHistory].reverse().map((job) => (
+                  <option key={job.jobId} value={job.jobId}>
+                    {job.name} ({new Date(job.startedAt).toTimeString().slice(0, 8)})
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
           <div className="col-body" ref={terminalRef} onScroll={handleTerminalScroll}>

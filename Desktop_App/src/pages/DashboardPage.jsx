@@ -30,7 +30,7 @@ export default function DashboardPage() {
   const { settings } = useSettings();
   const navigate = useNavigate();
 
-  const [selectedPort, setSelectedPort] = useState('');
+  const { selectedPort, setSelectedPort } = useSerial();
   const [baudRate, setBaudRate] = useState(
     settings.defaultBaudRate || '115200',
   );

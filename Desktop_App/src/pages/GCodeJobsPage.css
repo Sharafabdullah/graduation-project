@@ -280,3 +280,28 @@
   color: #fbbf24;
   font-style: italic;
 }
+
+/* ── History tab ────────────────────────────────────────────────────────────── */
+.history-item {
+  align-items: center;
+}
+
+.history-status-pill {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.history-status-pill.status-completed {
+  background: rgba(74, 222, 128, 0.15);
+  color: #4ade80;
+}
+
+.history-status-pill.status-stopped {
+  background: rgba(251, 146, 60, 0.15);
+  color: #fb923c;
+}
