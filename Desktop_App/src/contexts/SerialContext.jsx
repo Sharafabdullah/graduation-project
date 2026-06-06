@@ -460,7 +460,13 @@ export function SerialProvider({ children }) {
             commandMapRef.current.set(topId, updated);
             setCommandLog((prev) => prev.map((c) => (c.id === topId ? updated : c)));
           }
+          const waiter = pendingWaitMapRef.current.get(topId);
+          if (waiter) {
+            waiter.reject(new Error(trimmed));
+            pendingWaitMapRef.current.delete(topId);
+          }
         }
+        waitingForOkRef.current = false;
         logEvent('error', trimmed, 'critical');
       }
 
