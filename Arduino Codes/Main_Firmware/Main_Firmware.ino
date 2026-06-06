@@ -67,6 +67,7 @@ int servoSettleMs = 150;
 Servo penServo;
 int currentServoAngle = 90;
 bool isAbsoluteMode = true;
+bool homingMode = false;
 String inputBuffer = "";
 
 // ---------------------------------------------------------------------------
@@ -88,7 +89,6 @@ void processConfigCommand(String cmd);
 void setServoAngle(int angle);
 void reportPosition();
 void moveLinear(float targetXMm, float targetYMm, float feedRate);
-void homeAxis();
 
 // ---------------------------------------------------------------------------
 //  SETUP
@@ -104,8 +104,8 @@ void setup() {
   pinMode(Y_MIN_PIN, INPUT_PULLUP);
 
   // Invert motor directions because they were moving backwards physically
-  stepperY1.setPinsInverted(false, false, false);
-  stepperY2.setPinsInverted(false, false, false);
+  stepperY1.setPinsInverted(true, false, false);
+  stepperY2.setPinsInverted(true, false, false);
   stepperX.setPinsInverted(true, false, false);
 
   penServo.attach(Z_SERVO_PIN);
@@ -278,13 +278,6 @@ void processParsedGCode() {
         break;
       }
 
-      case 28: {
-        Serial.println("Homing sequence started...");
-        homeAxis();
-        Serial.println("ok");
-        break;
-      }
-
       case 90: {
         isAbsoluteMode = true;
         Serial.println("ok");
@@ -383,6 +376,7 @@ void processConfigCommand(String cmd) {
     Serial.print("$SD="); Serial.println(servoPenDown);
     Serial.print("$SH="); Serial.println(servoHome);
     Serial.print("$ST="); Serial.println(servoSettleMs);
+    Serial.print("$HOMING="); Serial.println(homingMode ? 1 : 0);
     Serial.println("ok");
     return;
   }
@@ -423,6 +417,8 @@ void processConfigCommand(String cmd) {
     servoHome = (int)val;
   } else if (key == "ST") {
     servoSettleMs = (int)val;
+  } else if (key == "HOMING") {
+    homingMode = (val != 0);
   } else {
     Serial.print("error:Unknown config key: ");
     Serial.println(key);
@@ -515,22 +511,39 @@ void moveLinear(float targetXMm, float targetYMm, float feedRate) {
   stepperY1.moveTo(positions[0]);
   stepperY2.moveTo(positions[2]);
 
+  bool xHomingDone = false;
+  bool yHomingDone = false;
+
   while (stepperX.distanceToGo() != 0 || stepperY1.distanceToGo() != 0) {
     if (checkEStop()) break;
 
     if (xMovingMin && digitalRead(X_MIN_PIN) == HIGH) {
-      Serial.println("error:Hard limit X triggered! Motor stopped.");
-      stepperX.stop();
-      stepperY1.stop();
-      stepperY2.stop();
-      break;
+      if (homingMode && !xHomingDone) {
+        xHomingDone = true;
+        stepperX.setCurrentPosition(0);
+        Serial.println("x stop triggered");
+      } else if (!homingMode) {
+        Serial.println("error:Hard limit X triggered! Motor stopped.");
+        stepperX.stop();
+        stepperY1.stop();
+        stepperY2.stop();
+        break;
+      }
     }
-    if (!yMovingMin && digitalRead(Y_MIN_PIN) == HIGH) {
-      Serial.println("error:Hard limit Y triggered! Motor stopped.");
-      stepperX.stop();
-      stepperY1.stop();
-      stepperY2.stop();
-      break;
+
+    if (yMovingMin && digitalRead(Y_MIN_PIN) == HIGH) {
+      if (homingMode && !yHomingDone) {
+        yHomingDone = true;
+        stepperY1.setCurrentPosition(0);
+        stepperY2.setCurrentPosition(0);
+        Serial.println("y stop triggered");
+      } else if (!homingMode) {
+        Serial.println("error:Hard limit Y triggered! Motor stopped.");
+        stepperX.stop();
+        stepperY1.stop();
+        stepperY2.stop();
+        break;
+      }
     }
 
     if (stepperX.distanceToGo() != 0) {
@@ -554,96 +567,3 @@ void moveLinear(float targetXMm, float targetYMm, float feedRate) {
   reportPosition();
 }
 
-// ---------------------------------------------------------------------------
-//  HOMING ROUTINE
-// ---------------------------------------------------------------------------
-void homeAxis() {
-  setServoAngle(servoHome);
-
-  float homeSpsX = (homingFeedrate / 60.0) * stepsPerMmX;
-  float homeSpsY = (homingFeedrate / 60.0) * stepsPerMmY;
-  if (homeSpsX < 1.0) homeSpsX = 1.0;
-  if (homeSpsY < 1.0) homeSpsY = 1.0;
-
-  stepperY1.setMaxSpeed(homeSpsY);
-  stepperY2.setMaxSpeed(homeSpsY);
-  stepperX.setMaxSpeed(homeSpsX);
-
-  bool xHit = false;
-  long maxSearchX = (long)(-500.0 * stepsPerMmX);
-  stepperX.setCurrentPosition(0);
-  stepperX.moveTo(maxSearchX);
-
-  while (stepperX.distanceToGo() != 0) {
-    if (checkEStop()) return;
-    if (digitalRead(X_MIN_PIN) == HIGH) {
-      xHit = true;
-      stepperX.stop();
-      while (stepperX.distanceToGo() != 0) {
-        if (checkEStop()) return;
-        stepperX.run();
-      }
-      break;
-    }
-    stepperX.run();
-  }
-
-  if (xHit) {
-    stepperX.setCurrentPosition(0);
-    long backoffStepsX = (long)(homingBackoffMm * stepsPerMmX);
-    stepperX.moveTo(backoffStepsX);
-    while (stepperX.distanceToGo() != 0) {
-      if (checkEStop()) return;
-      stepperX.run();
-    }
-  }
-
-  bool yHit = false;
-  long maxSearchY = (long)(500.0 * stepsPerMmY);
-  stepperY1.setCurrentPosition(0);
-  stepperY2.setCurrentPosition(0);
-  stepperY1.moveTo(maxSearchY);
-  stepperY2.moveTo(maxSearchY);
-
-  while (stepperY1.distanceToGo() != 0 || stepperY2.distanceToGo() != 0) {
-    if (checkEStop()) return;
-    if (digitalRead(Y_MIN_PIN) == HIGH) {
-      yHit = true;
-      stepperY1.stop();
-      stepperY2.stop();
-      while (stepperY1.distanceToGo() != 0 || stepperY2.distanceToGo() != 0) {
-        if (checkEStop()) return;
-        stepperY1.run();
-        stepperY2.run();
-      }
-      break;
-    }
-    stepperY1.run();
-    stepperY2.run();
-  }
-
-  if (yHit) {
-    stepperY1.setCurrentPosition(0);
-    stepperY2.setCurrentPosition(0);
-    long backoffStepsY = (long)(-homingBackoffMm * stepsPerMmY);
-    stepperY1.moveTo(backoffStepsY);
-    stepperY2.moveTo(backoffStepsY);
-    while (stepperY1.distanceToGo() != 0 || stepperY2.distanceToGo() != 0) {
-      if (checkEStop()) return;
-      stepperY1.run();
-      stepperY2.run();
-    }
-  }
-
-  stepperY1.setCurrentPosition(0);
-  stepperY2.setCurrentPosition(0);
-  stepperX.setCurrentPosition(0);
-  recalcStepsPerMm();
-
-  Serial.print("Debug: Homing Complete (XHit:");
-  Serial.print(xHit);
-  Serial.print(" YHit:");
-  Serial.print(yHit);
-  Serial.println(")");
-  reportPosition();
-}
