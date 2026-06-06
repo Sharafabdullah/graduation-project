@@ -182,7 +182,7 @@ export function SerialProvider({ children }) {
       if (!connected) { reject(new Error('Not connected')); return; }
       const now = Date.now();
       const id = `cmd-${now}-${Math.random().toString(36).slice(2)}`;
-      pendingWaitMapRef.current.set(id, resolve);
+      pendingWaitMapRef.current.set(id, { resolve, reject });
       const entry = {
         id, cmd, lineNum: null,
         sentAt: now, timestamp: now,
@@ -198,8 +198,20 @@ export function SerialProvider({ children }) {
         const next = [...prev, entry];
         return next.length > 1000 ? next.slice(-1000) : next;
       });
-      logConsole(`> ${cmd}`, 'sent');
-      window.platform.send(cmd);
+      window.platform.send(cmd).then(result => {
+        if (!result || !result.success) {
+          pendingWaitMapRef.current.delete(id);
+          pendingQueueRef.current = pendingQueueRef.current.filter(x => x !== id);
+          logConsole(`> ${cmd} [send failed]`, 'error');
+          reject(new Error(result?.error || 'Send failed'));
+        } else {
+          logConsole(`> ${cmd}`, 'sent');
+        }
+      }).catch(err => {
+        pendingWaitMapRef.current.delete(id);
+        pendingQueueRef.current = pendingQueueRef.current.filter(x => x !== id);
+        reject(err);
+      });
     });
   }, [connected, logConsole]);
 
@@ -428,9 +440,9 @@ export function SerialProvider({ children }) {
             commandMapRef.current.set(topId, updated);
             setCommandLog((prev) => prev.map((c) => (c.id === topId ? updated : c)));
           }
-          const resolve = pendingWaitMapRef.current.get(topId);
-          if (resolve) {
-            resolve(responses);
+          const waiter = pendingWaitMapRef.current.get(topId);
+          if (waiter) {
+            waiter.resolve(responses);
             pendingWaitMapRef.current.delete(topId);
           }
         }
@@ -486,6 +498,11 @@ export function SerialProvider({ children }) {
         setPortPath('');
         logConsole('Connection lost.', 'error');
         logEvent('disconnected', 'Connection lost unexpectedly', 'critical');
+        // Reject all pending sendAndWait Promises so homeStage and callers don't hang
+        pendingWaitMapRef.current.forEach(({ reject }) => {
+          reject(new Error('Disconnected'));
+        });
+        pendingWaitMapRef.current.clear();
       } else if (status.type === 'error') {
         logConsole(`Serial error: ${status.message}`, 'error');
         logEvent('error', `Serial error: ${status.message}`, 'critical');

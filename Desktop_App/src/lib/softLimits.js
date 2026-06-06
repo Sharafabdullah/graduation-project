@@ -25,7 +25,8 @@ export function parseXY(line) {
  * x or y may be null (axis not specified in the G-code line); only non-null axes are checked.
  */
 export function isInWarnZone(x, y, { bedMaxX, bedMaxY, softLimitMargin }) {
-  if (x === 0 && y === 0) return false;
+  if (x === null && y === null) return false;
+  if ((x === null || x === 0) && (y === null || y === 0)) return false;
   if (x !== null) {
     if (x < softLimitMargin) return true;
     if (x > bedMaxX - softLimitMargin) return true;
