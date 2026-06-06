@@ -179,7 +179,7 @@ export default function Image2GCodePage() {
           </div>
 
           <div className="bottom-bar-preview">
-            <GCodePreview lines={compiledGCode} bedW={bedW} bedH={bedH} />
+            <GCodePreview lines={compiledGCode} bedW={bedW} bedH={bedH} softLimitMargin={settings.softLimitMargin ?? 10} />
           </div>
 
           <div className="bottom-bar-right">
