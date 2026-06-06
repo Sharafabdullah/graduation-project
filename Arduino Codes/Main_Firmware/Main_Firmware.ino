@@ -192,6 +192,7 @@ void processLine(String rawCmd) {
     stepperX.stop();
     penServo.write(servoPenUp);
     currentServoAngle = servoPenUp;
+    homingMode = false;
     Serial.println("error:Emergency Stop triggered! Motor stopped.");
     return;
   }
@@ -464,6 +465,7 @@ bool checkEStop() {
       stepperX.stop();
       penServo.write(servoPenUp);
       currentServoAngle = servoPenUp;
+      homingMode = false;
       Serial.println("error:Emergency Stop triggered! Motor stopped.");
       inputBuffer = "";
       return true;
@@ -521,6 +523,7 @@ void moveLinear(float targetXMm, float targetYMm, float feedRate) {
       if (homingMode && !xHomingDone) {
         xHomingDone = true;
         stepperX.setCurrentPosition(0);
+        stepperX.setSpeed(0);
         Serial.println("x stop triggered");
       } else if (!homingMode) {
         Serial.println("error:Hard limit X triggered! Motor stopped.");
@@ -536,6 +539,8 @@ void moveLinear(float targetXMm, float targetYMm, float feedRate) {
         yHomingDone = true;
         stepperY1.setCurrentPosition(0);
         stepperY2.setCurrentPosition(0);
+        stepperY1.setSpeed(0);
+        stepperY2.setSpeed(0);
         Serial.println("y stop triggered");
       } else if (!homingMode) {
         Serial.println("error:Hard limit Y triggered! Motor stopped.");
