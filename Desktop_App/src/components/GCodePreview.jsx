@@ -4,6 +4,12 @@ import './GCodePreview.css';
 export default function GCodePreview({ lines = [], bedW = 200, bedH = 200 }) {
   const canvasRef = useRef(null);
 
+  // Maintain bed aspect ratio within a 400px bounding box
+  const PREVIEW_MAX = 400;
+  const aspect = bedW / bedH;
+  const canvasW = aspect >= 1 ? PREVIEW_MAX : Math.round(PREVIEW_MAX * aspect);
+  const canvasH = aspect <= 1 ? PREVIEW_MAX : Math.round(PREVIEW_MAX / aspect);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -24,7 +30,8 @@ export default function GCodePreview({ lines = [], bedW = 200, bedH = 200 }) {
     let cx = 0, cy = 0;
     let penDown = false;
 
-    const toCanvas = (x, y) => [x * scaleX, y * scaleY];
+    // Flip Y: machine Y=0 is at bottom, SVG/canvas Y=0 is at top
+    const toCanvas = (x, y) => [x * scaleX, (bedH - y) * scaleY];
 
     for (const line of lines) {
       const trimmed = line.trim().toUpperCase();
@@ -74,8 +81,8 @@ export default function GCodePreview({ lines = [], bedW = 200, bedH = 200 }) {
       <canvas
         ref={canvasRef}
         className="gcode-preview-canvas"
-        width={400}
-        height={400}
+        width={canvasW}
+        height={canvasH}
       />
     </div>
   );

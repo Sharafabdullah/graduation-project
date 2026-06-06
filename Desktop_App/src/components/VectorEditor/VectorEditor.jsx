@@ -18,7 +18,17 @@ const VectorEditor = forwardRef(function VectorEditor(
   const activeObjectRef = useRef(null);
 
   useImperativeHandle(ref, () => ({
-    toSVG: () => fabricRef.current?.toSVG() ?? '',
+    toSVG: () => {
+      const canvas = fabricRef.current;
+      if (!canvas) return '';
+      // Temporarily remove bed boundary (excludeFromExport) so it doesn't become a cut path
+      const excluded = canvas.getObjects().filter(o => o.excludeFromExport);
+      excluded.forEach(o => canvas.remove(o));
+      const svg = canvas.toSVG();
+      excluded.forEach(o => canvas.add(o));
+      if (excluded[0]) canvas.sendToBack(excluded[0]);
+      return svg;
+    },
     loadSVG: (svgString) => {
       if (!fabricRef.current) return;
       fabric.loadSVGFromString(svgString, (objects, options) => {
@@ -32,12 +42,15 @@ const VectorEditor = forwardRef(function VectorEditor(
   }));
 
   useEffect(() => {
+    // Scale canvas pixels so the editor is comfortably large (target ~600px for a 200mm bed)
+    const displayScale = Math.max(2, Math.min(4, 600 / Math.max(bedW, bedH)));
     const canvas = new fabric.Canvas(canvasElRef.current, {
-      width: bedW,
-      height: bedH,
+      width: bedW * displayScale,
+      height: bedH * displayScale,
       backgroundColor: '#ffffff',
       selection: true,
     });
+    canvas.setZoom(displayScale);
     fabricRef.current = canvas;
 
     // Bed boundary (excluded from SVG export via custom property)

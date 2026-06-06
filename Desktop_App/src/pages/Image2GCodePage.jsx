@@ -45,17 +45,25 @@ export default function Image2GCodePage() {
         maxFeedrate: settings?.maxFeedrate || 1000,
         servoPenDown: settings?.servoPenDown || 30,
         servoPenUp: settings?.servoPenUp || 75,
+        bedH,
       });
+      if (!lines.some(l => l.startsWith('G1'))) {
+        setCompileError('No drawable paths found. Add shapes or trace an image first.');
+        return;
+      }
       setCompiledGCode(lines);
       setCompileError('');
     } catch (err) {
       setCompileError(`Compile error: ${err.message}`);
     }
-  }, [activeTab, tracedSVG, settings]);
+  }, [activeTab, tracedSVG, settings, bedH]);
 
   const handleSave = useCallback(async () => {
     if (compiledGCode.length === 0) return;
-    await window.platform.saveGCode(compiledGCode);
+    const result = await window.platform.saveGCode(compiledGCode);
+    if (result && !result.success && result.error !== 'Save canceled') {
+      console.error('Save .gcode failed:', result.error);
+    }
   }, [compiledGCode]);
 
   const handleStart = useCallback(() => {
