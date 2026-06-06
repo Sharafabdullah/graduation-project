@@ -5,7 +5,7 @@ import './ManualControlPage.css';
 
 export default function ManualControlPage() {
   const {
-    connected, position, feedRate, jogWithIncrement, goToPosition, goToOrigin, findLimits, setZero,
+    connected, position, feedRate, jogWithIncrement, goToPosition, goToOrigin, homeStage, setZero,
     penUp, penDown, setServoAngle,
   } = useSerial();
 
@@ -111,7 +111,7 @@ export default function ManualControlPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
             <button className="btn btn-primary full-width" onClick={handleGoTo} disabled={!connected}>Go To Custom X/Y</button>
             <button className="btn btn-secondary full-width" onClick={goToOrigin} disabled={!connected}>Go to Origin</button>
-            <button className="btn btn-ghost full-width" onClick={findLimits} disabled={!connected}>Find Limits (G28)</button>
+            <button className="btn btn-ghost full-width" onClick={homeStage} disabled={!connected}>Home Stage</button>
             <button className="btn btn-ghost full-width" onClick={setZero} disabled={!connected}>Set Origin (G92)</button>
           </div>
         </div>
