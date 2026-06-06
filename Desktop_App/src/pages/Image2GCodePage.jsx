@@ -1,32 +1,43 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSerial } from '../contexts/SerialContext';
 import { useSettings } from '../contexts/SettingsContext';
+import { useImage2GCode } from '../contexts/Image2GCodeContext';
+import { useJobs } from '../contexts/JobsContext';
 import ImageToGCodeTab from './tabs/ImageToGCodeTab';
 import VectorDrawerTab from './tabs/VectorDrawerTab';
 import GCodePreview from '../components/GCodePreview';
 import { compileSVGToGCode } from '../lib/gcodeCompiler';
-import { Play, Save, Zap } from 'lucide-react';
+import { scanGCodeBounds } from '../lib/softLimits';
+import { Play, Save, Zap, SendToBack } from 'lucide-react';
 import './Image2GCodePage.css';
 
 export default function Image2GCodePage() {
   const { connected, streaming, startStreaming } = useSerial();
   const { settings } = useSettings();
+  const { addLoadedFile } = useJobs();
+  const navigate = useNavigate();
   const bedW = settings?.bedMaxX || 200;
   const bedH = settings?.bedMaxY || 200;
 
-  const [activeTab, setActiveTab] = useState('image');
-  const [lineWidth, setLineWidth] = useState(1);
-  const [injectedSVG, setInjectedSVG] = useState(null);
-  const [tracedSVG, setTracedSVG] = useState(null);
-  const [compiledGCode, setCompiledGCode] = useState([]);
-  const [compileError, setCompileError] = useState('');
+  const {
+    activeTab, setActiveTab,
+    lineWidth, setLineWidth,
+    tracedSVG, setTracedSVG,
+    compiledGCode, setCompiledGCode,
+  } = useImage2GCode();
+
+  const [injectedSVG, setInjectedSVG] = React.useState(null);
+  const [compileError, setCompileError] = React.useState('');
+  const [compileWarning, setCompileWarning] = React.useState(null); // null | number (violation count)
   const editorRef = useRef(null);
 
   const handleSendToDrawer = useCallback((svgString) => {
     setTracedSVG(svgString);
     setInjectedSVG(svgString);
     setActiveTab('drawer');
-  }, []);
+    setCompileWarning(null);
+  }, [setTracedSVG, setActiveTab]);
 
   const handleCompile = useCallback(() => {
     let svgSource = '';
@@ -53,10 +64,16 @@ export default function Image2GCodePage() {
       }
       setCompiledGCode(lines);
       setCompileError('');
+      const violations = scanGCodeBounds(lines, {
+        bedMaxX: settings.bedMaxX,
+        bedMaxY: settings.bedMaxY,
+        softLimitMargin: settings.softLimitMargin,
+      });
+      setCompileWarning(violations.length > 0 ? violations.length : null);
     } catch (err) {
       setCompileError(`Compile error: ${err.message}`);
     }
-  }, [activeTab, tracedSVG, settings, bedH]);
+  }, [activeTab, tracedSVG, settings, bedH, setCompiledGCode]);
 
   const handleSave = useCallback(async () => {
     if (compiledGCode.length === 0) return;
@@ -66,8 +83,22 @@ export default function Image2GCodePage() {
     }
   }, [compiledGCode]);
 
+  const handleSendToJobs = useCallback(() => {
+    if (compiledGCode.length === 0) return;
+    const name = `Image Job ${new Date().toTimeString().slice(0, 8)}`;
+    const content = compiledGCode.join('\n');
+    addLoadedFile({
+      name,
+      content,
+      path: `image2gcode:${Date.now()}`,
+      size: content.length,
+      lines: compiledGCode.length,
+    });
+    navigate('/gcode');
+  }, [compiledGCode, addLoadedFile, navigate]);
+
   const handleStart = useCallback(() => {
-    if (compiledGCode.length > 0) startStreaming(compiledGCode);
+    if (compiledGCode.length > 0) startStreaming(compiledGCode, 'Image Job');
   }, [compiledGCode, startStreaming]);
 
   const canCompile = activeTab === 'drawer' || !!tracedSVG;
@@ -134,6 +165,11 @@ export default function Image2GCodePage() {
               Compile Job
             </button>
             {compileError && <span className="error-text" style={{ marginLeft: 8 }}>{compileError}</span>}
+            {compileWarning && (
+              <span style={{ color: 'rgba(255, 200, 0, 0.9)', fontSize: '11px' }}>
+                ⚠ {compileWarning} line{compileWarning !== 1 ? 's' : ''} outside safe margin
+              </span>
+            )}
           </div>
 
           <div className="bottom-bar-preview">
@@ -151,6 +187,15 @@ export default function Image2GCodePage() {
             >
               <Save size={14} style={{ marginRight: 6 }} />
               Save .gcode
+            </button>
+            <button
+              className="btn btn-secondary"
+              onClick={handleSendToJobs}
+              disabled={compiledGCode.length === 0}
+              title="Add to G-Code Jobs loaded list"
+            >
+              <SendToBack size={14} style={{ marginRight: 6 }} />
+              Send to Jobs
             </button>
             <button
               className="btn btn-success"

@@ -1,8 +1,12 @@
 import React, { useState, useMemo, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSerial } from '../contexts/SerialContext';
+import { useJobs } from '../contexts/JobsContext';
 import { BUILTIN_GCODES, builtinToFile } from '../data/builtinGcodes';
 import { FileUp } from 'lucide-react';
 import './GCodeJobsPage.css';
+import { useSettings } from '../contexts/SettingsContext';
+import { scanGCodeBounds } from '../lib/softLimits';
 
 function formatSize(bytes) {
   if (bytes < 1024) return bytes + 'B';
@@ -15,20 +19,32 @@ function formatTimestamp(ts) {
   return `${d.toTimeString().slice(0, 8)}.${String(d.getMilliseconds()).padStart(3, '0')}`;
 }
 
+function formatDuration(ms) {
+  if (ms < 1000) return `${ms}ms`;
+  const s = Math.floor(ms / 1000);
+  const m = Math.floor(s / 60);
+  if (m === 0) return `${s}s`;
+  return `${m}m ${s % 60}s`;
+}
+
 const CATEGORY_LABELS = { shapes: 'Basic Shapes', calibration: 'Calibration', demo: 'Demo' };
 
 export default function GCodeJobsPage() {
+  const navigate = useNavigate();
+  const { settings } = useSettings();
   const {
     connected, streaming, paused, currentLine, totalLines,
     startStreaming, pauseStreaming, resumeStreaming, stopStreaming, logConsole,
-    commandLog,
+    commandLog, jobHistory,
   } = useSerial();
 
+  const { loadedFiles, addLoadedFile, removeLoadedFile } = useJobs();
+
   const [tab, setTab] = useState('builtin');
-  const [loadedFiles, setLoadedFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewLines, setPreviewLines] = useState([]);
   const [hoveredCmd, setHoveredCmd] = useState(null);
+  const [boundsWarning, setBoundsWarning] = useState(null); // null | { count: number, violations: array }
   const previewRef = useRef(null);
 
   const progressPct = totalLines > 0 ? Math.round((currentLine / totalLines) * 100) : 0;
@@ -74,15 +90,18 @@ export default function GCodeJobsPage() {
       .map(l => l.trim())
       .filter(l => l && !l.startsWith(';') && !l.startsWith('('));
     setPreviewLines(lines);
+    const violations = scanGCodeBounds(lines, {
+      bedMaxX: settings.bedMaxX,
+      bedMaxY: settings.bedMaxY,
+      softLimitMargin: settings.softLimitMargin,
+    });
+    setBoundsWarning(violations.length > 0 ? { count: violations.length, violations } : null);
   };
 
   const loadExternalFile = async () => {
     const file = await window.platform.loadGCodeFile();
     if (!file) return;
-    setLoadedFiles(prev => {
-      if (prev.some(f => f.path === file.path)) return prev;
-      return [...prev, file];
-    });
+    addLoadedFile(file);
     setTab('loaded');
     selectFile(file);
     logConsole(`Loaded: ${file.name} (${formatSize(file.size)}, ${file.lines} commands)`, 'info');
@@ -90,16 +109,17 @@ export default function GCodeJobsPage() {
 
   const removeLoaded = (path, e) => {
     e.stopPropagation();
-    setLoadedFiles(prev => prev.filter(f => f.path !== path));
+    removeLoadedFile(path);
     if (selectedFile?.path === path) {
       setSelectedFile(null);
       setPreviewLines([]);
+      setBoundsWarning(null);
     }
   };
 
   const handleStart = () => {
     if (previewLines.length === 0) return;
-    startStreaming(previewLines);
+    startStreaming(previewLines, selectedFile?.name || 'Job');
   };
 
   const builtinByCategory = BUILTIN_GCODES.reduce((acc, f) => {
@@ -131,6 +151,13 @@ export default function GCodeJobsPage() {
             >
               Loaded
               <span className="tab-count">{loadedFiles.length}</span>
+            </button>
+            <button
+              className={`gcode-tab ${tab === 'history' ? 'active' : ''}`}
+              onClick={() => setTab('history')}
+            >
+              History
+              <span className="tab-count">{jobHistory.length}</span>
             </button>
             <button className="btn btn-primary btn-sm" onClick={loadExternalFile} style={{ marginLeft: 'auto' }}>
               <FileUp size={14} />
@@ -194,6 +221,43 @@ export default function GCodeJobsPage() {
             </div>
           )}
 
+          {tab === 'history' && (
+            <div className="file-list">
+              {jobHistory.length === 0 ? (
+                <div className="file-item" style={{ justifyContent: 'center' }}>
+                  <span className="file-name" style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                    No jobs run yet
+                  </span>
+                </div>
+              ) : (
+                [...jobHistory].reverse().map(job => (
+                  <div key={job.id} className="file-item history-item">
+                    <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0, flex: 1, gap: 2 }}>
+                      <span className="file-name">{job.name}</span>
+                      <span className="file-size">
+                        {new Date(job.startedAt).toTimeString().slice(0, 8)}
+                        {' · '}
+                        {formatDuration(job.duration)}
+                      </span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+                      <span className={`history-status-pill status-${job.status}`}>
+                        {job.status === 'completed' ? 'Done' : 'Stopped'}
+                      </span>
+                      <button
+                        className="btn btn-sm btn-ghost"
+                        onClick={() => navigate(`/console?jobId=${job.jobId}`)}
+                        title="View console log for this job"
+                      >
+                        Log
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+
           <div className="progress-section">
             <div className="progress-label">
               <span>Job Progress</span>
@@ -242,6 +306,19 @@ export default function GCodeJobsPage() {
               </div>
             )}
           </div>
+          {boundsWarning && (
+            <div style={{
+              background: 'rgba(255, 200, 0, 0.12)',
+              border: '1px solid rgba(255, 200, 0, 0.4)',
+              borderRadius: '6px',
+              padding: '8px 12px',
+              marginBottom: '8px',
+              fontSize: '12px',
+              color: 'var(--text-secondary)',
+            }}>
+              ⚠ {boundsWarning.count} line{boundsWarning.count !== 1 ? 's' : ''} outside safe working margin — out-of-bounds moves will be skipped at runtime
+            </div>
+          )}
           <div className="gcode-preview" ref={previewRef}>
             {previewLines.length === 0 ? (
               <div className="preview-placeholder">Select a file to preview its G-code content</div>
