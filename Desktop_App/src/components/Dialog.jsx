@@ -13,12 +13,24 @@ export default function Dialog({
   onCancel,
 }) {
   const inputRef = useRef(null);
+  const cardRef = useRef(null);
 
   useEffect(() => {
-    if (open && mode === 'prompt' && inputRef.current) {
+    if (!open) return undefined;
+
+    const previouslyFocused = document.activeElement;
+    if (mode === 'prompt' && inputRef.current) {
       inputRef.current.focus();
       inputRef.current.select();
+    } else if (cardRef.current) {
+      cardRef.current.focus();
     }
+
+    return () => {
+      if (previouslyFocused && typeof previouslyFocused.focus === 'function') {
+        previouslyFocused.focus();
+      }
+    };
   }, [open, mode]);
 
   if (!open) return null;
@@ -43,7 +55,7 @@ export default function Dialog({
 
   return (
     <div className="dialog-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onCancel(); }}>
-      <div className="dialog-card" role="dialog" aria-modal="true" onKeyDown={handleKeyDown}>
+      <div className="dialog-card" ref={cardRef} tabIndex={-1} role="dialog" aria-modal="true" onKeyDown={handleKeyDown}>
         {title && <h3 className="dialog-title">{title}</h3>}
         {message && <p className="dialog-message">{message}</p>}
         {mode === 'prompt' && (
