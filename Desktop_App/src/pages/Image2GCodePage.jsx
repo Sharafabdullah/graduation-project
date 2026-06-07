@@ -27,6 +27,7 @@ export default function Image2GCodePage() {
     tracedSVG, setTracedSVG,
     compiledGCode, setCompiledGCode,
     multicolorMode,
+    backgroundColor,
   } = useImage2GCode();
 
   const [injectedSVG, setInjectedSVG] = React.useState(null);
@@ -66,6 +67,7 @@ export default function Image2GCodePage() {
         servoPenUp: settings?.servoPenUp || 75,
         bedH,
         multicolorMode,
+        backgroundColor: multicolorMode ? backgroundColor : null,
       });
       if (!lines.some(l => l.startsWith('G1'))) {
         setCompileError('No drawable paths found. Add shapes or trace an image first.');
@@ -82,7 +84,7 @@ export default function Image2GCodePage() {
     } catch (err) {
       setCompileError(`Compile error: ${err.message}`);
     }
-  }, [activeTab, tracedSVG, settings, bedH, setCompiledGCode]);
+  }, [activeTab, tracedSVG, settings, bedH, multicolorMode, backgroundColor, setCompiledGCode]);
 
   const [dialog, setDialog] = React.useState({ open: false });
 
@@ -145,13 +147,19 @@ export default function Image2GCodePage() {
             className={`i2g-tab${activeTab === 'image' ? ' active' : ''}`}
             onClick={() => setActiveTab('image')}
           >
-            Image to G-Code
+            Import &amp; Trace
           </button>
           <button
             className={`i2g-tab${activeTab === 'drawer' ? ' active' : ''}`}
             onClick={() => setActiveTab('drawer')}
           >
-            Vector Drawer
+            Draw &amp; Finalize
+          </button>
+          <button
+            className={`i2g-tab${activeTab === 'outline' ? ' active' : ''}`}
+            onClick={() => setActiveTab('outline')}
+          >
+            G-Code Outline
           </button>
         </div>
 
@@ -168,6 +176,23 @@ export default function Image2GCodePage() {
               lineWidth={lineWidth}
               injectedSVG={injectedSVG}
             />
+          </div>
+          <div style={{ display: activeTab === 'outline' ? 'flex' : 'none', height: '100%' }}>
+            <div className="tab-content outline-tab">
+              <div className="outline-tab-info">
+                <span className="gcode-line-count">
+                  {compiledGCode.length > 0 ? `${compiledGCode.length} lines` : 'No G-Code — compile a job to see its outline'}
+                </span>
+                {compileWarning && (
+                  <span style={{ color: 'rgba(255, 200, 0, 0.9)', fontSize: '12px' }}>
+                    ⚠ {compileWarning} line{compileWarning !== 1 ? 's' : ''} outside safe margin
+                  </span>
+                )}
+              </div>
+              <div className="outline-tab-preview">
+                <GCodePreview lines={compiledGCode} bedW={bedW} bedH={bedH} softLimitMargin={settings.softLimitMargin ?? 10} />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -193,15 +218,6 @@ export default function Image2GCodePage() {
               Compile Job
             </button>
             {compileError && <span className="error-text" style={{ marginLeft: 8 }}>{compileError}</span>}
-            {compileWarning && (
-              <span style={{ color: 'rgba(255, 200, 0, 0.9)', fontSize: '11px' }}>
-                ⚠ {compileWarning} line{compileWarning !== 1 ? 's' : ''} outside safe margin
-              </span>
-            )}
-          </div>
-
-          <div className="bottom-bar-preview">
-            <GCodePreview lines={compiledGCode} bedW={bedW} bedH={bedH} softLimitMargin={settings.softLimitMargin ?? 10} />
           </div>
 
           <div className="bottom-bar-right">

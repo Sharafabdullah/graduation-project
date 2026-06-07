@@ -5,7 +5,7 @@ export default function GCodePreview({ lines = [], bedW = 200, bedH = 200, softL
   const canvasRef = useRef(null);
 
   // Maintain bed aspect ratio within a 400px bounding box
-  const PREVIEW_MAX = 400;
+  const PREVIEW_MAX = 560;
   const aspect = bedW / bedH;
   const canvasW = aspect >= 1 ? PREVIEW_MAX : Math.round(PREVIEW_MAX * aspect);
   const canvasH = aspect <= 1 ? PREVIEW_MAX : Math.round(PREVIEW_MAX / aspect);
