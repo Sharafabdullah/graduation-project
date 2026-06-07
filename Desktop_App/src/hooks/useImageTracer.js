@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { binarizeImageData, sampleCornerColor } from '../lib/imageBinarize';
 
 export function useImageTracer() {
   const [result, setResult] = useState(null);
+  const [backgroundColor, setBackgroundColor] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const workerRef = useRef(null);
@@ -44,6 +46,9 @@ export function useImageTracer() {
     setLoading(true);
     setResult(null);
     setError(null);
+    setBackgroundColor(null);
+
+    const { multicolorMode = false, threshold = 128, ...tracerParams } = options;
 
     const defaultOptions = {
       numberofcolors: 2,
@@ -65,9 +70,25 @@ export function useImageTracer() {
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const buffer = imageData.data.buffer.slice(0);
+
+      let pixelData = imageData;
+      let traceOptions = { ...defaultOptions, ...tracerParams };
+
+      if (multicolorMode) {
+        // Real-color tracing: sample the source image's corners so the
+        // compiler can identify (and skip) the background by closest match.
+        setBackgroundColor(sampleCornerColor(imageData));
+      } else {
+        // Single-color tracing: binarize first so the tracer always receives
+        // strictly two-tone pixels — guarantees white=skip / black=draw
+        // regardless of the source image's lighting or scan artifacts.
+        pixelData = binarizeImageData(imageData, threshold);
+        traceOptions = { ...traceOptions, numberofcolors: 2, colorsampling: 0 };
+      }
+
+      const buffer = pixelData.data.buffer.slice(0);
       workerRef.current.postMessage(
-        { width: canvas.width, height: canvas.height, buffer, options: { ...defaultOptions, ...options } },
+        { width: pixelData.width, height: pixelData.height, buffer, options: traceOptions },
         [buffer]
       );
     };
@@ -78,5 +99,5 @@ export function useImageTracer() {
     img.src = base64DataUrl;
   }, []);
 
-  return { trace, result, loading, error };
+  return { trace, result, backgroundColor, loading, error };
 }
