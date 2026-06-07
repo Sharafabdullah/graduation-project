@@ -4,6 +4,7 @@ import React, {
 import { fabric } from 'fabric';
 import ToolPalette from './ToolPalette';
 import './VectorEditor.css';
+import Dialog from '../Dialog';
 
 const VectorEditor = forwardRef(function VectorEditor(
   { bedW = 200, bedH = 200, lineWidth = 1, injectedSVG = null },
@@ -214,16 +215,44 @@ const VectorEditor = forwardRef(function VectorEditor(
     canvas.renderAll();
   }, []);
 
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+
+  const deleteAll = useCallback(() => {
+    if (!fabricRef.current) return;
+    setConfirmDeleteOpen(true);
+  }, []);
+
+  const confirmDeleteAll = useCallback(() => {
+    const canvas = fabricRef.current;
+    setConfirmDeleteOpen(false);
+    if (!canvas) return;
+    canvas.getObjects().forEach((obj) => {
+      if (!obj.excludeFromExport) canvas.remove(obj);
+    });
+    canvas.renderAll();
+  }, []);
+
   return (
     <div className="vector-editor">
       <ToolPalette
         activeTool={activeTool}
         onToolChange={setTool}
         onDeleteSelected={deleteSelected}
+        onDeleteAll={deleteAll}
       />
       <div className="canvas-wrap">
         <canvas ref={canvasElRef} />
       </div>
+      <Dialog
+        open={confirmDeleteOpen}
+        mode="confirm"
+        title="Delete Everything"
+        message="Are you sure you want to delete everything?"
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        onConfirm={confirmDeleteAll}
+        onCancel={() => setConfirmDeleteOpen(false)}
+      />
     </div>
   );
 });
