@@ -7,9 +7,10 @@ import { useJobs } from '../contexts/JobsContext';
 import ImageToGCodeTab from './tabs/ImageToGCodeTab';
 import VectorDrawerTab from './tabs/VectorDrawerTab';
 import GCodePreview from '../components/GCodePreview';
+import Dialog from '../components/Dialog';
 import { compileSVGToGCode } from '../lib/gcodeCompiler';
 import { scanGCodeBounds } from '../lib/softLimits';
-import { Play, Save, Zap, SendToBack } from 'lucide-react';
+import { Play, Save, Zap } from 'lucide-react';
 import './Image2GCodePage.css';
 
 export default function Image2GCodePage() {
@@ -25,6 +26,7 @@ export default function Image2GCodePage() {
     lineWidth, setLineWidth,
     tracedSVG, setTracedSVG,
     compiledGCode, setCompiledGCode,
+    multicolorMode,
   } = useImage2GCode();
 
   const [injectedSVG, setInjectedSVG] = React.useState(null);
@@ -63,6 +65,7 @@ export default function Image2GCodePage() {
         servoPenDown: settings?.servoPenDown || 30,
         servoPenUp: settings?.servoPenUp || 75,
         bedH,
+        multicolorMode,
       });
       if (!lines.some(l => l.startsWith('G1'))) {
         setCompileError('No drawable paths found. Add shapes or trace an image first.');
@@ -81,27 +84,46 @@ export default function Image2GCodePage() {
     }
   }, [activeTab, tracedSVG, settings, bedH, setCompiledGCode]);
 
-  const handleSave = useCallback(async () => {
-    if (compiledGCode.length === 0) return;
-    const result = await window.platform.saveGCode(compiledGCode);
-    if (result && !result.success && result.error !== 'Save canceled') {
-      console.error('Save .gcode failed:', result.error);
-    }
-  }, [compiledGCode]);
+  const [dialog, setDialog] = React.useState({ open: false });
 
-  const handleSendToJobs = useCallback(() => {
+  const closeDialog = useCallback(() => setDialog({ open: false }), []);
+
+  const performSaveJob = useCallback(async (name) => {
+    const result = await window.platform.saveJob(name, compiledGCode);
+    if (result && result.success) {
+      addLoadedFile(result.job);
+      navigate('/gcode');
+    } else {
+      setDialog({
+        open: true,
+        mode: 'alert',
+        title: 'Save Failed',
+        message: `Failed to save job: ${result?.error || 'Unknown error'}`,
+        confirmLabel: 'OK',
+        onConfirm: closeDialog,
+        onCancel: closeDialog,
+      });
+    }
+  }, [compiledGCode, addLoadedFile, navigate, closeDialog]);
+
+  const handleSaveJob = useCallback(() => {
     if (compiledGCode.length === 0) return;
-    const name = `Image Job ${new Date().toTimeString().slice(0, 8)}`;
-    const content = compiledGCode.join('\n');
-    addLoadedFile({
-      name,
-      content,
-      path: `image2gcode:${Date.now()}`,
-      size: content.length,
-      lines: compiledGCode.length,
+    const defaultName = `Image Job ${new Date().toTimeString().slice(0, 8)}`;
+    setDialog({
+      open: true,
+      mode: 'prompt',
+      title: 'Save Job',
+      message: 'Enter a name for this job:',
+      defaultValue: defaultName,
+      confirmLabel: 'Save',
+      onConfirm: (name) => {
+        closeDialog();
+        if (!name || !name.trim()) return;
+        performSaveJob(name.trim());
+      },
+      onCancel: closeDialog,
     });
-    navigate('/gcode');
-  }, [compiledGCode, addLoadedFile, navigate]);
+  }, [compiledGCode, closeDialog, performSaveJob]);
 
   const handleStart = useCallback(() => {
     if (compiledGCode.length > 0) startStreaming(compiledGCode, 'Image Job');
@@ -188,20 +210,12 @@ export default function Image2GCodePage() {
             </span>
             <button
               className="btn btn-secondary"
-              onClick={handleSave}
+              onClick={handleSaveJob}
               disabled={compiledGCode.length === 0}
+              title="Save G-code and send to jobs"
             >
               <Save size={14} style={{ marginRight: 6 }} />
-              Save .gcode
-            </button>
-            <button
-              className="btn btn-secondary"
-              onClick={handleSendToJobs}
-              disabled={compiledGCode.length === 0}
-              title="Add to G-Code Jobs loaded list"
-            >
-              <SendToBack size={14} style={{ marginRight: 6 }} />
-              Send to Jobs
+              Save Job
             </button>
             <button
               className="btn btn-success"
@@ -214,6 +228,8 @@ export default function Image2GCodePage() {
           </div>
         </div>
       </div>
+
+      <Dialog {...dialog} />
     </div>
   );
 }
