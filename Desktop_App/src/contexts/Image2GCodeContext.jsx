@@ -16,10 +16,13 @@ export function Image2GCodeProvider({ children }) {
     ltres: 1,
     qtres: 1,
     pathomit: 8,
+    threshold: 128,
   });
   const [compiledGCode, setCompiledGCode] = useState([]);
   const [activeTab, setActiveTab] = useState('image');
   const [lineWidth, setLineWidth] = useState(1);
+  const [multicolorMode, setMulticolorMode] = useState(false);
+  const [backgroundColor, setBackgroundColor] = useState(null);
 
   const value = {
     previewSrc, setPreviewSrc,
@@ -28,6 +31,8 @@ export function Image2GCodeProvider({ children }) {
     compiledGCode, setCompiledGCode,
     activeTab, setActiveTab,
     lineWidth, setLineWidth,
+    multicolorMode, setMulticolorMode,
+    backgroundColor, setBackgroundColor,
   };
 
   return <Image2GCodeContext.Provider value={value}>{children}</Image2GCodeContext.Provider>;
