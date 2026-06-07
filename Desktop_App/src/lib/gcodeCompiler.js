@@ -1,5 +1,7 @@
 // Runs in Electron renderer process only — uses DOMParser (browser API).
 import { parseSVG, makeAbsolute } from 'svg-path-parser';
+import { isBackgroundColor } from './colorMatch';
+import { tessellateQuadratic, tessellateCubic } from './bezier';
 
 function parseTransform(str) {
   if (!str) return null;
@@ -42,6 +44,7 @@ function pathToPoints(d, transform) {
   const points = [];
   let startX = 0, startY = 0;
   for (const cmd of commands) {
+    const prev = points[points.length - 1];
     switch (cmd.code) {
       case 'M': {
         const p = applyTransform(cmd.x, cmd.y, transform);
@@ -54,11 +57,29 @@ function pathToPoints(d, transform) {
         points.push({ type: 'L', x: p.x, y: p.y });
         break;
       }
-      case 'C':
       case 'Q': {
-        // Approximate bezier to endpoint — sufficient for pen plotter linear moves
-        const p = applyTransform(cmd.x, cmd.y, transform);
-        points.push({ type: 'L', x: p.x, y: p.y });
+        const c1 = applyTransform(cmd.x1, cmd.y1, transform);
+        const end = applyTransform(cmd.x, cmd.y, transform);
+        if (prev) {
+          for (const pt of tessellateQuadratic(prev, c1, end)) {
+            points.push({ type: 'L', x: pt.x, y: pt.y });
+          }
+        } else {
+          points.push({ type: 'L', x: end.x, y: end.y });
+        }
+        break;
+      }
+      case 'C': {
+        const c1 = applyTransform(cmd.x1, cmd.y1, transform);
+        const c2 = applyTransform(cmd.x2, cmd.y2, transform);
+        const end = applyTransform(cmd.x, cmd.y, transform);
+        if (prev) {
+          for (const pt of tessellateCubic(prev, c1, c2, end)) {
+            points.push({ type: 'L', x: pt.x, y: pt.y });
+          }
+        } else {
+          points.push({ type: 'L', x: end.x, y: end.y });
+        }
         break;
       }
       case 'Z':
@@ -127,7 +148,11 @@ function extractAllPointSets(svgString) {
   const add = (el, fn) => {
     const t = getElementTransform(el, root);
     const pts = fn(el, t);
-    if (pts.length > 0) all.push(pts);
+    if (pts.length > 0) {
+      let color = el.getAttribute('fill') || el.getAttribute('stroke') || 'black';
+      if (color === 'none') color = el.getAttribute('stroke') || 'black';
+      all.push({ points: pts, color });
+    }
   };
 
   root.querySelectorAll('path').forEach(el => {
@@ -147,6 +172,8 @@ export function compileSVGToGCode(svgString, settings = {}) {
     servoPenDown = 30,
     servoPenUp = 75,
     bedH = 200,
+    multicolorMode = false,
+    backgroundColor = null,
   } = settings;
 
   if (maxFeedrate <= 0) throw new RangeError('maxFeedrate must be positive');
@@ -160,8 +187,9 @@ export function compileSVGToGCode(svgString, settings = {}) {
   lines.push(`F${maxFeedrate}`);
   lines.push(`M280 P0 S${servoPenUp} ; pen up`);
 
-  for (const points of allPointSets) {
-    if (points.length === 0) continue;
+  // Helper to generate gcode for a single point set
+  const generatePathGcode = (points) => {
+    if (points.length === 0) return;
     let penDown = false;
 
     for (let i = 0; i < points.length; i++) {
@@ -190,6 +218,26 @@ export function compileSVGToGCode(svgString, settings = {}) {
 
     if (penDown) {
       lines.push(`M280 P0 S${servoPenUp} ; pen up`);
+    }
+  };
+
+  const validSets = allPointSets.filter(s => !isBackgroundColor(s.color, backgroundColor));
+
+  if (multicolorMode) {
+    const colorGroups = {};
+    for (const set of validSets) {
+      if (!colorGroups[set.color]) colorGroups[set.color] = [];
+      colorGroups[set.color].push(set.points);
+    }
+    for (const [color, groups] of Object.entries(colorGroups)) {
+      lines.push(`M0 ; Change pen to color: ${color}`);
+      for (const points of groups) {
+        generatePathGcode(points);
+      }
+    }
+  } else {
+    for (const set of validSets) {
+      generatePathGcode(set.points);
     }
   }
 
