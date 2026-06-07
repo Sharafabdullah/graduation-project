@@ -226,6 +226,7 @@ const VectorEditor = forwardRef(function VectorEditor(
     const canvas = fabricRef.current;
     setConfirmDeleteOpen(false);
     if (!canvas) return;
+    canvas.discardActiveObject();
     canvas.getObjects().forEach((obj) => {
       if (!obj.excludeFromExport) canvas.remove(obj);
     });
