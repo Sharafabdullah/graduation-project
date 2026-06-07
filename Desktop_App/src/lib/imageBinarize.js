@@ -18,8 +18,8 @@ export function binarizeImageData(imageData, threshold) {
 
 export function sampleCornerColor(imageData, marginRatio = 0.02) {
   const { width, height, data } = imageData;
-  const mx = Math.max(1, Math.min(width - 1, Math.floor(width * marginRatio)));
-  const my = Math.max(1, Math.min(height - 1, Math.floor(height * marginRatio)));
+  const mx = width <= 2 ? 0 : Math.max(1, Math.min(width - 2, Math.floor(width * marginRatio)));
+  const my = height <= 2 ? 0 : Math.max(1, Math.min(height - 2, Math.floor(height * marginRatio)));
   const corners = [
     [mx, my],
     [width - 1 - mx, my],
