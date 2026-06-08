@@ -26,7 +26,8 @@
 }
 
 .i2g-tab {
-  padding: 0.6rem 1.25rem;
+  flex: 1;
+  padding: 0.6rem 0.75rem;
   background: transparent;
   border: none;
   border-bottom: 2px solid transparent;
@@ -34,6 +35,8 @@
   font-size: 0.875rem;
   cursor: pointer;
   transition: color 0.15s, border-color 0.15s;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .i2g-tab:hover { color: var(--text-primary); }
@@ -267,4 +270,94 @@
   padding: 1.5rem;
   gap: 1rem;
   box-sizing: border-box;
+}
+
+/* ── Upload & Transform tab additions ──────────────────────────────────── */
+
+/* Outline / Multicolor mode toggle */
+.tracer-mode-toggle {
+  display: flex;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius, 8px);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 0.45rem 0;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.mode-btn + .mode-btn {
+  border-left: 1px solid var(--border-color);
+}
+
+.mode-btn.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.mode-btn:not(.active):hover {
+  background: var(--bg-hover, rgba(255,255,255,0.05));
+  color: var(--text-primary);
+}
+
+/* Small hint text under sliders */
+.hint-text {
+  font-size: 0.72rem;
+  color: var(--text-muted, var(--text-secondary));
+  margin: 0.2rem 0 0;
+  line-height: 1.4;
+}
+
+/* Visual divider with a label inside the controls card */
+.settings-divider {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted, var(--text-secondary));
+  border-top: 1px solid var(--border-color);
+  padding-top: 0.6rem;
+  margin-top: 0.25rem;
+}
+
+/* Horizontal row for output settings (line width + fill checkbox) */
+.output-settings-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.form-group--small {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0;
+}
+
+.form-group--small label {
+  display: inline;
+  margin-bottom: 0;
+  white-space: nowrap;
+  font-size: 0.8rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+  margin: 0;
 }

@@ -5,9 +5,13 @@ import { fabric } from 'fabric';
 import ToolPalette from './ToolPalette';
 import './VectorEditor.css';
 import Dialog from '../Dialog';
+import { isBackgroundColor } from '../../lib/colorMatch';
 
 const VectorEditor = forwardRef(function VectorEditor(
-  { bedW = 200, bedH = 200, lineWidth = 1, injectedSVG = null },
+  {
+    bedW = 200, bedH = 200, lineWidth = 1,
+    backgroundColor = null, softLimitMargin = 10, homed = false, homeFloor = null,
+  },
   ref
 ) {
   const canvasElRef = useRef(null);
@@ -22,7 +26,6 @@ const VectorEditor = forwardRef(function VectorEditor(
     toSVG: () => {
       const canvas = fabricRef.current;
       if (!canvas) return '';
-      // Temporarily remove bed boundary (excludeFromExport) so it doesn't become a cut path
       const excluded = canvas.getObjects().filter(o => o.excludeFromExport);
       excluded.forEach(o => canvas.remove(o));
       const svg = canvas.toSVG();
@@ -30,10 +33,26 @@ const VectorEditor = forwardRef(function VectorEditor(
       if (excluded[0]) canvas.sendToBack(excluded[0]);
       return svg;
     },
+    // Replace all canvas content with the given SVG
     loadSVG: (svgString) => {
       if (!fabricRef.current) return;
+      const canvas = fabricRef.current;
+      canvas.getObjects().forEach(obj => { if (!obj.excludeFromExport) canvas.remove(obj); });
       fabric.loadSVGFromString(svgString, (objects, options) => {
-        const group = fabric.util.groupSVGElements(objects, options);
+        const filtered = objects.filter(o => !isBackgroundColor(o.fill, backgroundColor));
+        const group = fabric.util.groupSVGElements(filtered, options);
+        group.scaleToWidth(Math.min(bedW * 0.9, group.width ?? bedW));
+        group.set({ left: bedW / 2, top: bedH / 2, originX: 'center', originY: 'center' });
+        canvas.add(group);
+        canvas.renderAll();
+      });
+    },
+    // Add SVG to canvas WITHOUT clearing existing content
+    addSVG: (svgString) => {
+      if (!fabricRef.current) return;
+      fabric.loadSVGFromString(svgString, (objects, options) => {
+        const filtered = objects.filter(o => !isBackgroundColor(o.fill, backgroundColor));
+        const group = fabric.util.groupSVGElements(filtered, options);
         group.scaleToWidth(Math.min(bedW * 0.9, group.width ?? bedW));
         group.set({ left: bedW / 2, top: bedH / 2, originX: 'center', originY: 'center' });
         fabricRef.current.add(group);
@@ -65,7 +84,26 @@ const VectorEditor = forwardRef(function VectorEditor(
       evented: false,
       excludeFromExport: true,
     });
-    canvas.add(border);
+
+    // Soft-limit margin zone — a dashed inset rect distinct from the bed
+    // boundary's dash pattern/color (matches GCodePreview's amber [4,4] vs.
+    // this inset zone's tighter [2,2] dash), so the editor previews the same
+    // "stay off the edges" guidance the G-Code Outline tab already shows.
+    const marginZone = new fabric.Rect({
+      left: softLimitMargin, top: softLimitMargin,
+      width: Math.max(0, bedW - 2 * softLimitMargin),
+      height: Math.max(0, bedH - 2 * softLimitMargin),
+      fill: 'transparent',
+      stroke: 'rgba(255, 200, 0, 0.35)',
+      strokeWidth: 0.5,
+      strokeDashArray: [2, 2],
+      selectable: false,
+      evented: false,
+      excludeFromExport: true,
+    });
+
+    canvas.add(border, marginZone);
+    canvas.sendToBack(marginZone);
     canvas.sendToBack(border);
 
     const handleKeyDown = (e) => {
@@ -88,24 +126,38 @@ const VectorEditor = forwardRef(function VectorEditor(
       window.removeEventListener('keydown', handleKeyDown);
       canvas.dispose();
     };
-  }, [bedW, bedH]);
+  }, [bedW, bedH, softLimitMargin]);
 
-  // Inject SVG from tracer when prop changes
+  // Hard safety floor near the limit switches (machine origin corner) —
+  // mirrors GCodePreview's homeFloor overlay so the drawer previews the same
+  // danger zone. Only meaningful (and only drawn) once homed; redrawn whenever
+  // homing state/floor changes without needing to recreate the whole canvas.
   useEffect(() => {
-    if (!injectedSVG || !fabricRef.current) return;
-    // Clear existing user objects (keep bed boundary)
     const canvas = fabricRef.current;
-    canvas.getObjects().forEach((obj) => {
-      if (!obj.excludeFromExport) canvas.remove(obj);
-    });
-    fabric.loadSVGFromString(injectedSVG, (objects, options) => {
-      const group = fabric.util.groupSVGElements(objects, options);
-      group.scaleToWidth(Math.min(bedW * 0.9, group.width ?? bedW));
-      group.set({ left: bedW / 2, top: bedH / 2, originX: 'center', originY: 'center' });
-      canvas.add(group);
-      canvas.renderAll();
-    });
-  }, [injectedSVG, bedW, bedH]);
+    if (!canvas) return;
+    canvas.getObjects().filter(o => o.isHomeFloorOverlay).forEach(o => canvas.remove(o));
+    if (homed && homeFloor) {
+      const floorStyle = {
+        fill: 'rgba(241, 76, 76, 0.12)',
+        stroke: 'rgba(241, 76, 76, 0.6)',
+        strokeWidth: 0.5,
+        strokeDashArray: [1, 1],
+        selectable: false,
+        evented: false,
+        excludeFromExport: true,
+        isHomeFloorOverlay: true,
+      };
+      // Machine (0, 0) is the bottom-left corner of the bed; canvas Y grows
+      // downward (the opposite of machine Y — the compiler flips it on
+      // export), so the danger bands hug the left edge (x < floorX) and the
+      // bottom edge (canvas top = bedH - floorY, for y < floorY).
+      canvas.add(
+        new fabric.Rect({ ...floorStyle, left: 0, top: 0, width: homeFloor.x, height: bedH }),
+        new fabric.Rect({ ...floorStyle, left: 0, top: bedH - homeFloor.y, width: bedW, height: homeFloor.y })
+      );
+    }
+    canvas.renderAll();
+  }, [homed, homeFloor, bedW, bedH]);
 
   const setTool = useCallback((tool) => {
     const canvas = fabricRef.current;
@@ -125,6 +177,16 @@ const VectorEditor = forwardRef(function VectorEditor(
     canvas.off('mouse:down');
     canvas.off('mouse:move');
     canvas.off('mouse:up');
+
+    if (tool === 'eraser') {
+      canvas.defaultCursor = 'cell';
+      canvas.on('mouse:down', (opt) => {
+        if (opt.target && !opt.target.excludeFromExport) {
+          canvas.remove(opt.target);
+          canvas.renderAll();
+        }
+      });
+    }
 
     if (tool === 'rect' || tool === 'circle' || tool === 'line') {
       canvas.on('mouse:down', (opt) => {

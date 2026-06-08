@@ -1,5 +1,6 @@
 // Runs in Electron renderer process only — uses DOMParser (browser API).
 import { parseSVG, makeAbsolute } from 'svg-path-parser';
+import Offset from 'polygon-offset';
 import { isBackgroundColor } from './colorMatch';
 import { tessellateQuadratic, tessellateCubic } from './bezier';
 
@@ -139,6 +140,85 @@ function lineToPoints(el, transform) {
   return [{ type: 'M', x: p1.x, y: p1.y }, { type: 'L', x: p2.x, y: p2.y }];
 }
 
+// Split a point set into M..Z (or M..<end>) subpaths. A single SVG <path>
+// can contain several disjoint contours (e.g. letters with holes); each one
+// starts at an 'M' and, if closed, ends at a 'Z'.
+function splitIntoSubpaths(points) {
+  const subpaths = [];
+  let current = [];
+  for (const pt of points) {
+    if (pt.type === 'M' && current.length > 0) {
+      subpaths.push(current);
+      current = [pt];
+    } else {
+      current.push(pt);
+    }
+  }
+  if (current.length > 0) subpaths.push(current);
+  return subpaths;
+}
+
+function isClosedSubpath(subpath) {
+  return subpath.length > 2 && subpath[subpath.length - 1].type === 'Z';
+}
+
+// Convert a polygon-offset ring (array of [x, y] pairs, possibly with the
+// closing point repeated) back into the {type, x, y} point format the
+// compiler's G-code generator expects. Returns [] for degenerate rings.
+function ringToPoints(ring) {
+  let pts = ring;
+  if (pts.length > 1) {
+    const [fx, fy] = pts[0];
+    const [lx, ly] = pts[pts.length - 1];
+    if (Math.abs(fx - lx) < 1e-6 && Math.abs(fy - ly) < 1e-6) pts = pts.slice(0, -1);
+  }
+  if (pts.length < 3) return [];
+  const out = pts.map(([x, y], i) => ({ type: i === 0 ? 'M' : 'L', x, y }));
+  out.push({ type: 'Z', x: out[0].x, y: out[0].y });
+  return out;
+}
+
+const MAX_FILL_PASSES = 200;
+
+// Generate concentric inward-offset passes that fill a closed shape with
+// parallel strokes spaced `lineWidth` apart — so a pen wider than a hairline
+// can solid-fill the shape rather than draw only its outline. Returns an
+// array of point sets, starting with the outline itself (pass 0) and
+// shrinking inward until the shape is consumed or MAX_FILL_PASSES is hit.
+//
+// Limitation: only single-contour shapes are expanded this way (see the
+// `isClosedSubpath`/length === 1 check at the call site). Offsetting a
+// multi-contour shape (e.g. a letter "O") inward would shrink its inner
+// hole boundary the wrong way — toward the hole rather than toward the
+// filled ring — producing an incorrect toolpath. There is no off-the-shelf
+// solution for hole-aware pen-plotter fill (see spec notes), so multi-
+// contour shapes fall back to single-pass outline-only behaviour.
+function generateFillPasses(subpath, lineWidth) {
+  const outline = subpath.map((p) => ({ type: p.type === 'Z' ? 'Z' : p.type, x: p.x, y: p.y }));
+  if (!(lineWidth > 0)) return [outline];
+
+  const ring = subpath.map((p) => [p.x, p.y]);
+  const passes = [outline];
+  const offset = new Offset();
+
+  for (let i = 1; i <= MAX_FILL_PASSES; i++) {
+    let rings;
+    try {
+      rings = offset.data(ring).padding(i * lineWidth);
+    } catch {
+      break;
+    }
+    if (!rings || rings.length === 0) break;
+    // Non-convex shrinkage can split a ring into fragments; keep the
+    // largest one so the toolpath stays a single simple pass per offset step.
+    const largest = rings.reduce((a, b) => (b.length > a.length ? b : a));
+    const passPoints = ringToPoints(largest);
+    if (passPoints.length === 0) break;
+    passes.push(passPoints);
+  }
+  return passes;
+}
+
 function extractAllPointSets(svgString) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(svgString, 'image/svg+xml');
@@ -174,9 +254,23 @@ export function compileSVGToGCode(svgString, settings = {}) {
     bedH = 200,
     multicolorMode = false,
     backgroundColor = null,
+    lineWidth = 0,
+    fillWideStrokes = false,
   } = settings;
 
   if (maxFeedrate <= 0) throw new RangeError('maxFeedrate must be positive');
+
+  // Opt-in: expand a single-contour closed shape into N concentric inward
+  // passes spaced `lineWidth` apart, so a pen wider than a hairline can
+  // solid-fill it instead of drawing only its outline. Open paths and
+  // multi-contour shapes (e.g. letters with holes) are left as single-pass
+  // outlines — see generateFillPasses() for why holes can't be handled here.
+  const expandForFill = (points) => {
+    if (!fillWideStrokes || !(lineWidth > 0)) return [points];
+    const subpaths = splitIntoSubpaths(points);
+    if (subpaths.length !== 1 || !isClosedSubpath(subpaths[0])) return [points];
+    return generateFillPasses(subpaths[0], lineWidth);
+  };
 
   const allPointSets = extractAllPointSets(svgString);
   const lines = [];
@@ -185,7 +279,7 @@ export function compileSVGToGCode(svgString, settings = {}) {
   lines.push('G21 ; mm units');
   lines.push('G90 ; absolute positioning');
   lines.push(`F${maxFeedrate}`);
-  lines.push(`M280 P0 S${servoPenUp} ; pen up`);
+  lines.push(`M5 ; tool off`);
 
   // Helper to generate gcode for a single point set
   const generatePathGcode = (points) => {
@@ -199,17 +293,17 @@ export function compileSVGToGCode(svgString, settings = {}) {
 
       if (i === 0 || pt.type === 'M') {
         if (penDown) {
-          lines.push(`M280 P0 S${servoPenUp} ; pen up`);
+          lines.push(`M5 ; tool off`);
           penDown = false;
         }
         lines.push(`G0 X${x} Y${y}`);
       } else if (pt.type === 'Z') {
         lines.push(`G1 X${x} Y${y} F${maxFeedrate}`);
-        lines.push(`M280 P0 S${servoPenUp} ; pen up`);
+        lines.push(`M5 ; tool off`);
         penDown = false;
       } else {
         if (!penDown) {
-          lines.push(`M280 P0 S${servoPenDown} ; pen down`);
+          lines.push(`M3 ; tool on`);
           penDown = true;
         }
         lines.push(`G1 X${x} Y${y} F${maxFeedrate}`);
@@ -217,7 +311,7 @@ export function compileSVGToGCode(svgString, settings = {}) {
     }
 
     if (penDown) {
-      lines.push(`M280 P0 S${servoPenUp} ; pen up`);
+      lines.push(`M5 ; tool off`);
     }
   };
 
@@ -232,15 +326,14 @@ export function compileSVGToGCode(svgString, settings = {}) {
     for (const [color, groups] of Object.entries(colorGroups)) {
       lines.push(`M0 ; Change pen to color: ${color}`);
       for (const points of groups) {
-        generatePathGcode(points);
+        for (const pass of expandForFill(points)) generatePathGcode(pass);
       }
     }
   } else {
     for (const set of validSets) {
-      generatePathGcode(set.points);
+      for (const pass of expandForFill(set.points)) generatePathGcode(pass);
     }
   }
 
-  lines.push('G0 X0 Y0 ; return home');
   return lines;
 }

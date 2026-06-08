@@ -25,27 +25,28 @@ export default function Image2GCodePage() {
 
   const {
     activeTab, setActiveTab,
-    lineWidth, setLineWidth,
-    fillWideStrokes, setFillWideStrokes,
+    lineWidth,
+    fillWideStrokes,
     tracedSVG, setTracedSVG,
     compiledGCode, setCompiledGCode,
     multicolorMode,
     backgroundColor,
   } = useImage2GCode();
 
-  const [injectedSVG, setInjectedSVG] = React.useState(null);
   const [compileError, setCompileError] = React.useState('');
-  const [compileWarning, setCompileWarning] = React.useState(null); // null | number (violation count)
+  const [compileWarning, setCompileWarning] = React.useState(null);
   const editorRef = useRef(null);
 
-  const handleSendToDrawer = useCallback((svgString) => {
+  // Add traced SVG to the canvas without clearing existing content, then switch to canvas tab
+  const handleAddToCanvas = useCallback((svgString) => {
     setTracedSVG(svgString);
-    setInjectedSVG(svgString);
-    setActiveTab('drawer');
+    if (editorRef.current) {
+      editorRef.current.addSVG(svgString);
+    }
+    setActiveTab('canvas');
     setCompileWarning(null);
   }, [setTracedSVG, setActiveTab]);
 
-  // Clear stale compile warning when a new image is loaded
   useEffect(() => {
     setCompileWarning(null);
   }, [tracedSVG]);
@@ -53,13 +54,13 @@ export default function Image2GCodePage() {
   const handleCompile = useCallback(() => {
     setCompileWarning(null);
     let svgSource = '';
-    if (activeTab === 'drawer' && editorRef.current) {
+    if (activeTab === 'canvas' && editorRef.current) {
       svgSource = editorRef.current.toSVG();
     } else if (tracedSVG) {
       svgSource = tracedSVG;
     }
     if (!svgSource) {
-      setCompileError('Nothing to compile. Draw something or trace an image first.');
+      setCompileError('Nothing to compile. Trace an image or draw on the canvas first.');
       return;
     }
     setCompileError('');
@@ -92,7 +93,6 @@ export default function Image2GCodePage() {
   }, [activeTab, tracedSVG, settings, bedH, multicolorMode, backgroundColor, lineWidth, fillWideStrokes, setCompiledGCode]);
 
   const [dialog, setDialog] = React.useState({ open: false });
-
   const closeDialog = useCallback(() => setDialog({ open: false }), []);
 
   const performSaveJob = useCallback(async (name) => {
@@ -102,13 +102,9 @@ export default function Image2GCodePage() {
       navigate('/gcode');
     } else {
       setDialog({
-        open: true,
-        mode: 'alert',
-        title: 'Save Failed',
+        open: true, mode: 'alert', title: 'Save Failed',
         message: `Failed to save job: ${result?.error || 'Unknown error'}`,
-        confirmLabel: 'OK',
-        onConfirm: closeDialog,
-        onCancel: closeDialog,
+        confirmLabel: 'OK', onConfirm: closeDialog, onCancel: closeDialog,
       });
     }
   }, [compiledGCode, addLoadedFile, navigate, closeDialog]);
@@ -117,17 +113,10 @@ export default function Image2GCodePage() {
     if (compiledGCode.length === 0) return;
     const defaultName = `Image Job ${new Date().toTimeString().slice(0, 8)}`;
     setDialog({
-      open: true,
-      mode: 'prompt',
-      title: 'Save Job',
+      open: true, mode: 'prompt', title: 'Save Job',
       message: 'Enter a name for this job:',
-      defaultValue: defaultName,
-      confirmLabel: 'Save',
-      onConfirm: (name) => {
-        closeDialog();
-        if (!name || !name.trim()) return;
-        performSaveJob(name.trim());
-      },
+      defaultValue: defaultName, confirmLabel: 'Save',
+      onConfirm: (name) => { closeDialog(); if (name?.trim()) performSaveJob(name.trim()); },
       onCancel: closeDialog,
     });
   }, [compiledGCode, closeDialog, performSaveJob]);
@@ -136,7 +125,7 @@ export default function Image2GCodePage() {
     if (compiledGCode.length > 0) startStreaming(compiledGCode, 'Image Job');
   }, [compiledGCode, startStreaming]);
 
-  const canCompile = activeTab === 'drawer' || !!tracedSVG;
+  const canCompile = activeTab === 'canvas' || !!tracedSVG;
 
   return (
     <div className="page i2g-page">
@@ -149,136 +138,110 @@ export default function Image2GCodePage() {
         <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
           <h2>Image to G-Code is not supported in Drill Mode</h2>
           <p style={{ color: 'var(--text-secondary)' }}>
-            This feature is designed for Pen and Laser modes. Switch modes from the top menu to use it.
+            Switch to Pen or Laser mode to use this feature.
           </p>
         </div>
       ) : (
         <div className="i2g-layout">
           {/* ── Tab bar ─────────────────────────────────────── */}
-        <div className="i2g-tabs">
-          <button
-            className={`i2g-tab${activeTab === 'outline' ? ' active' : ''}`}
-            onClick={() => setActiveTab('outline')}
-          >
-            Outline
-          </button>
-          <button
-            className={`i2g-tab${activeTab === 'multicolor' ? ' active' : ''}`}
-            onClick={() => setActiveTab('multicolor')}
-          >
-            Multicolor
-          </button>
-          <button
-            className={`i2g-tab${activeTab === 'drawer' ? ' active' : ''}`}
-            onClick={() => setActiveTab('drawer')}
-          >
-            Drawing
-          </button>
-          <button
-            className={`i2g-tab${activeTab === 'gcode' ? ' active' : ''}`}
-            onClick={() => setActiveTab('gcode')}
-          >
-            G-Code Preview
-          </button>
-        </div>
+          <div className="i2g-tabs">
+            <button
+              className={`i2g-tab${activeTab === 'upload' ? ' active' : ''}`}
+              onClick={() => setActiveTab('upload')}
+            >
+              Upload &amp; Transform
+            </button>
+            <button
+              className={`i2g-tab${activeTab === 'canvas' ? ' active' : ''}`}
+              onClick={() => setActiveTab('canvas')}
+            >
+              Canvas
+            </button>
+            <button
+              className={`i2g-tab${activeTab === 'gcode' ? ' active' : ''}`}
+              onClick={() => setActiveTab('gcode')}
+            >
+              G-Code Preview
+            </button>
+          </div>
 
-        {/* ── Tab content ─────────────────────────────────── */}
-        <div className="i2g-tab-body">
-          <div style={{ display: (activeTab === 'outline' || activeTab === 'multicolor') ? 'flex' : 'none', height: '100%' }}>
-            <ImageToGCodeTab
-              onSendToDrawer={handleSendToDrawer}
-              mode={activeTab === 'multicolor' ? 'multicolor' : 'outline'}
-            />
-          </div>
-          <div style={{ display: activeTab === 'drawer' ? 'flex' : 'none', height: '100%' }}>
-            <VectorDrawerTab
-              editorRef={editorRef}
-              bedW={bedW}
-              bedH={bedH}
-              lineWidth={lineWidth}
-              injectedSVG={injectedSVG}
-              backgroundColor={multicolorMode ? backgroundColor : null}
-              softLimitMargin={settings?.softLimitMargin ?? 10}
-              homed={homed}
-              homeFloor={homed ? homeFloor : null}
-            />
-          </div>
-          <div style={{ display: activeTab === 'gcode' ? 'flex' : 'none', height: '100%' }}>
-            <div className="tab-content gcode-preview-tab">
-              <div className="outline-tab-info">
-                <span className="gcode-line-count">
-                  {compiledGCode.length > 0 ? `${compiledGCode.length} lines` : 'No G-Code — compile a job first'}
-                </span>
-                {compileWarning && (
-                  <span style={{ color: 'rgba(255, 200, 0, 0.9)', fontSize: '12px' }}>
-                    ⚠ {compileWarning} line{compileWarning !== 1 ? 's' : ''} outside safe margin
+          {/* ── Tab content ─────────────────────────────────── */}
+          <div className="i2g-tab-body">
+            <div style={{ display: activeTab === 'upload' ? 'flex' : 'none', height: '100%' }}>
+              <ImageToGCodeTab onAddToCanvas={handleAddToCanvas} />
+            </div>
+
+            {/* Canvas tab: always mounted so the Fabric.js state survives tab switches */}
+            <div style={{ display: activeTab === 'canvas' ? 'flex' : 'none', height: '100%' }}>
+              <VectorDrawerTab
+                editorRef={editorRef}
+                bedW={bedW}
+                bedH={bedH}
+                lineWidth={lineWidth}
+                backgroundColor={multicolorMode ? backgroundColor : null}
+                softLimitMargin={settings?.softLimitMargin ?? 10}
+                homed={homed}
+                homeFloor={homed ? homeFloor : null}
+              />
+            </div>
+
+            <div style={{ display: activeTab === 'gcode' ? 'flex' : 'none', height: '100%' }}>
+              <div className="tab-content gcode-preview-tab">
+                <div className="outline-tab-info">
+                  <span className="gcode-line-count">
+                    {compiledGCode.length > 0 ? `${compiledGCode.length} lines` : 'No G-Code — compile a job first'}
                   </span>
-                )}
-              </div>
-              <div className="outline-tab-preview">
-                <GCodePreview lines={compiledGCode} bedW={bedW} bedH={bedH} softLimitMargin={settings.softLimitMargin ?? 10} homeFloor={homed ? homeFloor : null} />
+                  {compileWarning && (
+                    <span style={{ color: 'rgba(255, 200, 0, 0.9)', fontSize: '12px' }}>
+                      ⚠ {compileWarning} line{compileWarning !== 1 ? 's' : ''} outside safe margin
+                    </span>
+                  )}
+                </div>
+                <div className="outline-tab-preview">
+                  <GCodePreview lines={compiledGCode} bedW={bedW} bedH={bedH} softLimitMargin={settings.softLimitMargin ?? 10} homeFloor={homed ? homeFloor : null} />
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* ── Shared bottom bar ────────────────────────────── */}
-        <div className="i2g-bottom-bar card">
-          <div className="bottom-bar-left">
-            <label className="bottom-label">Line Width (mm)</label>
-            <input
-              type="number"
-              min="0.1"
-              max="10"
-              step="0.1"
-              value={lineWidth}
-              onChange={(e) => setLineWidth(Number(e.target.value))}
-              className="number-input line-width-input"
-            />
-            <label className="bottom-label" style={{ display: 'flex', alignItems: 'center', gap: 6, marginLeft: 12 }}
-              title="Draw closed shapes as N parallel inward passes spaced by Line Width, instead of just their outline. Multiplies job time roughly by the number of passes.">
-              <input
-                type="checkbox"
-                checked={fillWideStrokes}
-                onChange={(e) => setFillWideStrokes(e.target.checked)}
-              />
-              Fill wide strokes
-            </label>
-            <button
-              className="btn btn-primary"
-              onClick={handleCompile}
-              disabled={!canCompile}
-            >
-              <Zap size={14} style={{ marginRight: 6 }} />
-              Compile Job
-            </button>
-            {compileError && <span className="error-text" style={{ marginLeft: 8 }}>{compileError}</span>}
-          </div>
+          {/* ── Shared bottom bar ────────────────────────────── */}
+          <div className="i2g-bottom-bar card">
+            <div className="bottom-bar-left">
+              <button
+                className="btn btn-primary"
+                onClick={handleCompile}
+                disabled={!canCompile}
+              >
+                <Zap size={14} style={{ marginRight: 6 }} />
+                Compile Job
+              </button>
+              {compileError && <span className="error-text" style={{ marginLeft: 8 }}>{compileError}</span>}
+            </div>
 
-          <div className="bottom-bar-right">
-            <span className="gcode-line-count">
-              {compiledGCode.length > 0 ? `${compiledGCode.length} lines` : 'No G-Code'}
-            </span>
-            <button
-              className="btn btn-secondary"
-              onClick={handleSaveJob}
-              disabled={compiledGCode.length === 0}
-              title="Save G-code and send to jobs"
-            >
-              <Save size={14} style={{ marginRight: 6 }} />
-              Save Job
-            </button>
-            <button
-              className="btn btn-success"
-              onClick={handleStart}
-              disabled={!connected || compiledGCode.length === 0 || streaming}
-            >
-              <Play size={14} style={{ marginRight: 6 }} />
-              Run Job
-            </button>
+            <div className="bottom-bar-right">
+              <span className="gcode-line-count">
+                {compiledGCode.length > 0 ? `${compiledGCode.length} lines` : 'No G-Code'}
+              </span>
+              <button
+                className="btn btn-secondary"
+                onClick={handleSaveJob}
+                disabled={compiledGCode.length === 0}
+                title="Save G-code and send to jobs"
+              >
+                <Save size={14} style={{ marginRight: 6 }} />
+                Save Job
+              </button>
+              <button
+                className="btn btn-success"
+                onClick={handleStart}
+                disabled={!connected || compiledGCode.length === 0 || streaming}
+              >
+                <Play size={14} style={{ marginRight: 6 }} />
+                Run Job
+              </button>
+            </div>
           </div>
         </div>
-      </div>
       )}
 
       <Dialog {...dialog} />

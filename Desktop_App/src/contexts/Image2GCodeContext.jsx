@@ -20,13 +20,14 @@ export function Image2GCodeProvider({ children }) {
     threshold: 128,
   });
   const [compiledGCode, setCompiledGCode] = useState([]);
-  const [activeTab, setActiveTab] = useState('outline');
+  const [activeTab, setActiveTab] = useState('upload');
   const [lineWidth, setLineWidth] = useState(1);
   const [fillWideStrokes, setFillWideStrokes] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState(null);
+  const [tracerMode, setTracerMode] = useState('outline'); // 'outline' | 'multicolor'
 
-  // multicolorMode is always derived from activeTab — no separate state needed
-  const multicolorMode = activeTab === 'multicolor';
+  // multicolorMode is derived from tracerMode — not a separate stored state
+  const multicolorMode = tracerMode === 'multicolor';
 
   const value = {
     previewSrc, setPreviewSrc,
@@ -38,6 +39,7 @@ export function Image2GCodeProvider({ children }) {
     fillWideStrokes, setFillWideStrokes,
     multicolorMode,
     backgroundColor, setBackgroundColor,
+    tracerMode, setTracerMode,
   };
 
   return <Image2GCodeContext.Provider value={value}>{children}</Image2GCodeContext.Provider>;

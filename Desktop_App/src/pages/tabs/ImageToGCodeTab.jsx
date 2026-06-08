@@ -1,16 +1,19 @@
 import React, { useRef, useEffect } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { PlusCircle } from 'lucide-react';
 import { useImageTracer } from '../../hooks/useImageTracer';
 import { useImage2GCode } from '../../contexts/Image2GCodeContext';
 import { binarizeImageData } from '../../lib/imageBinarize';
 
-export default function ImageToGCodeTab({ onSendToDrawer, mode }) {
+export default function ImageToGCodeTab({ onAddToCanvas }) {
   const { trace, result: tracerResult, backgroundColor: sampledBackground, loading, error } = useImageTracer();
   const {
     previewSrc, setPreviewSrc,
     tracedSVG, setTracedSVG,
     tracerOptions, setTracerOptions,
     setBackgroundColor,
+    tracerMode, setTracerMode,
+    lineWidth, setLineWidth,
+    fillWideStrokes, setFillWideStrokes,
   } = useImage2GCode();
 
   const fileInputRef = useRef(null);
@@ -24,9 +27,9 @@ export default function ImageToGCodeTab({ onSendToDrawer, mode }) {
     if (sampledBackground) setBackgroundColor(sampledBackground);
   }, [sampledBackground, setBackgroundColor]);
 
-  // Live threshold preview: re-binarize whenever source image or threshold changes (outline mode only)
+  // Live threshold preview: re-binarize when source image or threshold changes (outline mode only)
   useEffect(() => {
-    if (mode !== 'outline' || !previewSrc) return;
+    if (tracerMode !== 'outline' || !previewSrc) return;
     const canvas = binarizedCanvasRef.current;
     if (!canvas) return;
     const img = new Image();
@@ -40,7 +43,7 @@ export default function ImageToGCodeTab({ onSendToDrawer, mode }) {
       ctx.putImageData(new ImageData(binarized.data, binarized.width, binarized.height), 0, 0);
     };
     img.src = previewSrc;
-  }, [previewSrc, tracerOptions.threshold, mode]);
+  }, [previewSrc, tracerOptions.threshold, tracerMode]);
 
   const setOpt = (key, val) =>
     setTracerOptions((prev) => ({ ...prev, [key]: val }));
@@ -53,19 +56,31 @@ export default function ImageToGCodeTab({ onSendToDrawer, mode }) {
     reader.onload = (ev) => {
       setPreviewSrc(ev.target.result);
       setTracedSVG(null);
-      trace(ev.target.result, { ...tracerOptions, multicolorMode: mode === 'multicolor' });
+      trace(ev.target.result, { ...tracerOptions, multicolorMode: tracerMode === 'multicolor' });
     };
     reader.readAsDataURL(file);
   };
 
   const handleRetrace = () => {
-    if (previewSrc) trace(previewSrc, { ...tracerOptions, multicolorMode: mode === 'multicolor' });
+    if (previewSrc) trace(previewSrc, { ...tracerOptions, multicolorMode: tracerMode === 'multicolor' });
   };
 
   return (
     <div className="tab-content image-tab">
+      {/* ── Controls panel ───────────────────────────────────────────────── */}
       <div className="image-tab-controls card">
-        <h3 className="section-header">Import Image</h3>
+
+        {/* Mode toggle */}
+        <div className="tracer-mode-toggle">
+          <button
+            className={`mode-btn${tracerMode === 'outline' ? ' active' : ''}`}
+            onClick={() => setTracerMode('outline')}
+          >Outline</button>
+          <button
+            className={`mode-btn${tracerMode === 'multicolor' ? ' active' : ''}`}
+            onClick={() => setTracerMode('multicolor')}
+          >Multicolor</button>
+        </div>
 
         <div className="form-group">
           <label>Image File (JPG / PNG)</label>
@@ -78,27 +93,23 @@ export default function ImageToGCodeTab({ onSendToDrawer, mode }) {
           />
         </div>
 
-        {mode === 'outline' && (
+        {tracerMode === 'outline' && (
           <div className="form-group">
             <label>Ink Threshold: {tracerOptions.threshold}</label>
             <input type="range" min="0" max="255" value={tracerOptions.threshold}
               onChange={(e) => setOpt('threshold', Number(e.target.value))}
               className="slider" disabled={loading} />
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0.25rem 0 0' }}>
-              Pixels darker than this are drawn; lighter pixels are skipped.
-            </p>
+            <p className="hint-text">Pixels darker than this are drawn; lighter are skipped.</p>
           </div>
         )}
 
-        {mode === 'multicolor' && (
+        {tracerMode === 'multicolor' && (
           <div className="form-group">
             <label>Color Levels: {tracerOptions.numberofcolors}</label>
             <input type="range" min="2" max="16" value={tracerOptions.numberofcolors}
               onChange={(e) => setOpt('numberofcolors', Number(e.target.value))}
               className="slider" disabled={loading} />
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0.25rem 0 0' }}>
-              Number of distinct ink colors to extract. Machine pauses between colors for pen swap.
-            </p>
+            <p className="hint-text">Number of distinct ink colors. Machine pauses between colors.</p>
           </div>
         )}
 
@@ -107,9 +118,7 @@ export default function ImageToGCodeTab({ onSendToDrawer, mode }) {
           <input type="range" min="0.1" max="4" step="0.1" value={tracerOptions.qtres}
             onChange={(e) => setOpt('qtres', Number(e.target.value))}
             className="slider" disabled={loading} />
-          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0.25rem 0 0' }}>
-            Higher = smoother curves. Lower = follows contours more precisely.
-          </p>
+          <p className="hint-text">Higher = smoother curves. Lower = follows contours precisely.</p>
         </div>
 
         <div className="form-group">
@@ -117,9 +126,31 @@ export default function ImageToGCodeTab({ onSendToDrawer, mode }) {
           <input type="range" min="0" max="64" value={tracerOptions.pathomit}
             onChange={(e) => setOpt('pathomit', Number(e.target.value))}
             className="slider" disabled={loading} />
-          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0.25rem 0 0' }}>
-            Removes stray marks smaller than this size (pixels).
-          </p>
+          <p className="hint-text">Removes stray marks smaller than this size.</p>
+        </div>
+
+        {/* Output/compile settings */}
+        <div className="settings-divider">Output Settings</div>
+
+        <div className="output-settings-row">
+          <div className="form-group form-group--small">
+            <label>Line Width (mm)</label>
+            <input
+              type="number" min="0.1" max="10" step="0.1"
+              value={lineWidth}
+              onChange={(e) => setLineWidth(Number(e.target.value))}
+              className="number-input"
+              style={{ width: 70 }}
+            />
+          </div>
+          <label className="checkbox-label" title="Draw closed shapes as parallel inward passes spaced by Line Width">
+            <input
+              type="checkbox"
+              checked={fillWideStrokes}
+              onChange={(e) => setFillWideStrokes(e.target.checked)}
+            />
+            Fill wide strokes
+          </label>
         </div>
 
         <button
@@ -134,17 +165,18 @@ export default function ImageToGCodeTab({ onSendToDrawer, mode }) {
         {tracedSVG && (
           <button
             className="btn btn-primary"
-            onClick={() => onSendToDrawer(tracedSVG)}
-            style={{ width: '100%', marginTop: '0.5rem' }}
+            onClick={() => onAddToCanvas(tracedSVG)}
+            style={{ width: '100%' }}
           >
-            <ArrowRight size={14} style={{ marginRight: 6 }} />
-            Open in Drawer
+            <PlusCircle size={14} style={{ marginRight: 6 }} />
+            Add to Canvas
           </button>
         )}
 
         {error && <p className="error-text">{error}</p>}
       </div>
 
+      {/* ── Preview panel ────────────────────────────────────────────────── */}
       <div className="image-tab-preview card">
         <h3 className="section-header">Original</h3>
         <div className="preview-box">
@@ -153,7 +185,7 @@ export default function ImageToGCodeTab({ onSendToDrawer, mode }) {
             : <span className="placeholder-text">No image loaded</span>}
         </div>
 
-        {mode === 'outline' && (
+        {tracerMode === 'outline' && (
           <>
             <h3 className="section-header">Threshold Preview</h3>
             <div className="preview-box">

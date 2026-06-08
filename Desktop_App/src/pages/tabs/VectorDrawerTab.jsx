@@ -1,7 +1,10 @@
 import React from 'react';
 import VectorEditor from '../../components/VectorEditor/VectorEditor';
 
-export default function VectorDrawerTab({ editorRef, bedW, bedH, lineWidth, injectedSVG }) {
+export default function VectorDrawerTab({
+  editorRef, bedW, bedH, lineWidth,
+  backgroundColor, softLimitMargin, homed, homeFloor,
+}) {
   return (
     <div className="tab-content drawer-tab">
       <VectorEditor
@@ -9,7 +12,10 @@ export default function VectorDrawerTab({ editorRef, bedW, bedH, lineWidth, inje
         bedW={bedW}
         bedH={bedH}
         lineWidth={lineWidth}
-        injectedSVG={injectedSVG}
+        backgroundColor={backgroundColor}
+        softLimitMargin={softLimitMargin}
+        homed={homed}
+        homeFloor={homeFloor}
       />
     </div>
   );
