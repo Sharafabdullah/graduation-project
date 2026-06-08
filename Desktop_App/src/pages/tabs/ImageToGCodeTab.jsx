@@ -4,36 +4,29 @@ import { useImageTracer } from '../../hooks/useImageTracer';
 import { useImage2GCode } from '../../contexts/Image2GCodeContext';
 import { binarizeImageData } from '../../lib/imageBinarize';
 
-export default function ImageToGCodeTab({ onSendToDrawer }) {
+export default function ImageToGCodeTab({ onSendToDrawer, mode }) {
   const { trace, result: tracerResult, backgroundColor: sampledBackground, loading, error } = useImageTracer();
   const {
     previewSrc, setPreviewSrc,
     tracedSVG, setTracedSVG,
     tracerOptions, setTracerOptions,
-    multicolorMode, setMulticolorMode,
     setBackgroundColor,
   } = useImage2GCode();
 
   const fileInputRef = useRef(null);
   const binarizedCanvasRef = useRef(null);
 
-  // Sync worker result into context so it survives navigation
   useEffect(() => {
     if (tracerResult) setTracedSVG(tracerResult);
   }, [tracerResult, setTracedSVG]);
 
-  // Sync the multicolor-mode corner-sampled background color into context
-  // so the compiler can use it to identify background paths to skip.
   useEffect(() => {
     if (sampledBackground) setBackgroundColor(sampledBackground);
   }, [sampledBackground, setBackgroundColor]);
 
-  // Live threshold preview: re-binarize and redraw whenever the source
-  // image or threshold changes, so the user sees exactly what will be
-  // traced before committing to a (re)trace. Only relevant in single-color
-  // mode — multicolor mode traces the original image untouched.
+  // Live threshold preview: re-binarize whenever source image or threshold changes (outline mode only)
   useEffect(() => {
-    if (multicolorMode || !previewSrc) return;
+    if (mode !== 'outline' || !previewSrc) return;
     const canvas = binarizedCanvasRef.current;
     if (!canvas) return;
     const img = new Image();
@@ -47,7 +40,7 @@ export default function ImageToGCodeTab({ onSendToDrawer }) {
       ctx.putImageData(new ImageData(binarized.data, binarized.width, binarized.height), 0, 0);
     };
     img.src = previewSrc;
-  }, [previewSrc, tracerOptions.threshold, multicolorMode]);
+  }, [previewSrc, tracerOptions.threshold, mode]);
 
   const setOpt = (key, val) =>
     setTracerOptions((prev) => ({ ...prev, [key]: val }));
@@ -60,13 +53,13 @@ export default function ImageToGCodeTab({ onSendToDrawer }) {
     reader.onload = (ev) => {
       setPreviewSrc(ev.target.result);
       setTracedSVG(null);
-      trace(ev.target.result, { ...tracerOptions, multicolorMode });
+      trace(ev.target.result, { ...tracerOptions, multicolorMode: mode === 'multicolor' });
     };
     reader.readAsDataURL(file);
   };
 
   const handleRetrace = () => {
-    if (previewSrc) trace(previewSrc, { ...tracerOptions, multicolorMode });
+    if (previewSrc) trace(previewSrc, { ...tracerOptions, multicolorMode: mode === 'multicolor' });
   };
 
   return (
@@ -85,58 +78,48 @@ export default function ImageToGCodeTab({ onSendToDrawer }) {
           />
         </div>
 
-        <div className="form-group" style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-          <input
-            type="checkbox"
-            id="multicolor-mode"
-            checked={multicolorMode}
-            onChange={(e) => setMulticolorMode(e.target.checked)}
-            style={{ marginRight: '8px' }}
-          />
-          <label htmlFor="multicolor-mode" style={{ margin: 0, fontWeight: 'normal' }}>Enable Multicolor Mode (pauses for color changes)</label>
-        </div>
+        {mode === 'outline' && (
+          <div className="form-group">
+            <label>Ink Threshold: {tracerOptions.threshold}</label>
+            <input type="range" min="0" max="255" value={tracerOptions.threshold}
+              onChange={(e) => setOpt('threshold', Number(e.target.value))}
+              className="slider" disabled={loading} />
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0.25rem 0 0' }}>
+              Pixels darker than this are drawn; lighter pixels are skipped.
+            </p>
+          </div>
+        )}
+
+        {mode === 'multicolor' && (
+          <div className="form-group">
+            <label>Color Levels: {tracerOptions.numberofcolors}</label>
+            <input type="range" min="2" max="16" value={tracerOptions.numberofcolors}
+              onChange={(e) => setOpt('numberofcolors', Number(e.target.value))}
+              className="slider" disabled={loading} />
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0.25rem 0 0' }}>
+              Number of distinct ink colors to extract. Machine pauses between colors for pen swap.
+            </p>
+          </div>
+        )}
 
         <div className="form-group">
-          <label>Threshold (ink vs. paper): {tracerOptions.threshold}</label>
-          <input type="range" min="0" max="255" value={tracerOptions.threshold}
-            onChange={(e) => setOpt('threshold', Number(e.target.value))}
-            className="slider" disabled={loading || multicolorMode} />
+          <label>Curve Smoothness: {tracerOptions.qtres}</label>
+          <input type="range" min="0.1" max="4" step="0.1" value={tracerOptions.qtres}
+            onChange={(e) => setOpt('qtres', Number(e.target.value))}
+            className="slider" disabled={loading} />
           <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0.25rem 0 0' }}>
-            Pixels darker than this are drawn as ink; lighter pixels are skipped as paper.
+            Higher = smoother curves. Lower = follows contours more precisely.
           </p>
         </div>
 
         <div className="form-group">
-          <label>Colors: {tracerOptions.numberofcolors}</label>
-          <input type="range" min="2" max="16" value={tracerOptions.numberofcolors}
-            onChange={(e) => setOpt('numberofcolors', Number(e.target.value))}
-            className="slider" disabled={loading || !multicolorMode} />
-          {!multicolorMode && (
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0.25rem 0 0' }}>
-              Only used in Multicolor Mode — single-color traces always use a forced black/white palette.
-            </p>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label>Line Threshold (ltres): {tracerOptions.ltres}</label>
-          <input type="range" min="0.1" max="5" step="0.1" value={tracerOptions.ltres}
-            onChange={(e) => setOpt('ltres', Number(e.target.value))}
-            className="slider" disabled={loading} />
-        </div>
-
-        <div className="form-group">
-          <label>Spline Threshold (qtres): {tracerOptions.qtres}</label>
-          <input type="range" min="0.1" max="5" step="0.1" value={tracerOptions.qtres}
-            onChange={(e) => setOpt('qtres', Number(e.target.value))}
-            className="slider" disabled={loading} />
-        </div>
-
-        <div className="form-group">
-          <label>Min Path Length (pathomit): {tracerOptions.pathomit}</label>
-          <input type="range" min="1" max="32" value={tracerOptions.pathomit}
+          <label>Noise Filter: {tracerOptions.pathomit}px</label>
+          <input type="range" min="0" max="64" value={tracerOptions.pathomit}
             onChange={(e) => setOpt('pathomit', Number(e.target.value))}
             className="slider" disabled={loading} />
+          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0.25rem 0 0' }}>
+            Removes stray marks smaller than this size (pixels).
+          </p>
         </div>
 
         <button
@@ -145,7 +128,7 @@ export default function ImageToGCodeTab({ onSendToDrawer }) {
           disabled={!previewSrc || loading}
           style={{ width: '100%', marginTop: '0.5rem' }}
         >
-          {loading ? 'Tracing…' : 'Re-trace'}
+          {loading ? 'Tracing…' : tracedSVG ? 'Re-trace' : 'Trace'}
         </button>
 
         {tracedSVG && (
@@ -170,28 +153,25 @@ export default function ImageToGCodeTab({ onSendToDrawer }) {
             : <span className="placeholder-text">No image loaded</span>}
         </div>
 
-        {!multicolorMode && (
+        {mode === 'outline' && (
           <>
-            <h3 className="section-header" style={{ marginTop: '1rem' }}>Threshold Preview</h3>
+            <h3 className="section-header">Threshold Preview</h3>
             <div className="preview-box">
               {previewSrc
                 ? <canvas ref={binarizedCanvasRef} className="preview-canvas" />
-                : <span className="placeholder-text">Load an image to preview the black/white mask</span>}
+                : <span className="placeholder-text">Load an image to preview the B/W mask</span>}
             </div>
           </>
         )}
 
-        <h3 className="section-header" style={{ marginTop: '1rem' }}>Traced Vector</h3>
+        <h3 className="section-header">Traced Vector</h3>
         <div className="preview-box">
           {loading && <span className="placeholder-text">Tracing in background…</span>}
           {!loading && tracedSVG && (
-            <div
-              className="svg-preview"
-              dangerouslySetInnerHTML={{ __html: tracedSVG }}
-            />
+            <div className="svg-preview" dangerouslySetInnerHTML={{ __html: tracedSVG }} />
           )}
           {!loading && !tracedSVG && !error && (
-            <span className="placeholder-text">Result will appear here</span>
+            <span className="placeholder-text">Result will appear here after tracing</span>
           )}
         </div>
       </div>

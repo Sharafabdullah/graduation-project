@@ -2,6 +2,12 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  /* .page (components.css) sets overflow-y: auto, but this page manages its
+     own internal scroll regions per-tab (.image-tab-controls, .tab-content,
+     etc.). Letting the outer .page scroll too creates a double-scroll-parent
+     situation where percentage-height flex children resolve inconsistently
+     in Chromium/Electron — block it here so only the inner regions scroll. */
+  overflow: hidden;
 }
 
 .i2g-layout {
@@ -69,41 +75,54 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  min-height: 0;
+  gap: 0.25rem;
 }
 
 .preview-box {
   flex: 1;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--bg-primary);
   border: 1px solid var(--border-color);
   border-radius: 4px;
-  overflow: auto;
-  min-height: 100px;
+  overflow: hidden;
   padding: 0.5rem;
 }
 
 .preview-img {
   max-width: 100%;
-  max-height: 200px;
+  max-height: 100%;
+  width: auto;
+  height: 100%;
   object-fit: contain;
+  display: block;
 }
 
 .preview-canvas {
   max-width: 100%;
-  max-height: 200px;
+  max-height: 100%;
+  width: auto;
+  height: 100%;
   image-rendering: pixelated;
+  display: block;
 }
 
 .svg-preview {
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .svg-preview svg {
   max-width: 100%;
-  max-height: 250px;
+  max-height: 100%;
+  width: auto;
+  height: 100%;
   display: block;
 }
 
@@ -238,4 +257,14 @@
 
 .btn-success:hover:not(:disabled) {
   background: #338833;
+}
+
+/* G-Code Preview tab (renamed from .outline-tab) */
+.gcode-preview-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  gap: 1rem;
+  box-sizing: border-box;
 }

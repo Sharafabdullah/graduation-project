@@ -48,20 +48,16 @@ export function useImageTracer() {
     setError(null);
     setBackgroundColor(null);
 
-    const { multicolorMode = false, threshold = 128, ...tracerParams } = options;
+    const {
+      multicolorMode = false,
+      threshold = 128,
+      numberofcolors = 4,
+      ltres = 1,
+      qtres = 1,
+      pathomit = 8,
+      blurradius = 0,
+    } = options;
 
-    const defaultOptions = {
-      numberofcolors: 2,
-      colorquantcycles: 1,
-      ltres: 1,
-      qtres: 1,
-      pathomit: 8,
-      blurradius: 0,
-    };
-
-    // Decode the image on the main thread (DOM available here) so the
-    // worker receives raw RGBA pixels instead of a data URL — workers
-    // cannot call new Image() because they have no DOM access.
     const img = new Image();
     img.onload = () => {
       const canvas = document.createElement('canvas');
@@ -71,19 +67,16 @@ export function useImageTracer() {
       ctx.drawImage(img, 0, 0);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-      let pixelData = imageData;
-      let traceOptions = { ...defaultOptions, ...tracerParams };
+      let pixelData;
+      let traceOptions;
 
       if (multicolorMode) {
-        // Real-color tracing: sample the source image's corners so the
-        // compiler can identify (and skip) the background by closest match.
         setBackgroundColor(sampleCornerColor(imageData));
+        pixelData = imageData;
+        traceOptions = { numberofcolors, ltres, qtres, pathomit, blurradius };
       } else {
-        // Single-color tracing: binarize first so the tracer always receives
-        // strictly two-tone pixels — guarantees white=skip / black=draw
-        // regardless of the source image's lighting or scan artifacts.
         pixelData = binarizeImageData(imageData, threshold);
-        traceOptions = { ...traceOptions, numberofcolors: 2, colorsampling: 0 };
+        traceOptions = { numberofcolors: 2, ltres, qtres, pathomit, blurradius };
       }
 
       const buffer = pixelData.data.buffer.slice(0);

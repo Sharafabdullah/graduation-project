@@ -12,17 +12,21 @@ export function Image2GCodeProvider({ children }) {
   const [previewSrc, setPreviewSrc] = useState(null);
   const [tracedSVG, setTracedSVG] = useState(null);
   const [tracerOptions, setTracerOptions] = useState({
-    numberofcolors: 2,
+    numberofcolors: 4,
     ltres: 1,
     qtres: 1,
     pathomit: 8,
+    blurradius: 0,
     threshold: 128,
   });
   const [compiledGCode, setCompiledGCode] = useState([]);
-  const [activeTab, setActiveTab] = useState('image');
+  const [activeTab, setActiveTab] = useState('outline');
   const [lineWidth, setLineWidth] = useState(1);
-  const [multicolorMode, setMulticolorMode] = useState(false);
+  const [fillWideStrokes, setFillWideStrokes] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState(null);
+
+  // multicolorMode is always derived from activeTab — no separate state needed
+  const multicolorMode = activeTab === 'multicolor';
 
   const value = {
     previewSrc, setPreviewSrc,
@@ -31,7 +35,8 @@ export function Image2GCodeProvider({ children }) {
     compiledGCode, setCompiledGCode,
     activeTab, setActiveTab,
     lineWidth, setLineWidth,
-    multicolorMode, setMulticolorMode,
+    fillWideStrokes, setFillWideStrokes,
+    multicolorMode,
     backgroundColor, setBackgroundColor,
   };
 

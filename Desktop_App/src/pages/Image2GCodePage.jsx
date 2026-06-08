@@ -4,6 +4,7 @@ import { useSerial } from '../contexts/SerialContext';
 import { useSettings } from '../contexts/SettingsContext';
 import { useImage2GCode } from '../contexts/Image2GCodeContext';
 import { useJobs } from '../contexts/JobsContext';
+import { useMode } from '../contexts/ModeContext';
 import ImageToGCodeTab from './tabs/ImageToGCodeTab';
 import VectorDrawerTab from './tabs/VectorDrawerTab';
 import GCodePreview from '../components/GCodePreview';
@@ -14,9 +15,10 @@ import { Play, Save, Zap } from 'lucide-react';
 import './Image2GCodePage.css';
 
 export default function Image2GCodePage() {
-  const { connected, streaming, startStreaming } = useSerial();
+  const { connected, streaming, startStreaming, homed, homeFloor } = useSerial();
   const { settings } = useSettings();
   const { addLoadedFile } = useJobs();
+  const { mode } = useMode();
   const navigate = useNavigate();
   const bedW = settings?.bedMaxX || 200;
   const bedH = settings?.bedMaxY || 200;
@@ -24,6 +26,7 @@ export default function Image2GCodePage() {
   const {
     activeTab, setActiveTab,
     lineWidth, setLineWidth,
+    fillWideStrokes, setFillWideStrokes,
     tracedSVG, setTracedSVG,
     compiledGCode, setCompiledGCode,
     multicolorMode,
@@ -68,6 +71,8 @@ export default function Image2GCodePage() {
         bedH,
         multicolorMode,
         backgroundColor: multicolorMode ? backgroundColor : null,
+        lineWidth,
+        fillWideStrokes,
       });
       if (!lines.some(l => l.startsWith('G1'))) {
         setCompileError('No drawable paths found. Add shapes or trace an image first.');
@@ -84,7 +89,7 @@ export default function Image2GCodePage() {
     } catch (err) {
       setCompileError(`Compile error: ${err.message}`);
     }
-  }, [activeTab, tracedSVG, settings, bedH, multicolorMode, backgroundColor, setCompiledGCode]);
+  }, [activeTab, tracedSVG, settings, bedH, multicolorMode, backgroundColor, lineWidth, fillWideStrokes, setCompiledGCode]);
 
   const [dialog, setDialog] = React.useState({ open: false });
 
@@ -140,33 +145,50 @@ export default function Image2GCodePage() {
         <p className="page-subtitle">Trace images or draw vectors, then compile and run</p>
       </div>
 
-      <div className="i2g-layout">
-        {/* ── Tab bar ─────────────────────────────────────── */}
+      {mode === 'drill' ? (
+        <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
+          <h2>Image to G-Code is not supported in Drill Mode</h2>
+          <p style={{ color: 'var(--text-secondary)' }}>
+            This feature is designed for Pen and Laser modes. Switch modes from the top menu to use it.
+          </p>
+        </div>
+      ) : (
+        <div className="i2g-layout">
+          {/* ── Tab bar ─────────────────────────────────────── */}
         <div className="i2g-tabs">
           <button
-            className={`i2g-tab${activeTab === 'image' ? ' active' : ''}`}
-            onClick={() => setActiveTab('image')}
+            className={`i2g-tab${activeTab === 'outline' ? ' active' : ''}`}
+            onClick={() => setActiveTab('outline')}
           >
-            Import &amp; Trace
+            Outline
+          </button>
+          <button
+            className={`i2g-tab${activeTab === 'multicolor' ? ' active' : ''}`}
+            onClick={() => setActiveTab('multicolor')}
+          >
+            Multicolor
           </button>
           <button
             className={`i2g-tab${activeTab === 'drawer' ? ' active' : ''}`}
             onClick={() => setActiveTab('drawer')}
           >
-            Draw &amp; Finalize
+            Drawing
           </button>
           <button
-            className={`i2g-tab${activeTab === 'outline' ? ' active' : ''}`}
-            onClick={() => setActiveTab('outline')}
+            className={`i2g-tab${activeTab === 'gcode' ? ' active' : ''}`}
+            onClick={() => setActiveTab('gcode')}
           >
-            G-Code Outline
+            G-Code Preview
           </button>
         </div>
 
         {/* ── Tab content ─────────────────────────────────── */}
         <div className="i2g-tab-body">
-          <div style={{ display: activeTab === 'image' ? 'flex' : 'none', height: '100%' }}>
-            <ImageToGCodeTab onSendToDrawer={handleSendToDrawer} />
+          <div style={{ display: (activeTab === 'outline' || activeTab === 'multicolor') ? 'flex' : 'none', height: '100%' }}>
+            <ImageToGCodeTab
+              onSendToDrawer={handleSendToDrawer}
+              mode={activeTab === 'multicolor' ? 'multicolor' : 'outline'}
+            />
           </div>
           <div style={{ display: activeTab === 'drawer' ? 'flex' : 'none', height: '100%' }}>
             <VectorDrawerTab
@@ -175,13 +197,17 @@ export default function Image2GCodePage() {
               bedH={bedH}
               lineWidth={lineWidth}
               injectedSVG={injectedSVG}
+              backgroundColor={multicolorMode ? backgroundColor : null}
+              softLimitMargin={settings?.softLimitMargin ?? 10}
+              homed={homed}
+              homeFloor={homed ? homeFloor : null}
             />
           </div>
-          <div style={{ display: activeTab === 'outline' ? 'flex' : 'none', height: '100%' }}>
-            <div className="tab-content outline-tab">
+          <div style={{ display: activeTab === 'gcode' ? 'flex' : 'none', height: '100%' }}>
+            <div className="tab-content gcode-preview-tab">
               <div className="outline-tab-info">
                 <span className="gcode-line-count">
-                  {compiledGCode.length > 0 ? `${compiledGCode.length} lines` : 'No G-Code — compile a job to see its outline'}
+                  {compiledGCode.length > 0 ? `${compiledGCode.length} lines` : 'No G-Code — compile a job first'}
                 </span>
                 {compileWarning && (
                   <span style={{ color: 'rgba(255, 200, 0, 0.9)', fontSize: '12px' }}>
@@ -190,7 +216,7 @@ export default function Image2GCodePage() {
                 )}
               </div>
               <div className="outline-tab-preview">
-                <GCodePreview lines={compiledGCode} bedW={bedW} bedH={bedH} softLimitMargin={settings.softLimitMargin ?? 10} />
+                <GCodePreview lines={compiledGCode} bedW={bedW} bedH={bedH} softLimitMargin={settings.softLimitMargin ?? 10} homeFloor={homed ? homeFloor : null} />
               </div>
             </div>
           </div>
@@ -209,6 +235,15 @@ export default function Image2GCodePage() {
               onChange={(e) => setLineWidth(Number(e.target.value))}
               className="number-input line-width-input"
             />
+            <label className="bottom-label" style={{ display: 'flex', alignItems: 'center', gap: 6, marginLeft: 12 }}
+              title="Draw closed shapes as N parallel inward passes spaced by Line Width, instead of just their outline. Multiplies job time roughly by the number of passes.">
+              <input
+                type="checkbox"
+                checked={fillWideStrokes}
+                onChange={(e) => setFillWideStrokes(e.target.checked)}
+              />
+              Fill wide strokes
+            </label>
             <button
               className="btn btn-primary"
               onClick={handleCompile}
@@ -244,6 +279,7 @@ export default function Image2GCodePage() {
           </div>
         </div>
       </div>
+      )}
 
       <Dialog {...dialog} />
     </div>
