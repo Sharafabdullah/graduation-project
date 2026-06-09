@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useMemo } from 'react';
 import { parsePath, formatPath } from '../../lib/pathOps.js';
 
 function buildNodes(cmds) {
@@ -21,8 +21,8 @@ function buildNodes(cmds) {
 
 export const NodeEditor = forwardRef(function NodeEditor({ path, onUpdateD, scale }, ref) {
   const dragging = useRef(null);
-  const cmds  = parsePath(path.d);
-  const nodes = buildNodes(cmds);
+  const cmds  = useMemo(() => parsePath(path.d), [path.d]);
+  const nodes = useMemo(() => buildNodes(cmds), [cmds]);
   const r     = 5 / Math.max(scale || 1, 0.1);
 
   useImperativeHandle(ref, () => ({

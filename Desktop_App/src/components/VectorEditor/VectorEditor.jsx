@@ -23,7 +23,7 @@ const VectorEditor = forwardRef(function VectorEditor(
 ) {
   const svgRef  = useRef(null);
   const wrapRef = useRef(null);
-  const { vt, onWheel, startPan, updatePan, endPan, toSvg } = useViewTransform();
+  const { vt, onWheel, startPan, updatePan, endPan } = useViewTransform();
 
   const [paths,      setPaths]      = useState([]);
   const [selectedId, setSelectedId] = useState(null);
@@ -95,18 +95,34 @@ const VectorEditor = forwardRef(function VectorEditor(
 
   useEffect(() => {
     const handleNodeDragStart = () => { isDraggingNode.current = true; };
+    const handleGlobalUp = () => {
+      if (isDraggingNode.current) {
+        isDraggingNode.current = false;
+        nodeEditorRef.current?.endDrag?.();
+      }
+    };
     const el = wrapRef.current;
     el?.addEventListener('node-drag-start', handleNodeDragStart);
-    return () => el?.removeEventListener('node-drag-start', handleNodeDragStart);
+    window.addEventListener('mouseup', handleGlobalUp);
+    return () => {
+      el?.removeEventListener('node-drag-start', handleNodeDragStart);
+      window.removeEventListener('mouseup', handleGlobalUp);
+    };
   }, []);
 
   // ── SVG coordinate conversion ───────────────────────────────────────────────
 
   const getSvgCoords = useCallback((e) => {
-    const rect = wrapRef.current?.getBoundingClientRect();
-    if (!rect) return { x: 0, y: 0 };
-    return toSvg(e.clientX, e.clientY, rect);
-  }, [toSvg]);
+    const svg = svgRef.current;
+    if (!svg) return { x: 0, y: 0 };
+    const rect = svg.getBoundingClientRect();
+    // rect.width/height is the rendered size of the SVG (after CSS transforms)
+    // viewBox is bedW × bedH
+    return {
+      x: (e.clientX - rect.left) / rect.width  * bedW,
+      y: (e.clientY - rect.top)  / rect.height * bedH,
+    };
+  }, [bedW, bedH]);
 
   const updateSelectedPath = useCallback((newD) => {
     setPaths(prev => prev.map(p => p.id === selectedId ? { ...p, d: newD } : p));
@@ -187,6 +203,31 @@ const VectorEditor = forwardRef(function VectorEditor(
     return () => window.removeEventListener('keydown', onKey);
   }, [selectedId, prevPaths, paths]);
 
+  // ── Global drag listeners (keep drag working when mouse exits container) ────
+
+  useEffect(() => {
+    const isAnyDragActive = isPanning || drawing !== null || lineStart !== null;
+    if (!isAnyDragActive) return;
+
+    const onGlobalMove = (e) => handleMouseMove(e);
+    const onGlobalUp   = (e) => handleMouseUp(e);
+    window.addEventListener('mousemove', onGlobalMove);
+    window.addEventListener('mouseup',   onGlobalUp);
+    return () => {
+      window.removeEventListener('mousemove', onGlobalMove);
+      window.removeEventListener('mouseup',   onGlobalUp);
+    };
+  }, [isPanning, drawing, lineStart, handleMouseMove, handleMouseUp]);
+
+  // ── Non-passive wheel listener ──────────────────────────────────────────────
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    const handler = (e) => { e.preventDefault(); onWheel(e); };
+    el?.addEventListener('wheel', handler, { passive: false });
+    return () => el?.removeEventListener('wheel', handler);
+  }, [onWheel]);
+
   // ── Operations ──────────────────────────────────────────────────────────────
 
   const handleSimplify = useCallback(() => {
@@ -234,14 +275,13 @@ const VectorEditor = forwardRef(function VectorEditor(
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
-        onWheel={onWheel}
       >
         <svg
           ref={svgRef}
           width={bedW * fitScale}
           height={bedH * fitScale}
           viewBox={`0 0 ${bedW} ${bedH}`}
-          style={{ display: 'block', background: '#ffffff' }}
+          style={{ display: 'block', background: '#ffffff', transform: `translate(${vt.x}px, ${vt.y}px) scale(${vt.scale})`, transformOrigin: '0 0' }}
         >
           {/* Bed boundary */}
           <rect x={0} y={0} width={bedW} height={bedH}
