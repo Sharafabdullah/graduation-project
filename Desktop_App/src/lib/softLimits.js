@@ -64,21 +64,73 @@ export function violatesSafeFloor(x, y, floorX, floorY) {
   return false;
 }
 
+// Axis-aligned bounding box of a G2/G3 arc in machine coordinates.
+// x0,y0 = start; x1,y1 = end; i,j = offsets from start to center; cw = clockwise
+function arcBounds(x0, y0, x1, y1, i, j, cw) {
+  const cx = x0 + i, cy = y0 + j;
+  const r  = Math.sqrt(i*i + j*j);
+  const startAngle = Math.atan2(y0 - cy, x0 - cx);
+  const endAngle   = Math.atan2(y1 - cy, x1 - cx);
+
+  let sweep;
+  if (cw) { sweep = startAngle - endAngle; if (sweep <= 0) sweep += 2*Math.PI; }
+  else     { sweep = endAngle - startAngle; if (sweep <= 0) sweep += 2*Math.PI; }
+
+  const pts = [{ x: x0, y: y0 }, { x: x1, y: y1 }];
+  for (const cardAngle of [0, Math.PI/2, Math.PI, 3*Math.PI/2]) {
+    let delta = cw ? (startAngle - cardAngle) : (cardAngle - startAngle);
+    while (delta < 0) delta += 2*Math.PI;
+    if (delta <= sweep) pts.push({ x: cx + r*Math.cos(cardAngle), y: cy + r*Math.sin(cardAngle) });
+  }
+  return {
+    minX: Math.min(...pts.map(p => p.x)), maxX: Math.max(...pts.map(p => p.x)),
+    minY: Math.min(...pts.map(p => p.y)), maxY: Math.max(...pts.map(p => p.y)),
+  };
+}
+
 /**
  * Scan an array of G-code line strings for boundary violations.
- * Only checks G0 and G1 lines that contain X or Y coordinates.
+ * Checks G0/G1 linear moves and G2/G3 arc moves (including full arc extent).
  * Returns an array of violation objects: { lineIndex, line, x, y }.
  */
 export function scanGCodeBounds(lines, { bedMaxX, bedMaxY, softLimitMargin }) {
   const violations = [];
+  let cx = 0, cy = 0; // track current machine position for arc bounds
+
   for (let i = 0; i < lines.length; i++) {
     const upper = lines[i].trim().toUpperCase();
-    if (!upper.startsWith('G0') && !upper.startsWith('G1')) continue;
+    const isG01 = upper.startsWith('G0 ') || upper.startsWith('G1 ') || upper === 'G0' || upper === 'G1';
+    const isG23 = /^G[23][\s]/.test(upper);
+
+    if (!isG01 && !isG23) continue;
+
     const pos = parseXY(upper);
     if (!pos) continue;
-    if (isInWarnZone(pos.x, pos.y, { bedMaxX, bedMaxY, softLimitMargin })) {
-      violations.push({ lineIndex: i, line: lines[i], x: pos.x, y: pos.y });
+    const nx = pos.x !== null ? pos.x : cx;
+    const ny = pos.y !== null ? pos.y : cy;
+
+    if (isG01) {
+      if (isInWarnZone(pos.x, pos.y, { bedMaxX, bedMaxY, softLimitMargin })) {
+        violations.push({ lineIndex: i, line: lines[i], x: pos.x, y: pos.y });
+      }
+    } else {
+      const iMatch = upper.match(/I([-\d.]+)/);
+      const jMatch = upper.match(/J([-\d.]+)/);
+      const oI = iMatch ? parseFloat(iMatch[1]) : 0;
+      const oJ = jMatch ? parseFloat(jMatch[1]) : 0;
+      const cw = upper[1] === '2';
+      const b  = arcBounds(cx, cy, nx, ny, oI, oJ, cw);
+      const checks = [
+        { x: b.minX, y: b.minY }, { x: b.maxX, y: b.minY },
+        { x: b.minX, y: b.maxY }, { x: b.maxX, y: b.maxY },
+        { x: nx,     y: ny     },
+      ];
+      if (checks.some(pt => isInWarnZone(pt.x, pt.y, { bedMaxX, bedMaxY, softLimitMargin }))) {
+        violations.push({ lineIndex: i, line: lines[i], x: nx, y: ny });
+      }
     }
+
+    cx = nx; cy = ny;
   }
   return violations;
 }
