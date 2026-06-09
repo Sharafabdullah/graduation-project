@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSerial } from '../contexts/SerialContext';
+import { useMode } from '../contexts/ModeContext';
 import { LayoutGrid, Move, FileBarChart2, Image, Settings, Terminal, XCircle, ChevronLeft } from 'lucide-react';
 import './Sidebar.css';
 
@@ -40,6 +41,7 @@ const NAV_ITEMS = [
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const { connected, portPath, machineState, logConsole, stopStreaming } = useSerial();
+  const { modeConfig } = useMode();
 
   const handleEStop = (e) => {
     e.stopPropagation();
@@ -58,18 +60,38 @@ export default function Sidebar() {
 
       {/* Navigation */}
       <nav className="sidebar-nav">
-        {NAV_ITEMS.map(item => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            end={item.path === '/'}
-            className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-            title={collapsed ? item.label : undefined}
-          >
-            <span className="nav-icon">{item.icon}</span>
-            {!collapsed && <span className="nav-label">{item.label}</span>}
-          </NavLink>
-        ))}
+        {NAV_ITEMS.map(item => {
+          // Disable Image2GCode in Drill mode (not applicable)
+          const isDisabled = item.path === '/image2gcode' && !modeConfig.image2gcodeEnabled;
+          if (isDisabled) {
+            return (
+              <div
+                key={item.path}
+                className="nav-item nav-item-disabled"
+                title={`Not available in ${modeConfig.label} Mode`}
+              >
+                <span className="nav-icon" style={{ opacity: 0.35 }}>{item.icon}</span>
+                {!collapsed && (
+                  <span className="nav-label" style={{ opacity: 0.35 }}>
+                    {item.label}
+                  </span>
+                )}
+              </div>
+            );
+          }
+          return (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              end={item.path === '/'}
+              className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+              title={collapsed ? item.label : undefined}
+            >
+              <span className="nav-icon">{item.icon}</span>
+              {!collapsed && <span className="nav-label">{item.label}</span>}
+            </NavLink>
+          );
+        })}
       </nav>
 
       {/* E-Stop Button */}

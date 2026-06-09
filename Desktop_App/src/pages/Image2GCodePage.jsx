@@ -209,7 +209,7 @@ export default function Image2GCodePage() {
           </div>
 
           {/* ── Shared bottom bar ────────────────────────────── */}
-          <div className="i2g-bottom-bar card">
+          <div className="i2g-bottom-bar">
             {compileError && <span className="error-text bottom-bar-error">{compileError}</span>}
             <span className="gcode-line-count">
               {compiledGCode.length > 0 ? `${compiledGCode.length} lines` : 'No G-Code'}

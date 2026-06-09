@@ -15,6 +15,7 @@ const VectorEditor = forwardRef(function VectorEditor(
   ref
 ) {
   const canvasElRef = useRef(null);
+  const canvasWrapRef = useRef(null);
   const fabricRef = useRef(null);
   const [activeTool, setActiveTool] = useState('select');
   const activeToolRef = useRef('select');
@@ -62,15 +63,14 @@ const VectorEditor = forwardRef(function VectorEditor(
   }));
 
   useEffect(() => {
-    // Scale canvas pixels so the editor is comfortably large (target ~600px for a 200mm bed)
-    const displayScale = Math.max(2, Math.min(4, 600 / Math.max(bedW, bedH)));
+    // Start at 1:1 (mm → px); ResizeObserver fits it to the container immediately.
     const canvas = new fabric.Canvas(canvasElRef.current, {
-      width: bedW * displayScale,
-      height: bedH * displayScale,
+      width: bedW,
+      height: bedH,
       backgroundColor: '#ffffff',
       selection: true,
     });
-    canvas.setZoom(displayScale);
+    canvas.setZoom(1);
     fabricRef.current = canvas;
 
     // Bed boundary (excluded from SVG export via custom property)
@@ -122,7 +122,26 @@ const VectorEditor = forwardRef(function VectorEditor(
     // Apply the initial tool after canvas is ready
     setTool(activeToolRef.current);
 
+    // Fit canvas to its container, preserving bed aspect ratio with padding.
+    const PADDING = 32;
+    const fitCanvas = () => {
+      const wrap = canvasWrapRef.current;
+      if (!wrap || !fabricRef.current) return;
+      const maxW = wrap.clientWidth  - PADDING * 2;
+      const maxH = wrap.clientHeight - PADDING * 2;
+      if (maxW <= 0 || maxH <= 0) return;
+      const scale = Math.min(maxW / bedW, maxH / bedH);
+      canvas.setWidth(Math.round(bedW * scale));
+      canvas.setHeight(Math.round(bedH * scale));
+      canvas.setZoom(scale);
+      canvas.requestRenderAll();
+    };
+    const ro = new ResizeObserver(fitCanvas);
+    if (canvasWrapRef.current) ro.observe(canvasWrapRef.current);
+    fitCanvas();
+
     return () => {
+      ro.disconnect();
       window.removeEventListener('keydown', handleKeyDown);
       canvas.dispose();
     };
@@ -328,7 +347,7 @@ const VectorEditor = forwardRef(function VectorEditor(
         onDeleteSelected={deleteSelected}
         onDeleteAll={deleteAll}
       />
-      <div className="canvas-wrap">
+      <div className="canvas-wrap" ref={canvasWrapRef}>
         <canvas ref={canvasElRef} />
       </div>
       <Dialog

@@ -12,10 +12,18 @@ contextBridge.exposeInMainWorld('platform', {
   loadGCodeFile: () => ipcRenderer.invoke('file:load-gcode'),
   saveLog: (content) => ipcRenderer.invoke('file:save-log', content),
   saveGCode: (lines) => ipcRenderer.invoke('file:save-gcode', lines),
+  saveJob: (name, lines) => ipcRenderer.invoke('file:save-job', name, lines),
+  getJobs: () => ipcRenderer.invoke('file:get-jobs'),
+  openJobsFolder: () => ipcRenderer.invoke('file:open-jobs-folder'),
 
   // Settings persistence
   loadSettings: () => ipcRenderer.invoke('settings:load'),
   saveSettings: (settings) => ipcRenderer.invoke('settings:save', settings),
+
+  // Firmware upload (portPath: string, mode: 'pen'|'drill'|'laser')
+  // Returns { success, exitCode, log[] }
+  uploadFirmware: (portPath, mode) =>
+    ipcRenderer.invoke('firmware:upload', { portPath, mode }),
 
   // Receive data and status events from main process
   onData: (callback) => {
@@ -28,4 +36,11 @@ contextBridge.exposeInMainWorld('platform', {
     ipcRenderer.on('serial:status', listener);
     return () => ipcRenderer.removeListener('serial:status', listener);
   },
+  // Streaming avrdude progress lines
+  onUploadProgress: (callback) => {
+    const listener = (_event, line) => callback(line);
+    ipcRenderer.on('firmware:upload-progress', listener);
+    return () => ipcRenderer.removeListener('firmware:upload-progress', listener);
+  },
 });
+

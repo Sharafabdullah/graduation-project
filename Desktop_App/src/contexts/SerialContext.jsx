@@ -7,7 +7,7 @@ import React, {
   useCallback,
 } from 'react';
 import { useSettings } from './SettingsContext';
-import { isInWarnZone, wouldExceedPositiveLimit } from '../lib/softLimits';
+import { isInWarnZone, wouldExceedPositiveLimit, violatesSafeFloor, wouldCrossSafeFloor } from '../lib/softLimits';
 
 const SerialContext = createContext(null);
 
@@ -40,6 +40,16 @@ export function SerialProvider({ children }) {
   const [spindleSpeed, setSpindleSpeed] = useState(0);
   const [machineState, setMachineState] = useState('Idle');
 
+  // `homed` is true once the head has retreated to a known safe position after a
+  // successful homing pass. `homeFloor` is the ACTUAL backoff distance (mm, machine-
+  // absolute) used during that pass — captured at the moment homing completes, NOT
+  // read live from settings each time. Machine (0, 0) is the limit-switch position;
+  // the floor marks how far off it the head is parked. If the user edits the
+  // `homingBackoff` setting afterward, the physical retreat already performed doesn't
+  // change retroactively — the new value only takes effect on the next home.
+  const [homed, setHomed] = useState(false);
+  const [homeFloor, setHomeFloor] = useState({ x: 2, y: 2 });
+
   // ── Streaming ───────────────────────────────────────────────────────────────
   const [streaming, setStreaming] = useState(false);
   const [paused, setPaused] = useState(false);
@@ -63,6 +73,8 @@ export function SerialProvider({ children }) {
     positionMode: 'Abs',
     feedRate: 0,
     servoAngle: 75,
+    spindleSpeed: 0,
+    laserPower: 0,
     limX: false,
     limY: false,
   });
@@ -130,6 +142,8 @@ export function SerialProvider({ children }) {
       setPortPath(port);
       logConsole('Connection successful.', 'received');
       logEvent('connected', `Connected to ${port} at ${baudRate} baud`, 'info');
+      // Delay sending the wakeup newline to allow the Arduino bootloader to finish (DTR reset takes ~1s)
+      setTimeout(() => { window.platform.send('\n'); }, 1500);
       return true;
     } else {
       logConsole(`Connection failed: ${result.error}`, 'error');
@@ -143,6 +157,9 @@ export function SerialProvider({ children }) {
     const result = await window.platform.disconnect();
     setConnected(false);
     setPortPath('');
+    // The machine could be moved by hand while disconnected — the previously
+    // captured safety floor can no longer be trusted. Require a fresh home on reconnect.
+    setHomed(false);
     if (result.success) {
       logConsole('Disconnected successfully.', 'info');
       logEvent('disconnected', 'Disconnected from port', 'warning');
@@ -229,6 +246,16 @@ export function SerialProvider({ children }) {
           const s = settingsRef.current;
           const x = xM ? parseFloat(xM[1]) : null;
           const y = yM ? parseFloat(yM[1]) : null;
+          // Hard safety floor (limit-switch margin) — rejected, not just warned.
+          // Logged at 'error'/'critical' (vs. 'warning' for soft-limit skips below)
+          // so a collision-risk line stands out clearly from routine bounds-trimming.
+          if (homed && violatesSafeFloor(x, y, homeFloor.x, homeFloor.y)) {
+            logConsole(`REJECTED — would cross home-safety margin (floor ${homeFloor.x.toFixed(2)}, ${homeFloor.y.toFixed(2)} mm): ${candidate.trim()}`, 'error');
+            logEvent('floor_violation', `Line ${currentLineRef.current + 1} rejected — would cross home-safety margin: ${candidate.trim()}`, 'critical');
+            currentLineRef.current++;
+            setCurrentLine(currentLineRef.current);
+            continue;
+          }
           if (isInWarnZone(x, y, {
             bedMaxX: s?.bedMaxX || 200,
             bedMaxY: s?.bedMaxY || 200,
@@ -274,6 +301,15 @@ export function SerialProvider({ children }) {
     currentLineRef.current++;
     setCurrentLine(currentLineRef.current);
 
+    if (line.trim().toUpperCase().startsWith('M0')) {
+      pausedRef.current = true;
+      setPaused(true);
+      setMachineState('Paused');
+      logConsole(`Job paused: ${line}`, 'warning');
+      logEvent('paused', `Job paused by M0: ${line}`, 'warning');
+      return;
+    }
+
     const fMatch = line.match(/F([\d.]+)/i);
     if (fMatch) setFeedRate(parseInt(fMatch[1], 10));
 
@@ -298,7 +334,7 @@ export function SerialProvider({ children }) {
     logConsole(`> ${line}`, 'sent');
     waitingForOkRef.current = true;
     window.platform.send(line);
-  }, [logConsole, logEvent, addJobHistory]);
+  }, [logConsole, logEvent, addJobHistory, homed, homeFloor]);
 
   const startStreaming = useCallback((lines, jobName = 'Job') => {
     if (lines.length === 0) { logConsole('No G-code file loaded.', 'error'); return; }
@@ -384,6 +420,10 @@ export function SerialProvider({ children }) {
     if (connected) {
       window.platform.send('\x18');
       logEvent('estop', 'Emergency stop sent to Arduino', 'critical');
+      // An emergency stop can interrupt motion mid-step (lost steps / stall) — the
+      // app's tracked position is no longer trustworthy, so the captured safety
+      // floor can't be either. Require a fresh homing pass before re-enforcing it.
+      setHomed(false);
     }
   }, [connected, logConsole, logEvent, addJobHistory]);
 
@@ -394,7 +434,7 @@ export function SerialProvider({ children }) {
       const isOk = trimmed.toLowerCase() === 'ok';
       const isError = trimmed.toLowerCase().startsWith('error:');
 
-      // Silent auto-poll path — parse state, skip logging and command queue
+      // Silent auto-poll path (deprecated but kept just in case)
       if (pollInFlightRef.current) {
         const posMatch = trimmed.match(/X[:\s]?([\d.-]+)\s*Y[:\s]?([\d.-]+)/i);
         if (posMatch) setPosition({ x: parseFloat(posMatch[1]), y: parseFloat(posMatch[2]) });
@@ -411,6 +451,39 @@ export function SerialProvider({ children }) {
           setFeedRate(parseFloat(stateMatch[2]));
         }
         if (isOk) pollInFlightRef.current = false;
+        return;
+      }
+
+      // ── Telemetry Handling ──────────────────────────────────────────────────
+      if (trimmed.startsWith('[TELEMETRY]')) {
+        const posMatch = trimmed.match(/X[:\s]?([\d.-]+)\s*Y[:\s]?([\d.-]+)/i);
+        if (posMatch) setPosition({ x: parseFloat(posMatch[1]), y: parseFloat(posMatch[2]) });
+
+        const stateMatch = trimmed.match(/State:(\w+)\s+F:([\d.]+)(.*?)\s+LimX:(\d)\s+LimY:(\d)/i);
+        if (stateMatch) {
+          const toolStr = stateMatch[3];
+          const srv = toolStr.match(/Servo:([\d.]+)/i);
+          const spd = toolStr.match(/Spindle:([\d.]+)/i);
+          const lsr = toolStr.match(/Laser:([\d.]+)/i);
+
+          const newServo = srv ? parseFloat(srv[1]) : arduinoState.servoAngle;
+          const newSpindle = spd ? parseFloat(spd[1]) : arduinoState.spindleSpeed;
+          const newLaser = lsr ? parseFloat(lsr[1]) : arduinoState.laserPower;
+
+          setArduinoState({
+            positionMode: stateMatch[1],
+            feedRate: parseFloat(stateMatch[2]),
+            servoAngle: newServo,
+            spindleSpeed: newSpindle,
+            laserPower: newLaser,
+            limX: stateMatch[4] === '1',
+            limY: stateMatch[5] === '1',
+          });
+          setFeedRate(parseFloat(stateMatch[2]));
+          if (spd) setSpindleSpeed(newSpindle);
+        }
+        
+        logConsole(trimmed, 'telemetry');
         return;
       }
 
@@ -475,16 +548,28 @@ export function SerialProvider({ children }) {
       if (posMatch) setPosition({ x: parseFloat(posMatch[1]), y: parseFloat(posMatch[2]) });
 
       // State line parsing (manual ? query)
-      const stateMatch = trimmed.match(/State:(\w+)\s+F:([\d.]+)\s+Servo:([\d.]+)\s+LimX:(\d)\s+LimY:(\d)/i);
+      const stateMatch = trimmed.match(/State:(\w+)\s+F:([\d.]+)(.*?)\s+LimX:(\d)\s+LimY:(\d)/i);
       if (stateMatch) {
+        const toolStr = stateMatch[3];
+        const srv = toolStr.match(/Servo:([\d.]+)/i);
+        const spd = toolStr.match(/Spindle:([\d.]+)/i);
+        const lsr = toolStr.match(/Laser:([\d.]+)/i);
+
+        const newServo = srv ? parseFloat(srv[1]) : arduinoState.servoAngle;
+        const newSpindle = spd ? parseFloat(spd[1]) : arduinoState.spindleSpeed;
+        const newLaser = lsr ? parseFloat(lsr[1]) : arduinoState.laserPower;
+
         setArduinoState({
           positionMode: stateMatch[1],
           feedRate: parseFloat(stateMatch[2]),
-          servoAngle: parseFloat(stateMatch[3]),
+          servoAngle: newServo,
+          spindleSpeed: newSpindle,
+          laserPower: newLaser,
           limX: stateMatch[4] === '1',
           limY: stateMatch[5] === '1',
         });
         setFeedRate(parseFloat(stateMatch[2]));
+        if (spd) setSpindleSpeed(newSpindle);
       }
 
       // Homing events from firmware debug messages
@@ -521,25 +606,14 @@ export function SerialProvider({ children }) {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Auto-poll ? every 3s when connected, skip during streaming ──────────────
-  useEffect(() => {
-    if (!connected) {
-      clearInterval(pollIntervalRef.current);
-      return;
-    }
-    pollIntervalRef.current = setInterval(() => {
-      if (streamingRef.current) return;
-      if (pollInFlightRef.current) return;
-      pollInFlightRef.current = true;
-      window.platform.send('?');
-    }, 3000);
-    return () => clearInterval(pollIntervalRef.current);
-  }, [connected]);
+  // (Removed: Arduino now sends autonomous [TELEMETRY] updates every 500ms)
+
 
   // ── Motion helpers ──────────────────────────────────────────────────────────
   const jogWithIncrement = useCallback((axis, direction, increment) => {
+    const cur = axis === 'X' ? position.x : position.y;
     if (direction > 0) {
       const s = settingsRef.current;
-      const cur = axis === 'X' ? position.x : position.y;
       if (wouldExceedPositiveLimit(cur, increment, axis, {
         bedMaxX: s?.bedMaxX || 200,
         bedMaxY: s?.bedMaxY || 200,
@@ -548,19 +622,26 @@ export function SerialProvider({ children }) {
         logConsole(`Jog blocked: would exceed soft limit on ${axis}`, 'warning');
         return;
       }
+    } else if (direction < 0 && homed) {
+      const floor = axis === 'X' ? homeFloor.x : homeFloor.y;
+      if (wouldCrossSafeFloor(cur, increment, floor)) {
+        logConsole(`Jog rejected: would cross the home-safety margin on ${axis} (floor: ${floor.toFixed(2)} mm)`, 'error');
+        return;
+      }
     }
     const value = increment * direction;
     sendCommand('G91');
     sendCommand(`G0 ${axis}${value.toFixed(3)} F1000`);
     sendCommand('G90');
-    setPosition((prev) => ({
-      x: axis === 'X' ? prev.x + value : prev.x,
-      y: axis === 'Y' ? prev.y + value : prev.y,
-    }));
-  }, [sendCommand, logConsole, position]);
+    // State is updated automatically when [TELEMETRY] acknowledgment is received
+  }, [sendCommand, logConsole, position, homed, homeFloor]);
 
   const goToPosition = useCallback((x, y) => {
     const s = settingsRef.current;
+    if (homed && violatesSafeFloor(x, y, homeFloor.x, homeFloor.y)) {
+      logConsole(`Move rejected: target (${x.toFixed(1)}, ${y.toFixed(1)}) would cross the home-safety margin (floor: ${homeFloor.x.toFixed(2)}, ${homeFloor.y.toFixed(2)} mm)`, 'error');
+      return;
+    }
     if (isInWarnZone(x, y, {
       bedMaxX: s?.bedMaxX || 200,
       bedMaxY: s?.bedMaxY || 200,
@@ -570,14 +651,19 @@ export function SerialProvider({ children }) {
     }
     sendCommand('G90');
     sendCommand(`G0 X${x.toFixed(3)} Y${y.toFixed(3)} F1000`);
-    setPosition({ x, y });
-  }, [sendCommand, logConsole]);
+    // State is updated automatically when [TELEMETRY] acknowledgment is received
+  }, [sendCommand, logConsole, homed, homeFloor]);
 
   const homeStage = useCallback(async () => {
     if (!connected) { logConsole('Not connected. Cannot home.', 'error'); return; }
     setMachineState('Homing');
     logConsole('Starting homing sequence...', 'info');
     logEvent('homing_start', 'App-orchestrated homing started', 'info');
+    // The machine is about to redrive into the limit switches on purpose — any
+    // floor captured by a previous pass is about to be invalidated, and enforcing
+    // it here would reject the very moves homing needs to make. Clear it up front;
+    // it's only restored (with a freshly-captured value) on full success below.
+    setHomed(false);
     try {
       const s = settingsRef.current;
       const hf = s?.homingFeedrate || 600;
@@ -610,8 +696,13 @@ export function SerialProvider({ children }) {
 
       setPosition({ x: parseFloat(cx), y: parseFloat(cy) });
       setMachineState('Idle');
-      logConsole('Homing complete. Head at stage centre.', 'info');
-      logEvent('homing_done', 'Homing complete', 'info');
+      // Capture the ACTUAL backoff distance just used — not a live read of the
+      // setting — so later edits to `homingBackoff` can't retroactively change
+      // where the floor sits relative to the head's real, physical position.
+      setHomeFloor({ x: backoff, y: backoff });
+      setHomed(true);
+      logConsole(`Homing complete. Head at stage centre. Safety floor set at ${backoff.toFixed(2)} mm.`, 'info');
+      logEvent('homing_done', 'Homing complete — safety floor active', 'info');
     } catch (err) {
       logConsole(`Homing error: ${err.message}`, 'error');
       logEvent('homing_failed', err.message, 'critical');
@@ -622,15 +713,21 @@ export function SerialProvider({ children }) {
   }, [connected, logConsole, logEvent, sendAndWait]);
 
   const goToOrigin = useCallback(() => {
-    sendCommand('G90');
-    sendCommand('G0 X0 Y0 F1000');
-    setPosition({ x: 0, y: 0 });
-    logConsole('Returning to work origin (X0 Y0)...', 'info');
-  }, [sendCommand, logConsole]);
+    // Machine (0, 0) IS the limit-switch position — driving straight at it is
+    // exactly the dangerous move homing exists to avoid repeating. "Origin" here
+    // means the safe retreat point the head parks at after homing (homeFloor),
+    // not raw machine-zero. Route through goToPosition so the floor check (and
+    // warn-zone check) apply uniformly, the same as any other commanded move.
+    if (!homed) {
+      logConsole('Cannot go to origin: home the machine first (machine zero is the limit-switch position).', 'error');
+      return;
+    }
+    logConsole(`Returning to safe home position (X${homeFloor.x.toFixed(2)}, Y${homeFloor.y.toFixed(2)})...`, 'info');
+    goToPosition(homeFloor.x, homeFloor.y);
+  }, [goToPosition, logConsole, homed, homeFloor]);
 
   const setZero = useCallback(() => {
     sendCommand('G92 X0 Y0');
-    setPosition({ x: 0, y: 0 });
     logConsole('Work origin set to current position.', 'info');
   }, [sendCommand, logConsole]);
 
@@ -641,6 +738,7 @@ export function SerialProvider({ children }) {
   const value = {
     connected, portPath, ports, machineState,
     selectedPort, setSelectedPort,
+    homed, homeFloor,
     position, feedRate, spindleSpeed, arduinoState,
     streaming, paused, currentLine, totalLines,
     consoleLog, commandLog, eventLog,

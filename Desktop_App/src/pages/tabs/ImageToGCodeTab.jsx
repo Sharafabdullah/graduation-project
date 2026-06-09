@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { PlusCircle } from 'lucide-react';
 import { useImageTracer } from '../../hooks/useImageTracer';
 import { useImage2GCode } from '../../contexts/Image2GCodeContext';
@@ -27,7 +27,7 @@ export default function ImageToGCodeTab({ onAddToCanvas }) {
     if (sampledBackground) setBackgroundColor(sampledBackground);
   }, [sampledBackground, setBackgroundColor]);
 
-  // Live threshold preview: re-binarize when source image or threshold changes (outline mode only)
+  // Live threshold preview
   useEffect(() => {
     if (tracerMode !== 'outline' || !previewSrc) return;
     const canvas = binarizedCanvasRef.current;
@@ -48,10 +48,99 @@ export default function ImageToGCodeTab({ onAddToCanvas }) {
   const setOpt = (key, val) =>
     setTracerOptions((prev) => ({ ...prev, [key]: val }));
 
+  // ── Synchronized pan/zoom ────────────────────────────────────────────────
+  // All three preview boxes share a single transform: translate(tx,ty) scale(scale)
+  // with transformOrigin '0 0'. At scale=1, tx=ty=0 the image is centered inside
+  // the box (by the inner flex wrapper). Zoom math keeps the point under the
+  // cursor fixed across scale changes.
+  const viewRef = useRef({ scale: 1, tx: 0, ty: 0 });
+  const [view, setViewState] = useState({ scale: 1, tx: 0, ty: 0 });
+  const dragging = useRef(false);
+  const dragStart = useRef(null);
+  const previewPanelRef = useRef(null);
+
+  const setView = useCallback((updater) => {
+    setViewState(prev => {
+      const next = typeof updater === 'function' ? updater(prev) : updater;
+      viewRef.current = next;
+      return next;
+    });
+  }, []);
+
+  const resetView = useCallback(() => {
+    setView({ scale: 1, tx: 0, ty: 0 });
+  }, [setView]);
+
+  // Wheel: must be non-passive to call preventDefault
+  const handleWheel = useCallback((e) => {
+    e.preventDefault();
+    const box = e.target.closest('.preview-box');
+    if (!box) return;
+    const rect = box.getBoundingClientRect();
+    const cx = e.clientX - rect.left;
+    const cy = e.clientY - rect.top;
+    const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
+    setView(v => {
+      const newScale = Math.max(0.15, Math.min(30, v.scale * factor));
+      const ratio = newScale / v.scale;
+      return { scale: newScale, tx: cx + (v.tx - cx) * ratio, ty: cy + (v.ty - cy) * ratio };
+    });
+  }, [setView]);
+
+  useEffect(() => {
+    const panel = previewPanelRef.current;
+    if (!panel) return;
+    panel.addEventListener('wheel', handleWheel, { passive: false });
+    return () => panel.removeEventListener('wheel', handleWheel);
+  }, [handleWheel]);
+
+  // Drag pan
+  const handleMouseDown = useCallback((e) => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    dragging.current = true;
+    dragStart.current = {
+      x: e.clientX, y: e.clientY,
+      tx: viewRef.current.tx, ty: viewRef.current.ty,
+    };
+  }, []);
+
+  useEffect(() => {
+    const onMove = (e) => {
+      if (!dragging.current || !dragStart.current) return;
+      const { x, y, tx, ty } = dragStart.current;
+      setView(v => ({ ...v, tx: tx + (e.clientX - x), ty: ty + (e.clientY - y) }));
+    };
+    const onUp = () => { dragging.current = false; };
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+    return () => {
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+    };
+  }, [setView]);
+
+  // The inner wrapper for each preview box: fills the box, centers content,
+  // and carries the shared transform. transformOrigin '0 0' + the zoom math
+  // in handleWheel keeps the hovered point fixed during zoom.
+  const transformWrap = {
+    position: 'absolute',
+    inset: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transform: `translate(${view.tx}px, ${view.ty}px) scale(${view.scale})`,
+    transformOrigin: '0 0',
+    userSelect: 'none',
+    pointerEvents: 'none',
+  };
+
+  // ── File handling ────────────────────────────────────────────────────────
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
     if (file.size > 10 * 1024 * 1024) return;
+    resetView();
     const reader = new FileReader();
     reader.onload = (ev) => {
       setPreviewSrc(ev.target.result);
@@ -122,6 +211,22 @@ export default function ImageToGCodeTab({ onAddToCanvas }) {
         </div>
 
         <div className="form-group">
+          <label>Line Precision: {tracerOptions.ltres}</label>
+          <input type="range" min="0.1" max="4" step="0.1" value={tracerOptions.ltres}
+            onChange={(e) => setOpt('ltres', Number(e.target.value))}
+            className="slider" disabled={loading} />
+          <p className="hint-text">Lower = more precise straight-line tracing. Higher = simpler paths.</p>
+        </div>
+
+        <div className="form-group">
+          <label>Pre-blur: {tracerOptions.blurradius}px</label>
+          <input type="range" min="0" max="5" step="1" value={tracerOptions.blurradius}
+            onChange={(e) => setOpt('blurradius', Number(e.target.value))}
+            className="slider" disabled={loading} />
+          <p className="hint-text">Blur before tracing to reduce noise and smooth jagged edges.</p>
+        </div>
+
+        <div className="form-group">
           <label>Noise Filter: {tracerOptions.pathomit}px</label>
           <input type="range" min="0" max="64" value={tracerOptions.pathomit}
             onChange={(e) => setOpt('pathomit', Number(e.target.value))}
@@ -177,30 +282,56 @@ export default function ImageToGCodeTab({ onAddToCanvas }) {
       </div>
 
       {/* ── Preview panel ────────────────────────────────────────────────── */}
-      <div className="image-tab-preview card">
+      <div
+        className="image-tab-preview card"
+        ref={previewPanelRef}
+        onMouseDown={handleMouseDown}
+      >
+        <div className="preview-panel-header">
+          <h3 className="section-header" style={{ margin: 0 }}>Previews</h3>
+          <button
+            className="btn btn-ghost btn-sm"
+            onClick={resetView}
+            title="Reset zoom and pan (double-click any preview)"
+            style={{ fontSize: '11px', padding: '2px 8px' }}
+          >
+            Reset View
+          </button>
+        </div>
+
         <h3 className="section-header">Original</h3>
-        <div className="preview-box">
-          {previewSrc
-            ? <img src={previewSrc} alt="Original" className="preview-img" />
-            : <span className="placeholder-text">No image loaded</span>}
+        <div className="preview-box" onDoubleClick={resetView}>
+          {previewSrc ? (
+            <div style={transformWrap}>
+              <img src={previewSrc} alt="Original" className="preview-img" draggable={false} />
+            </div>
+          ) : (
+            <span className="placeholder-text">No image loaded</span>
+          )}
         </div>
 
         {tracerMode === 'outline' && (
           <>
             <h3 className="section-header">Threshold Preview</h3>
-            <div className="preview-box">
-              {previewSrc
-                ? <canvas ref={binarizedCanvasRef} className="preview-canvas" />
-                : <span className="placeholder-text">Load an image to preview the B/W mask</span>}
+            <div className="preview-box" onDoubleClick={resetView}>
+              {previewSrc ? (
+                <div style={transformWrap}>
+                  <canvas ref={binarizedCanvasRef} className="preview-canvas" />
+                </div>
+              ) : (
+                <span className="placeholder-text">Load an image to preview the B/W mask</span>
+              )}
             </div>
           </>
         )}
 
         <h3 className="section-header">Traced Vector</h3>
-        <div className="preview-box">
+        <div className="preview-box" onDoubleClick={resetView}>
           {loading && <span className="placeholder-text">Tracing in background…</span>}
           {!loading && tracedSVG && (
-            <div className="svg-preview" dangerouslySetInnerHTML={{ __html: tracedSVG }} />
+            <div style={transformWrap}>
+              <div className="svg-preview" dangerouslySetInnerHTML={{ __html: tracedSVG }} />
+            </div>
           )}
           {!loading && !tracedSVG && !error && (
             <span className="placeholder-text">Result will appear here after tracing</span>

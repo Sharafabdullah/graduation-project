@@ -13,9 +13,11 @@
   "author": "Graduation Project Team",
   "license": "MIT",
   "dependencies": {
+    "esm-potrace-wasm": "^0.4.4",
     "fabric": "^5.5.2",
     "imagetracerjs": "^1.2.6",
     "lucide-react": "^1.17.0",
+    "polygon-offset": "^0.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.0",

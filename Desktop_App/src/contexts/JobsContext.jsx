@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const JobsContext = createContext(null);
 
@@ -10,6 +10,24 @@ export function useJobs() {
 
 export function JobsProvider({ children }) {
   const [loadedFiles, setLoadedFiles] = useState([]);
+
+  useEffect(() => {
+    async function loadJobs() {
+      const result = await window.platform.getJobs();
+      if (result && result.success) {
+        setLoadedFiles(prev => {
+          const newFiles = [...prev];
+          result.jobs.forEach(job => {
+            if (!newFiles.some(f => f.path === job.path)) {
+              newFiles.push(job);
+            }
+          });
+          return newFiles;
+        });
+      }
+    }
+    loadJobs();
+  }, []);
 
   const addLoadedFile = (file) => {
     setLoadedFiles(prev => {

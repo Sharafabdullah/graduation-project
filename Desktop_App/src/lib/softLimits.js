@@ -15,18 +15,21 @@ export function parseXY(line) {
 }
 
 /**
- * Returns true if a position falls in the warn/flag zone.
+ * Returns true if a position falls in the warn/flag zone near the bed edges.
  *
  * Rule:
  *   - x < softLimitMargin  OR  x > bedMaxX - softLimitMargin  → flagged
  *   - y < softLimitMargin  OR  y > bedMaxY - softLimitMargin  → flagged
- *   - Exception: x === 0 AND y === 0 (explicit home return) → never flagged
  *
  * x or y may be null (axis not specified in the G-code line); only non-null axes are checked.
+ *
+ * NOTE: this is a "stay away from the edges of the drawable area" warning — it is
+ * NOT the hard safety floor near the limit switches. For that, see violatesSafeFloor().
+ * (0, 0) is intentionally NOT exempted: machine (0, 0) is the limit-switch position,
+ * the single most dangerous point on the machine, and must be flagged like anywhere else.
  */
 export function isInWarnZone(x, y, { bedMaxX, bedMaxY, softLimitMargin }) {
   if (x === null && y === null) return false;
-  if ((x === null || x === 0) && (y === null || y === 0)) return false;
   if (x !== null) {
     if (x < softLimitMargin) return true;
     if (x > bedMaxX - softLimitMargin) return true;
@@ -35,6 +38,29 @@ export function isInWarnZone(x, y, { bedMaxX, bedMaxY, softLimitMargin }) {
     if (y < softLimitMargin) return true;
     if (y > bedMaxY - softLimitMargin) return true;
   }
+  return false;
+}
+
+/**
+ * Returns true if a position would cross the hard safety floor near the limit
+ * switches — the distance the machine retreated to during the most recent
+ * homing pass (homingBackoff at the time homing completed).
+ *
+ * Unlike isInWarnZone (a soft "stay inside the drawable area" warning), this is
+ * a hard physical-safety boundary: machine (0, 0) is the limit-switch position,
+ * and floorX/floorY mark how far the head backed off from it. Crossing back below
+ * that point risks re-triggering — or grinding past — the switches.
+ *
+ * floorX/floorY must be the ACTUAL backoff distance used during the last homing
+ * pass, not necessarily the current `homingBackoff` setting — if the user changes
+ * that setting afterward, the physical retreat the machine already performed
+ * doesn't change retroactively. The new value only takes effect on the next home.
+ *
+ * x or y may be null (axis not specified); only non-null axes are checked.
+ */
+export function violatesSafeFloor(x, y, floorX, floorY) {
+  if (x !== null && x < floorX) return true;
+  if (y !== null && y < floorY) return true;
   return false;
 }
 
@@ -70,4 +96,18 @@ export function wouldExceedPositiveLimit(currentPos, increment, axis, { bedMaxX,
   const target = currentPos + increment;
   const ceiling = axis === 'X' ? bedMaxX - softLimitMargin : bedMaxY - softLimitMargin;
   return target > ceiling;
+}
+
+/**
+ * Returns true if a negative-direction jog would cross the hard safety floor
+ * near the limit switches (see violatesSafeFloor for what `floor` represents
+ * and why it must be the backoff distance captured at homing time, not the
+ * live `homingBackoff` setting).
+ *
+ * @param {number} currentPos  Current axis position in mm (machine-absolute)
+ * @param {number} increment   Jog step magnitude (always positive)
+ * @param {number} floor       Actual backoff distance used during the last homing pass
+ */
+export function wouldCrossSafeFloor(currentPos, increment, floor) {
+  return (currentPos - increment) < floor;
 }

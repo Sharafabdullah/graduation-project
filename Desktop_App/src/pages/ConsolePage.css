@@ -113,10 +113,11 @@
   color: var(--text-secondary);
 }
 
-.console-line.sent     { color: #60a5fa; }
-.console-line.received { color: #4ade80; }
-.console-line.info     { color: var(--text-muted); }
-.console-line.error    { color: #f87171; }
+.console-line.sent      { color: #60a5fa; }
+.console-line.received  { color: #4ade80; }
+.console-line.info      { color: var(--text-muted); }
+.console-line.error     { color: #f87171; }
+.console-line.telemetry { color: #c084fc; font-style: italic; }
 
 /* ── Command queue entries ───────────────────────────────────────────────────── */
 .cmd-entry {

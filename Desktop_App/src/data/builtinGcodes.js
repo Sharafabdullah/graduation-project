@@ -1,3 +1,6 @@
+import { DRILL_GCODES } from './builtinGcodes.drill';
+import { LASER_GCODES } from './builtinGcodes.laser';
+
 // Built-in G-code files that ship with the app.
 // Each has a name, description, category, and content.
 
@@ -8,6 +11,7 @@ export const BUILTIN_GCODES = [
     name: 'Straight Line',
     description: 'Draw a 50mm horizontal line from origin',
     category: 'shapes',
+    mode: 'pen',
     content: `; Simple straight line — 50mm horizontal
 G90
 M5
@@ -25,6 +29,7 @@ G0 X0 Y0 F1000
     name: 'Triangle',
     description: 'Equilateral-ish triangle — tests diagonal motion in both directions',
     category: 'shapes',
+    mode: 'pen',
     content: `; Triangle
 G90
 M5
@@ -44,6 +49,7 @@ G0 X0 Y0 F1000
     name: 'Square',
     description: 'Simple 40×40mm square from a corner origin',
     category: 'shapes',
+    mode: 'pen',
     content: `; Square 40x40mm
 G90
 M5
@@ -64,6 +70,7 @@ G0 X0 Y0 F1000
     name: 'Rectangle',
     description: '60×30mm landscape rectangle',
     category: 'shapes',
+    mode: 'pen',
     content: `; Rectangle 60x30mm
 G90
 M5
@@ -84,6 +91,7 @@ G0 X0 Y0 F1000
     name: 'Plus / Cross',
     description: 'A centered cross shape — tests axis transitions',
     category: 'shapes',
+    mode: 'pen',
     content: `; Plus / Cross shape
 G90
 M5
@@ -118,6 +126,7 @@ G0 X0 Y0 F1000
     name: 'Calibration Grid',
     description: '50×50mm grid with 10mm spacing — verify steps/mm accuracy',
     category: 'calibration',
+    mode: 'pen',
     content: `; ==========================================
 ; Calibration Grid 50x50mm, 10mm spacing
 ; Use this to verify steps/mm settings.
@@ -220,6 +229,7 @@ G0 X0 Y0 F1000
     name: 'Test Square 40×40mm',
     description: 'Simple filled border square — quick connection and motion test',
     category: 'calibration',
+    mode: 'pen',
     content: `; ==========================================
 ; Test Square 40x40mm
 ; Quick motion and pen test.
@@ -247,6 +257,7 @@ G0 X0 Y0 F1000
     name: 'Head Lift Test',
     description: 'Alternating dots to verify servo head up/down is working correctly',
     category: 'calibration',
+    mode: 'pen',
     content: `; ==========================================
 ; Pen Lift / Servo Test
 ; Draws dots in a row to verify servo.
@@ -298,6 +309,7 @@ G0 X0 Y0 F1000
     name: 'The House (Demo)',
     description: 'Classic demo drawing — house with walls, roof, door, and window',
     category: 'demo',
+    mode: 'pen',
     content: `; ==========================================
 ; The House Demo
 ; Classic firmware demo drawing.
@@ -358,6 +370,7 @@ G0 X0 Y0 F1000
     name: 'Spiral Approximation',
     description: 'Multi-pass expanding square spiral — tests continuous motion and feed rates',
     category: 'demo',
+    mode: 'pen',
     content: `; ==========================================
 ; Expanding Square Spiral
 ; Tests continuous motion and speed.
@@ -414,6 +427,7 @@ G0 X0 Y0 F1000
     name: 'Diagonal Accuracy Test',
     description: 'X shapes and diagonals — checks Bresenham interpolation accuracy',
     category: 'calibration',
+    mode: 'pen',
     content: `; ==========================================
 ; Diagonal Accuracy Test
 ; Checks X and Y motion synchronization.
@@ -440,12 +454,18 @@ G0 X0 Y0 F1000
   },
 ];
 
+export const ALL_BUILTINS = [...BUILTIN_GCODES, ...DRILL_GCODES, ...LASER_GCODES];
+
 export function getBuiltinById(id) {
-  return BUILTIN_GCODES.find(f => f.id === id);
+  return ALL_BUILTINS.find(f => f.id === id);
 }
 
 export function getBuiltinsByCategory(category) {
-  return BUILTIN_GCODES.filter(f => f.category === category);
+  return ALL_BUILTINS.filter(f => f.category === category);
+}
+
+export function getBuiltinsForMode(modeId) {
+  return ALL_BUILTINS.filter(f => f.mode === modeId);
 }
 
 // Convert a builtin entry to the same shape as a loaded file

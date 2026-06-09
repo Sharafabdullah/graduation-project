@@ -48,6 +48,14 @@ const DEFAULT_SETTINGS = {
   bedMaxX: 200,
   bedMaxY: 200,
   softLimitMargin: 10,
+
+  // Drill
+  defaultSpindleSpeed: 180,
+  plungeDwellMs: 500,
+
+  // Laser
+  laserMaxPower: 200,
+  laserDynamicMode: false,
 };
 
 export function SettingsProvider({ children }) {
@@ -82,7 +90,7 @@ export function SettingsProvider({ children }) {
 
   // Send settings to Arduino via $ commands
   const applyToArduino = useCallback(
-    async (sendCommand) => {
+    async (sendCommand, mode = 'pen') => {
       const commands = [
         `$MS=${settings.microsteps}`,
         `$SPR=${settings.stepsPerRev}`,
@@ -90,11 +98,24 @@ export function SettingsProvider({ children }) {
         `$MF=${settings.maxFeedrate}`,
         `$HF=${settings.homingFeedrate}`,
         `$HB=${settings.homingBackoff}`,
-        `$SU=${settings.servoPenUp}`,
-        `$SD=${settings.servoPenDown}`,
-        `$SH=${settings.servoHome}`,
-        `$ST=${settings.servoSettleMs}`,
       ];
+
+      if (mode === 'pen' || mode === 'drill') {
+        commands.push(`$SU=${settings.servoPenUp}`);
+        commands.push(`$SD=${settings.servoPenDown}`);
+        commands.push(`$SH=${settings.servoHome}`);
+        commands.push(`$ST=${settings.servoSettleMs}`);
+      }
+
+      if (mode === 'drill') {
+        commands.push(`$SS=${settings.defaultSpindleSpeed}`);
+        commands.push(`$PD=${settings.plungeDwellMs}`);
+      }
+
+      if (mode === 'laser') {
+        commands.push(`$LMP=${settings.laserMaxPower}`);
+        commands.push(`$LM=${settings.laserDynamicMode ? 1 : 0}`);
+      }
 
       for (const cmd of commands) {
         await sendCommand(cmd);

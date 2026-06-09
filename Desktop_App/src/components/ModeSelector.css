@@ -1,0 +1,227 @@
+/* ── ModeSelector ─────────────────────────────────────────────────────────── */
+
+.mode-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 200;
+}
+
+/* ── Mode trigger button ──────────────────────────────────────────────────── */
+.mode-trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px 5px 8px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+  position: relative;
+  white-space: nowrap;
+}
+
+.mode-trigger:hover {
+  background: var(--bg-hover);
+  border-color: var(--text-muted);
+}
+
+.mode-trigger.mode-pen   { border-color: rgba(0, 122, 204, 0.5); }
+.mode-trigger.mode-drill { border-color: rgba(212, 160, 23, 0.5); }
+.mode-trigger.mode-laser { border-color: rgba(224, 79, 95, 0.5); }
+
+.mode-trigger.mode-pen:hover   { box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.2); }
+.mode-trigger.mode-drill:hover { box-shadow: 0 0 0 2px rgba(212, 160, 23, 0.2); }
+.mode-trigger.mode-laser:hover { box-shadow: 0 0 0 2px rgba(224, 79, 95, 0.2); }
+
+.mode-icon  { font-size: 14px; line-height: 1; }
+.mode-label { font-size: 12px; font-weight: 600; }
+
+.mode-stale-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #D4A017;
+  animation: pulse 1.6s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.mode-chevron {
+  transition: transform 200ms ease;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.mode-chevron.open { transform: rotate(180deg); }
+
+/* ── Dropdown panel ───────────────────────────────────────────────────────── */
+.mode-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  width: 240px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  animation: fadeIn 120ms ease;
+  z-index: 300;
+}
+
+.mode-dropdown-header {
+  padding: 8px 12px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.mode-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 12px;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-family: var(--font);
+  cursor: pointer;
+  transition: background var(--transition);
+  text-align: left;
+}
+
+.mode-option:hover        { background: var(--bg-hover); }
+.mode-option.active       { background: var(--accent-subtle); }
+
+.mode-option-icon  { font-size: 16px; flex-shrink: 0; width: 22px; text-align: center; }
+.mode-option-text  { flex: 1; display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.mode-option-label { font-size: 12px; font-weight: 600; }
+.mode-option-desc  { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.mode-option-check { color: var(--accent); flex-shrink: 0; }
+
+/* ── Firmware upload button ───────────────────────────────────────────────── */
+.firmware-upload-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(212, 160, 23, 0.6);
+  background: rgba(212, 160, 23, 0.12);
+  color: #D4A017;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition);
+  white-space: nowrap;
+}
+
+.firmware-upload-btn:hover:not(:disabled) {
+  background: rgba(212, 160, 23, 0.22);
+  border-color: rgba(212, 160, 23, 0.9);
+}
+
+.firmware-upload-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.firmware-upload-btn.uploading {
+  color: var(--text-secondary);
+  border-color: var(--border);
+  background: var(--bg-secondary);
+}
+
+.upload-spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Confirmation overlay ─────────────────────────────────────────────────── */
+.mode-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9000;
+  animation: fadeIn 120ms ease;
+  backdrop-filter: blur(2px);
+}
+
+.mode-confirm-dialog {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 28px 22px;
+  width: 400px;
+  max-width: 90vw;
+  animation: fadeIn 160ms ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mode-confirm-icon {
+  font-size: 36px;
+  text-align: center;
+  line-height: 1;
+}
+
+.mode-confirm-title {
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+.mode-confirm-body {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  text-align: center;
+}
+
+.mode-confirm-body strong {
+  color: var(--text-primary);
+}
+
+.mode-confirm-warning {
+  font-size: 12px;
+  color: #D4A017;
+  background: rgba(212, 160, 23, 0.1);
+  border: 1px solid rgba(212, 160, 23, 0.3);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.mode-confirm-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.mode-confirm-actions .btn {
+  min-width: 120px;
+}

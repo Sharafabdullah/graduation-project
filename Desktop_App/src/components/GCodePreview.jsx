@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import './GCodePreview.css';
 
-export default function GCodePreview({ lines = [], bedW = 200, bedH = 200, softLimitMargin = 10 }) {
+export default function GCodePreview({ lines = [], bedW = 200, bedH = 200, softLimitMargin = 10, homeFloor = null }) {
   const canvasRef = useRef(null);
 
   // Maintain bed aspect ratio within a 400px bounding box
@@ -40,7 +40,15 @@ export default function GCodePreview({ lines = [], bedW = 200, bedH = 200, softL
       const xMatch = trimmed.match(/X([-\d.]+)/);
       const yMatch = trimmed.match(/Y([-\d.]+)/);
       if (!xMatch && !yMatch) {
-        if (trimmed.includes('M280') && trimmed.includes('S')) {
+        // gcodeCompiler now emits the mode-agnostic M3 (tool on) / M5 (tool off)
+        // convention (matching the multi-mode firmware and every built-in program),
+        // not the legacy M280 servo-angle command — recognize both so old saved
+        // jobs still preview correctly. M4 (laser dynamic mode) also counts as "on".
+        if (trimmed.startsWith('M3') || trimmed.startsWith('M4')) {
+          penDown = true;
+        } else if (trimmed.startsWith('M5')) {
+          penDown = false;
+        } else if (trimmed.includes('M280') && trimmed.includes('S')) {
           const sMatch = trimmed.match(/S([\d.]+)/);
           if (sMatch) {
             const angle = parseFloat(sMatch[1]);
@@ -84,6 +92,28 @@ export default function GCodePreview({ lines = [], bedW = 200, bedH = 200, softL
     ctx.setLineDash([4, 4]);
     ctx.strokeRect(marginPxX, marginPxY, W - 2 * marginPxX, H - 2 * marginPxY);
     ctx.restore();
+
+    // Hard safety floor near the limit switches (machine (0,0) corner).
+    // Distinct from the soft-limit margin above: this marks how far the head
+    // backed off during the last successful homing pass — crossing back below
+    // it risks re-triggering or grinding past the switches. Only meaningful
+    // (and only drawn) once the machine has actually been homed.
+    if (homeFloor) {
+      const floorPxX = homeFloor.x * scaleX;
+      const floorPxY = homeFloor.y * scaleY;
+      ctx.save();
+      ctx.fillStyle = 'rgba(241, 76, 76, 0.12)';
+      ctx.strokeStyle = 'rgba(241, 76, 76, 0.6)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([2, 2]);
+      // x < floorX band (left edge, full bed height)
+      ctx.fillRect(0, 0, floorPxX, H);
+      ctx.strokeRect(0, 0, floorPxX, H);
+      // y < floorY band (bottom edge, full bed width — canvas Y is flipped)
+      ctx.fillRect(0, H - floorPxY, W, floorPxY);
+      ctx.strokeRect(0, H - floorPxY, W, floorPxY);
+      ctx.restore();
+    }
 
     // Drawing bounding box
     let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
@@ -144,7 +174,7 @@ export default function GCodePreview({ lines = [], bedW = 200, bedH = 200, softL
     ctx.fillText('X→', W - 24, H - 4);
     ctx.fillText('↑Y', 2, 14);
     ctx.restore();
-  }, [lines, bedW, bedH, softLimitMargin]);
+  }, [lines, bedW, bedH, softLimitMargin, homeFloor]);
 
   return (
     <div className="gcode-preview-wrap">
