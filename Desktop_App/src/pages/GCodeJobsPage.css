@@ -1,18 +1,43 @@
+.gcode-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
 .gcode-grid {
-  display: grid;
-  grid-template-columns: 360px 1fr;
-  gap: 16px;
-  height: calc(100% - 70px);
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  gap: 0;
 }
 
 .gcode-files-card {
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .gcode-preview-card {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.resize-handle {
+  width: 6px;
+  flex-shrink: 0;
+  cursor: col-resize;
+  background: var(--border);
+  margin: 0 5px;
+  border-radius: 3px;
+  transition: background 0.15s;
+}
+
+.resize-handle:hover,
+.resize-handle.dragging {
+  background: var(--accent);
 }
 
 .gcode-controls {

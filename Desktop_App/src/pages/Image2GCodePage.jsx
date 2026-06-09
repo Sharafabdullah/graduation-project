@@ -210,40 +210,35 @@ export default function Image2GCodePage() {
 
           {/* ── Shared bottom bar ────────────────────────────── */}
           <div className="i2g-bottom-bar card">
-            <div className="bottom-bar-left">
-              <button
-                className="btn btn-primary"
-                onClick={handleCompile}
-                disabled={!canCompile}
-              >
-                <Zap size={14} style={{ marginRight: 6 }} />
-                Compile Job
-              </button>
-              {compileError && <span className="error-text" style={{ marginLeft: 8 }}>{compileError}</span>}
-            </div>
-
-            <div className="bottom-bar-right">
-              <span className="gcode-line-count">
-                {compiledGCode.length > 0 ? `${compiledGCode.length} lines` : 'No G-Code'}
-              </span>
-              <button
-                className="btn btn-secondary"
-                onClick={handleSaveJob}
-                disabled={compiledGCode.length === 0}
-                title="Save G-code and send to jobs"
-              >
-                <Save size={14} style={{ marginRight: 6 }} />
-                Save Job
-              </button>
-              <button
-                className="btn btn-success"
-                onClick={handleStart}
-                disabled={!connected || compiledGCode.length === 0 || streaming}
-              >
-                <Play size={14} style={{ marginRight: 6 }} />
-                Run Job
-              </button>
-            </div>
+            {compileError && <span className="error-text bottom-bar-error">{compileError}</span>}
+            <span className="gcode-line-count">
+              {compiledGCode.length > 0 ? `${compiledGCode.length} lines` : 'No G-Code'}
+            </span>
+            <button
+              className="btn btn-primary"
+              onClick={handleCompile}
+              disabled={!canCompile}
+            >
+              <Zap size={14} style={{ marginRight: 6 }} />
+              Compile Job
+            </button>
+            <button
+              className="btn btn-secondary"
+              onClick={handleSaveJob}
+              disabled={compiledGCode.length === 0}
+              title="Save G-code and send to jobs"
+            >
+              <Save size={14} style={{ marginRight: 6 }} />
+              Save Job
+            </button>
+            <button
+              className="btn btn-success"
+              onClick={handleStart}
+              disabled={!connected || compiledGCode.length === 0 || streaming}
+            >
+              <Play size={14} style={{ marginRight: 6 }} />
+              Run Job
+            </button>
           </div>
         </div>
       )}

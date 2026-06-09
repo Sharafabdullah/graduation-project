@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSerial } from '../contexts/SerialContext';
 import { useJobs } from '../contexts/JobsContext';
@@ -49,6 +49,32 @@ export default function GCodeJobsPage() {
   const [hoveredCmd, setHoveredCmd] = useState(null);
   const [boundsWarning, setBoundsWarning] = useState(null); // null | { count: number, violations: array }
   const previewRef = useRef(null);
+  const [leftWidth, setLeftWidth] = useState(360);
+  const isDragging = useRef(false);
+  const dragStartX = useRef(0);
+  const dragStartWidth = useRef(0);
+
+  const handleResizeStart = useCallback((e) => {
+    isDragging.current = true;
+    dragStartX.current = e.clientX;
+    dragStartWidth.current = leftWidth;
+    e.preventDefault();
+  }, [leftWidth]);
+
+  useEffect(() => {
+    const onMouseMove = (e) => {
+      if (!isDragging.current) return;
+      const delta = e.clientX - dragStartX.current;
+      setLeftWidth(Math.max(220, Math.min(600, dragStartWidth.current + delta)));
+    };
+    const onMouseUp = () => { isDragging.current = false; };
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+    return () => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+  }, []);
 
   const progressPct = totalLines > 0 ? Math.round((currentLine / totalLines) * 100) : 0;
 
@@ -133,7 +159,7 @@ export default function GCodeJobsPage() {
   }, {});
 
   return (
-    <div className="page">
+    <div className="page gcode-page">
       <div className="page-header">
         <div>
           <h1 className="page-title">G-Code Jobs</h1>
@@ -144,7 +170,7 @@ export default function GCodeJobsPage() {
 
       <div className="gcode-grid">
         {/* Left panel: file browser */}
-        <div className="card gcode-files-card">
+        <div className="card gcode-files-card" style={{ width: leftWidth }}>
           <div className="gcode-tabs">
             <button
               className={`gcode-tab ${tab === 'builtin' ? 'active' : ''}`}
@@ -304,6 +330,9 @@ export default function GCodeJobsPage() {
             </button>
           </div>
         </div>
+
+        {/* Drag handle */}
+        <div className="resize-handle" onMouseDown={handleResizeStart} />
 
         {/* Right panel: G-code preview */}
         <div className="card gcode-preview-card">

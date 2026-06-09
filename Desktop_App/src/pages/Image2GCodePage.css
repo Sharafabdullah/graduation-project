@@ -65,6 +65,8 @@
   gap: 1rem;
   padding: 0;
   height: 100%;
+  width: 100%;
+  flex: 1;
   box-sizing: border-box;
 }
 
@@ -165,36 +167,16 @@
 .i2g-bottom-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  justify-content: flex-end;
+  gap: 0.75rem;
   padding: 0.75rem 1rem;
   flex-shrink: 0;
   border-top: 1px solid var(--border-color);
   border-radius: 0;
 }
 
-.bottom-bar-left {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-shrink: 0;
-}
-
-.bottom-label {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  white-space: nowrap;
-}
-
-.line-width-input {
-  width: 70px;
-}
-
-.bottom-bar-right {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-shrink: 0;
+.bottom-bar-error {
+  margin-right: auto;
 }
 
 .gcode-line-count {
