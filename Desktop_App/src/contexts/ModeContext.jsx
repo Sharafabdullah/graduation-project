@@ -76,7 +76,9 @@ export function ModeProvider({ children }) {
   const [mode, setModeState] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      return saved && MODES[saved] ? saved : 'pen';
+      const resolved = saved && MODES[saved] ? saved : 'pen';
+      document.documentElement.dataset.mode = resolved;
+      return resolved;
     } catch {
       return 'pen';
     }
