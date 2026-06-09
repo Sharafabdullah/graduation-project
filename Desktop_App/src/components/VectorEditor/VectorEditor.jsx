@@ -181,9 +181,20 @@ const VectorEditor = forwardRef(function VectorEditor(
     if (tool === 'eraser') {
       canvas.defaultCursor = 'cell';
       canvas.on('mouse:down', (opt) => {
-        if (opt.target && !opt.target.excludeFromExport) {
-          canvas.remove(opt.target);
-          canvas.renderAll();
+        const p = canvas.getPointer(opt.e);
+        // Use bounding-box hit detection so transparent-fill shapes (circles,
+        // rects) are erasable even when clicking through their hollow interior.
+        const erasable = canvas.getObjects().filter(o => !o.excludeFromExport);
+        // Iterate in reverse so the topmost (last-drawn) object is removed first.
+        for (let i = erasable.length - 1; i >= 0; i--) {
+          const obj = erasable[i];
+          const br = obj.getBoundingRect(true);
+          if (p.x >= br.left && p.x <= br.left + br.width &&
+              p.y >= br.top  && p.y <= br.top  + br.height) {
+            canvas.remove(obj);
+            canvas.renderAll();
+            break;
+          }
         }
       });
     }
@@ -234,12 +245,26 @@ const VectorEditor = forwardRef(function VectorEditor(
         } else {
           shape.set({ x2: p.x, y2: p.y });
         }
+        // Keep hit-detection bounding coords in sync with the updated geometry.
+        shape.setCoords();
         canvas.renderAll();
       });
 
       canvas.on('mouse:up', () => {
+        const shape = activeObjectRef.current;
+        if (shape) {
+          // Remove shapes that were never dragged (zero/near-zero size) —
+          // these are invisible and pollute the canvas / G-code output.
+          const tooSmall =
+            (shape.type === 'ellipse' && shape.rx < 1 && shape.ry < 1) ||
+            (shape.type === 'rect'    && shape.width < 1 && shape.height < 1) ||
+            (shape.type === 'line'    && Math.abs(shape.x2 - shape.x1) < 1 &&
+                                         Math.abs(shape.y2 - shape.y1) < 1);
+          if (tooSmall) canvas.remove(shape);
+        }
         isDrawingRef.current = false;
         activeObjectRef.current = null;
+        canvas.renderAll();
       });
     }
 
