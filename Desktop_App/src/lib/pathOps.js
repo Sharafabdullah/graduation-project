@@ -2,13 +2,11 @@
 // Runs in both browser (Electron renderer) and Node (unit tests).
 // svgToPaths / pathsToSvg use DOMParser — browser only.
 //
-// svg-path-parser and simplify-js are CJS-only packages.
-// In Vite/browser they are bundled fine via the default import.
-// In Node ESM (unit tests) we must use createRequire to pull them in.
-import { createRequire } from 'module';
-const _require = (typeof require !== 'undefined') ? require : createRequire(import.meta.url);
-const { parseSVG, makeAbsolute } = _require('svg-path-parser');
-const simplify = _require('simplify-js');
+// svg-path-parser and simplify-js are CJS packages; Vite handles CJS→ESM
+// automatically in the browser build. For Node ESM unit tests the packages
+// also expose a default export that works with a standard import.
+import { parseSVG, makeAbsolute } from 'svg-path-parser';
+import simplify from 'simplify-js';
 import { isBackgroundColor } from './colorMatch.js';
 
 // ── Path string ↔ command array ──────────────────────────────────────────────

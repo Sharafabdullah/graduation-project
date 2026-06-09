@@ -1,14 +1,31 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './GCodePreview.css';
 
 export default function GCodePreview({ lines = [], bedW = 200, bedH = 200, softLimitMargin = 10, homeFloor = null }) {
   const canvasRef = useRef(null);
+  const wrapRef   = useRef(null);
+  const [canvasSize, setCanvasSize] = useState({ w: 400, h: 400 });
 
-  // Maintain bed aspect ratio within a 400px bounding box
-  const PREVIEW_MAX = 560;
-  const aspect = bedW / bedH;
-  const canvasW = aspect >= 1 ? PREVIEW_MAX : Math.round(PREVIEW_MAX * aspect);
-  const canvasH = aspect <= 1 ? PREVIEW_MAX : Math.round(PREVIEW_MAX / aspect);
+  // Fill the wrapper while preserving the bed aspect ratio
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+    const compute = () => {
+      const { width, height } = wrap.getBoundingClientRect();
+      const pad = 16;
+      const maxW = Math.max(width  - pad, 10);
+      const maxH = Math.max(height - pad, 10);
+      const aspect = bedW / bedH;
+      let w, h;
+      if (maxW / maxH > aspect) { h = maxH; w = h * aspect; }
+      else                       { w = maxW; h = w / aspect; }
+      setCanvasSize({ w: Math.round(w), h: Math.round(h) });
+    };
+    compute();
+    const ro = new ResizeObserver(compute);
+    ro.observe(wrap);
+    return () => ro.disconnect();
+  }, [bedW, bedH]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -174,15 +191,15 @@ export default function GCodePreview({ lines = [], bedW = 200, bedH = 200, softL
     ctx.fillText('X→', W - 24, H - 4);
     ctx.fillText('↑Y', 2, 14);
     ctx.restore();
-  }, [lines, bedW, bedH, softLimitMargin, homeFloor]);
+  }, [lines, bedW, bedH, softLimitMargin, homeFloor, canvasSize]);
 
   return (
-    <div className="gcode-preview-wrap">
+    <div ref={wrapRef} className="gcode-preview-wrap">
       <canvas
         ref={canvasRef}
         className="gcode-preview-canvas"
-        width={canvasW}
-        height={canvasH}
+        width={canvasSize.w}
+        height={canvasSize.h}
       />
     </div>
   );
