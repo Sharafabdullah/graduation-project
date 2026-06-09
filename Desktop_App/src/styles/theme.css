@@ -83,3 +83,23 @@ html, body, #root {
   from { opacity: 0; transform: translateX(-12px); }
   to { opacity: 1; transform: translateX(0); }
 }
+
+/* ── Drill mode (amber) ────────────────────────────────────────────────────── */
+[data-mode="drill"] {
+  --accent:        #D4A017;
+  --accent-hover:  #B8860B;
+  --accent-active: #9A6F0A;
+  --accent-glow:   rgba(212, 160, 23, 0.25);
+  --accent-subtle: rgba(212, 160, 23, 0.08);
+  --border-focus:  #D4A017;
+}
+
+/* ── Laser mode (red-coral) ────────────────────────────────────────────────── */
+[data-mode="laser"] {
+  --accent:        #E04F5F;
+  --accent-hover:  #C43D4C;
+  --accent-active: #A83040;
+  --accent-glow:   rgba(224, 79, 95, 0.25);
+  --accent-subtle: rgba(224, 79, 95, 0.08);
+  --border-focus:  #E04F5F;
+}
