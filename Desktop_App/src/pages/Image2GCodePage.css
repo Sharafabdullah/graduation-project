@@ -61,9 +61,9 @@
 /* ── Image tab ──────────────────────────────────────────────── */
 .image-tab {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 320px 1fr;
   gap: 1rem;
-  padding: 1rem;
+  padding: 0;
   height: 100%;
   box-sizing: border-box;
 }
