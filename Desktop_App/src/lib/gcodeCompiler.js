@@ -4,6 +4,43 @@ import Offset from 'polygon-offset';
 import { isBackgroundColor } from './colorMatch';
 import { tessellateQuadratic, tessellateCubic } from './bezier';
 
+// Arc fitting tolerance — max deviation of Bezier from circumscribed circle
+const ARC_FIT_TOLERANCE = 0.05; // mm
+
+// Circumscribed circle through three points. Returns {cx, cy, r} or null if collinear.
+function circumscribedCircle(p0, p1, p2) {
+  const ax = p0.x, ay = p0.y, bx = p1.x, by = p1.y, cx = p2.x, cy = p2.y;
+  const D = 2 * (ax*(by-cy) + bx*(cy-ay) + cx*(ay-by));
+  if (Math.abs(D) < 1e-10) return null;
+  const ux = ((ax*ax+ay*ay)*(by-cy) + (bx*bx+by*by)*(cy-ay) + (cx*cx+cy*cy)*(ay-by)) / D;
+  const uy = ((ax*ax+ay*ay)*(cx-bx) + (bx*bx+by*by)*(ax-cx) + (cx*cx+cy*cy)*(bx-ax)) / D;
+  return { cx: ux, cy: uy, r: Math.sqrt((ax-ux)**2 + (ay-uy)**2) };
+}
+
+// Returns arc params {i, j, clockwise} in SVG space, or null if the curve doesn't fit.
+// p0=arc start, end=arc end, sampleFn(t)=point on curve at t∈[0,1]
+function fitArcToSampledCurve(p0, end, sampleFn) {
+  const mid = sampleFn(0.5);
+  const circle = circumscribedCircle(p0, mid, end);
+  if (!circle || circle.r < 0.5) return null;
+
+  // Check deviation at 7 interior samples
+  for (const t of [0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875]) {
+    const pt = sampleFn(t);
+    if (Math.abs(Math.sqrt((pt.x-circle.cx)**2 + (pt.y-circle.cy)**2) - circle.r) > ARC_FIT_TOLERANCE) {
+      return null;
+    }
+  }
+
+  // CW/CCW in SVG Y-down: positive cross = CW visually
+  const cross = (mid.x-p0.x)*(end.y-mid.y) - (mid.y-p0.y)*(end.x-mid.x);
+  return {
+    i: circle.cx - p0.x, // offset from arc start to center
+    j: circle.cy - p0.y,
+    clockwise: cross > 0,
+  };
+}
+
 function parseTransform(str) {
   if (!str) return null;
   const m = str.match(/matrix\(\s*([-\d.e]+)[,\s]+([-\d.e]+)[,\s]+([-\d.e]+)[,\s]+([-\d.e]+)[,\s]+([-\d.e]+)[,\s]+([-\d.e]+)\s*\)/);
@@ -59,11 +96,22 @@ function pathToPoints(d, transform) {
         break;
       }
       case 'Q': {
-        const c1 = applyTransform(cmd.x1, cmd.y1, transform);
-        const end = applyTransform(cmd.x, cmd.y, transform);
+        const c1  = applyTransform(cmd.x1, cmd.y1, transform);
+        const end = applyTransform(cmd.x,  cmd.y,  transform);
         if (prev) {
-          for (const pt of tessellateQuadratic(prev, c1, end)) {
-            points.push({ type: 'L', x: pt.x, y: pt.y });
+          const arc = fitArcToSampledCurve(
+            prev, end,
+            t => {
+              const mt = 1 - t;
+              return { x: mt*mt*prev.x + 2*mt*t*c1.x + t*t*end.x,
+                       y: mt*mt*prev.y + 2*mt*t*c1.y + t*t*end.y };
+            }
+          );
+          if (arc) {
+            points.push({ type: 'A', x: end.x, y: end.y, ...arc });
+          } else {
+            for (const pt of tessellateQuadratic(prev, c1, end))
+              points.push({ type: 'L', x: pt.x, y: pt.y });
           }
         } else {
           points.push({ type: 'L', x: end.x, y: end.y });
@@ -71,12 +119,25 @@ function pathToPoints(d, transform) {
         break;
       }
       case 'C': {
-        const c1 = applyTransform(cmd.x1, cmd.y1, transform);
-        const c2 = applyTransform(cmd.x2, cmd.y2, transform);
-        const end = applyTransform(cmd.x, cmd.y, transform);
+        const c1  = applyTransform(cmd.x1, cmd.y1, transform);
+        const c2  = applyTransform(cmd.x2, cmd.y2, transform);
+        const end = applyTransform(cmd.x,  cmd.y,  transform);
         if (prev) {
-          for (const pt of tessellateCubic(prev, c1, c2, end)) {
-            points.push({ type: 'L', x: pt.x, y: pt.y });
+          const arc = fitArcToSampledCurve(
+            prev, end,
+            t => {
+              const mt = 1 - t;
+              return {
+                x: mt*mt*mt*prev.x + 3*mt*mt*t*c1.x + 3*mt*t*t*c2.x + t*t*t*end.x,
+                y: mt*mt*mt*prev.y + 3*mt*mt*t*c1.y + 3*mt*t*t*c2.y + t*t*t*end.y,
+              };
+            }
+          );
+          if (arc) {
+            points.push({ type: 'A', x: end.x, y: end.y, ...arc });
+          } else {
+            for (const pt of tessellateCubic(prev, c1, c2, end))
+              points.push({ type: 'L', x: pt.x, y: pt.y });
           }
         } else {
           points.push({ type: 'L', x: end.x, y: end.y });
@@ -138,6 +199,32 @@ function lineToPoints(el, transform) {
     transform
   );
   return [{ type: 'M', x: p1.x, y: p1.y }, { type: 'L', x: p2.x, y: p2.y }];
+}
+
+// Emit a true circle as two G2/G3 half-arcs instead of 64 G1 lines.
+function circleToPoints(el, transform) {
+  const cx = parseFloat(el.getAttribute('cx') || 0);
+  const cy = parseFloat(el.getAttribute('cy') || 0);
+  const r  = parseFloat(el.getAttribute('r') || el.getAttribute('rx') || 0);
+  if (r <= 0) return [];
+
+  const center = applyTransform(cx, cy, transform);
+  const left   = applyTransform(cx - r, cy, transform);
+  const right  = applyTransform(cx + r, cy, transform);
+  const top    = applyTransform(cx, cy - r, transform);
+
+  // Determine CW in SVG Y-down via cross product at top of first half
+  const vx1 = top.x - left.x, vy1 = top.y - left.y;
+  const vx2 = right.x - top.x, vy2 = right.y - top.y;
+  const cw = (vx1 * vy2 - vy1 * vx2) > 0;
+
+  // I/J = offset from arc START to circle center
+  return [
+    { type: 'M', x: left.x,  y: left.y  },
+    { type: 'A', x: right.x, y: right.y, i: center.x - left.x,  j: center.y - left.y,  clockwise: cw },
+    { type: 'A', x: left.x,  y: left.y,  i: center.x - right.x, j: center.y - right.y, clockwise: cw },
+    { type: 'Z', x: left.x,  y: left.y  },
+  ];
 }
 
 // Split a point set into M..Z (or M..<end>) subpaths. A single SVG <path>
@@ -240,7 +327,15 @@ function extractAllPointSets(svgString) {
     if (d) add(el, (e, t) => pathToPoints(d, t));
   });
   root.querySelectorAll('rect').forEach(el => add(el, rectToPoints));
-  root.querySelectorAll('ellipse, circle').forEach(el => add(el, ellipseToPoints));
+  root.querySelectorAll('ellipse, circle').forEach(el => {
+    const rx = parseFloat(el.getAttribute('rx') || el.getAttribute('r') || 0);
+    const ry = parseFloat(el.getAttribute('ry') || el.getAttribute('r') || 0);
+    if (Math.abs(rx - ry) < 0.01) {
+      add(el, circleToPoints);
+    } else {
+      add(el, ellipseToPoints);
+    }
+  });
   root.querySelectorAll('line').forEach(el => add(el, lineToPoints));
 
   return all;
@@ -300,6 +395,13 @@ export function compileSVGToGCode(svgString, settings = {}) {
         lines.push(`G1 X${x} Y${y} F${maxFeedrate}`);
         lines.push(`M5 ; tool off`);
         penDown = false;
+      } else if (pt.type === 'A') {
+        if (!penDown) { lines.push(`M3 ; tool on`); penDown = true; }
+        // SVG CW in Y-down → machine CCW after Y-flip → G3; SVG CCW → G2
+        const gNum = pt.clockwise ? 3 : 2;
+        const iMm  = pt.i.toFixed(3);
+        const jMm  = (-pt.j).toFixed(3); // negate J: SVG Y-down → machine Y-up
+        lines.push(`G${gNum} X${x} Y${y} I${iMm} J${jMm} F${maxFeedrate}`);
       } else {
         if (!penDown) {
           lines.push(`M3 ; tool on`);
