@@ -201,16 +201,14 @@ export default function ConsolePage() {
   return (
     <div className="page console-page-v2">
       <div className="page-header">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div>
-            <h1 className="page-title">Console</h1>
-            <p className="page-subtitle">Serial terminal · Command queue · Event log</p>
-          </div>
-          <div className="console-toolbar">
-            <button className="btn btn-sm btn-ghost" onClick={clearConsole}>Clear Terminal</button>
-            <button className="btn btn-sm btn-ghost" onClick={handleExport}>Export</button>
-            <ModeSelector />
-          </div>
+        <div>
+          <h1 className="page-title">Console</h1>
+          <p className="page-subtitle">Serial terminal · Command queue · Event log</p>
+        </div>
+        <div className="console-toolbar">
+          <button className="btn btn-sm btn-ghost" onClick={clearConsole}>Clear Terminal</button>
+          <button className="btn btn-sm btn-ghost" onClick={handleExport}>Export</button>
+          <ModeSelector />
         </div>
       </div>
 
