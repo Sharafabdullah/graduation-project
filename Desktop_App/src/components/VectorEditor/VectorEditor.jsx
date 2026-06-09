@@ -1,364 +1,309 @@
 import React, {
-  useEffect, useRef, useImperativeHandle, forwardRef, useState, useCallback
+  forwardRef, useImperativeHandle, useRef, useState, useCallback,
+  useEffect,
 } from 'react';
-import { fabric } from 'fabric';
 import ToolPalette from './ToolPalette';
-import './VectorEditor.css';
+import { PathLayer } from './PathLayer';
+import { NodeEditor } from './NodeEditor';
+import { OperationsPanel } from './OperationsPanel';
 import Dialog from '../Dialog';
-import { isBackgroundColor } from '../../lib/colorMatch';
+import { useViewTransform } from './useViewTransform';
+import {
+  svgToPaths, pathsToSvg, simplifyPath, smoothPath, fitPathsToBed,
+} from '../../lib/pathOps.js';
+import './VectorEditor.css';
+
+let _uid = 0;
+const uid = () => `ve-${++_uid}-${Date.now()}`;
 
 const VectorEditor = forwardRef(function VectorEditor(
-  {
-    bedW = 200, bedH = 200, lineWidth = 1,
-    backgroundColor = null, softLimitMargin = 10, homed = false, homeFloor = null,
-  },
+  { bedW = 200, bedH = 200, lineWidth = 1, backgroundColor = null,
+    softLimitMargin = 10, homed = false, homeFloor = null },
   ref
 ) {
-  const canvasElRef = useRef(null);
-  const canvasWrapRef = useRef(null);
-  const fabricRef = useRef(null);
-  const [activeTool, setActiveTool] = useState('select');
-  const activeToolRef = useRef('select');
-  const isDrawingRef = useRef(false);
-  const originRef = useRef({ x: 0, y: 0 });
-  const activeObjectRef = useRef(null);
+  const svgRef  = useRef(null);
+  const wrapRef = useRef(null);
+  const { vt, onWheel, startPan, updatePan, endPan, toSvg } = useViewTransform();
+
+  const [paths,      setPaths]      = useState([]);
+  const [selectedId, setSelectedId] = useState(null);
+  const [tool,       setTool]       = useState('select');
+  const [prevPaths,  setPrevPaths]  = useState(null);
+  const [drawing,    setDrawing]    = useState(null);
+  const [lineStart,  setLineStart]  = useState(null);
+  const [simplifyTol, setSimplifyTol] = useState(1);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [isPanning,  setIsPanning]  = useState(false);
+  const [fitScale,   setFitScale]   = useState(1);
+
+  const toolRef = useRef(tool);
+  useEffect(() => { toolRef.current = tool; }, [tool]);
+
+  const nodeEditorRef   = useRef(null);
+  const isDraggingNode  = useRef(false);
+
+  // ── Imperative API ──────────────────────────────────────────────────────────
 
   useImperativeHandle(ref, () => ({
-    toSVG: () => {
-      const canvas = fabricRef.current;
-      if (!canvas) return '';
-      const excluded = canvas.getObjects().filter(o => o.excludeFromExport);
-      excluded.forEach(o => canvas.remove(o));
-      const svg = canvas.toSVG();
-      excluded.forEach(o => canvas.add(o));
-      if (excluded[0]) canvas.sendToBack(excluded[0]);
-      return svg;
-    },
-    // Replace all canvas content with the given SVG
+    toSVG: () => pathsToSvg(paths, bedW, bedH),
+
     loadSVG: (svgString) => {
-      if (!fabricRef.current) return;
-      const canvas = fabricRef.current;
-      canvas.getObjects().forEach(obj => { if (!obj.excludeFromExport) canvas.remove(obj); });
-      fabric.loadSVGFromString(svgString, (objects, options) => {
-        const filtered = objects.filter(o => !isBackgroundColor(o.fill, backgroundColor));
-        const group = fabric.util.groupSVGElements(filtered, options);
-        group.scaleToWidth(Math.min(bedW * 0.9, group.width ?? bedW));
-        group.set({ left: bedW / 2, top: bedH / 2, originX: 'center', originY: 'center' });
-        canvas.add(group);
-        canvas.renderAll();
-      });
+      const doc = new DOMParser().parseFromString(svgString, 'image/svg+xml');
+      const root = doc.documentElement;
+      const vbRaw = root.getAttribute('viewBox');
+      const parts = vbRaw ? vbRaw.split(/\s+/).map(Number) : [0, 0, bedW, bedH];
+      const vbW = parts[2] || bedW;
+      const vbH = parts[3] || bedH;
+      const loaded = svgToPaths(svgString, backgroundColor);
+      const fitted = fitPathsToBed(loaded, vbW, vbH, bedW, bedH);
+      setPrevPaths(paths);
+      setPaths(fitted);
+      setSelectedId(null);
     },
-    // Add SVG to canvas WITHOUT clearing existing content
+
     addSVG: (svgString) => {
-      if (!fabricRef.current) return;
-      fabric.loadSVGFromString(svgString, (objects, options) => {
-        const filtered = objects.filter(o => !isBackgroundColor(o.fill, backgroundColor));
-        const group = fabric.util.groupSVGElements(filtered, options);
-        group.scaleToWidth(Math.min(bedW * 0.9, group.width ?? bedW));
-        group.set({ left: bedW / 2, top: bedH / 2, originX: 'center', originY: 'center' });
-        fabricRef.current.add(group);
-        fabricRef.current.renderAll();
-      });
+      const doc = new DOMParser().parseFromString(svgString, 'image/svg+xml');
+      const root = doc.documentElement;
+      const vbRaw = root.getAttribute('viewBox');
+      const parts = vbRaw ? vbRaw.split(/\s+/).map(Number) : [0, 0, bedW, bedH];
+      const vbW = parts[2] || bedW;
+      const vbH = parts[3] || bedH;
+      const loaded = svgToPaths(svgString, backgroundColor);
+      const fitted = fitPathsToBed(loaded, vbW, vbH, bedW, bedH);
+      setPaths(prev => [...prev, ...fitted]);
     },
-  }));
+  }), [paths, bedW, bedH, backgroundColor]);
+
+  // ── Fit SVG to container ────────────────────────────────────────────────────
 
   useEffect(() => {
-    // Start at 1:1 (mm → px); ResizeObserver fits it to the container immediately.
-    const canvas = new fabric.Canvas(canvasElRef.current, {
-      width: bedW,
-      height: bedH,
-      backgroundColor: '#ffffff',
-      selection: true,
-    });
-    canvas.setZoom(1);
-    fabricRef.current = canvas;
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+    const fit = () => {
+      const { width, height } = wrap.getBoundingClientRect();
+      const pad = 32;
+      const s = Math.min((width - pad) / bedW, (height - pad) / bedH, 4);
+      setFitScale(s > 0 ? s : 1);
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(wrap);
+    return () => ro.disconnect();
+  }, [bedW, bedH]);
 
-    // Bed boundary (excluded from SVG export via custom property)
-    const border = new fabric.Rect({
-      left: 0, top: 0, width: bedW, height: bedH,
-      fill: 'transparent',
-      stroke: '#555',
-      strokeWidth: 0.5,
-      strokeDashArray: [4, 4],
-      selectable: false,
-      evented: false,
-      excludeFromExport: true,
-    });
+  // ── Node drag detection ─────────────────────────────────────────────────────
 
-    // Soft-limit margin zone — a dashed inset rect distinct from the bed
-    // boundary's dash pattern/color (matches GCodePreview's amber [4,4] vs.
-    // this inset zone's tighter [2,2] dash), so the editor previews the same
-    // "stay off the edges" guidance the G-Code Outline tab already shows.
-    const marginZone = new fabric.Rect({
-      left: softLimitMargin, top: softLimitMargin,
-      width: Math.max(0, bedW - 2 * softLimitMargin),
-      height: Math.max(0, bedH - 2 * softLimitMargin),
-      fill: 'transparent',
-      stroke: 'rgba(255, 200, 0, 0.35)',
-      strokeWidth: 0.5,
-      strokeDashArray: [2, 2],
-      selectable: false,
-      evented: false,
-      excludeFromExport: true,
-    });
+  useEffect(() => {
+    const handleNodeDragStart = () => { isDraggingNode.current = true; };
+    const el = wrapRef.current;
+    el?.addEventListener('node-drag-start', handleNodeDragStart);
+    return () => el?.removeEventListener('node-drag-start', handleNodeDragStart);
+  }, []);
 
-    canvas.add(border, marginZone);
-    canvas.sendToBack(marginZone);
-    canvas.sendToBack(border);
+  // ── SVG coordinate conversion ───────────────────────────────────────────────
 
-    const handleKeyDown = (e) => {
-      const activeObj = canvas.getActiveObject();
-      if ((e.key === 'Delete' || e.key === 'Backspace') && document.activeElement.tagName !== 'INPUT' && !activeObj?.isEditing) {
-        const active = canvas.getActiveObjects();
-        canvas.discardActiveObject();
-        active.forEach((obj) => {
-          if (!obj.excludeFromExport) canvas.remove(obj);
-        });
-        canvas.renderAll();
+  const getSvgCoords = useCallback((e) => {
+    const rect = wrapRef.current?.getBoundingClientRect();
+    if (!rect) return { x: 0, y: 0 };
+    return toSvg(e.clientX, e.clientY, rect);
+  }, [toSvg]);
+
+  const updateSelectedPath = useCallback((newD) => {
+    setPaths(prev => prev.map(p => p.id === selectedId ? { ...p, d: newD } : p));
+  }, [selectedId]);
+
+  // ── Mouse handlers ──────────────────────────────────────────────────────────
+
+  const handleMouseDown = useCallback((e) => {
+    if (e.button === 1 || (e.button === 0 && e.altKey)) {
+      setIsPanning(true);
+      startPan(e.clientX, e.clientY);
+      return;
+    }
+    const { x, y } = getSvgCoords(e);
+    const t = toolRef.current;
+    if (t === 'pen')  setDrawing({ points: [{ x, y }] });
+    if (t === 'line') setLineStart({ x, y });
+  }, [getSvgCoords, startPan]);
+
+  const handleMouseMove = useCallback((e) => {
+    if (isPanning) { updatePan(e.clientX, e.clientY); return; }
+    const { x, y } = getSvgCoords(e);
+    if (isDraggingNode.current && nodeEditorRef.current) {
+      nodeEditorRef.current.continueDrag(x, y);
+      return;
+    }
+    const t = toolRef.current;
+    if (t === 'pen' && drawing) {
+      setDrawing(prev => ({ points: [...prev.points, { x, y }] }));
+    }
+  }, [isPanning, updatePan, getSvgCoords, drawing]);
+
+  const handleMouseUp = useCallback((e) => {
+    if (isPanning) { setIsPanning(false); endPan(); return; }
+    if (isDraggingNode.current) {
+      isDraggingNode.current = false;
+      nodeEditorRef.current?.endDrag?.();
+      return;
+    }
+    const { x, y } = getSvgCoords(e);
+    const t = toolRef.current;
+
+    if (t === 'pen' && drawing && drawing.points.length > 1) {
+      const d = `M ${drawing.points[0].x.toFixed(3)} ${drawing.points[0].y.toFixed(3)} ` +
+        drawing.points.slice(1).map(p => `L ${p.x.toFixed(3)} ${p.y.toFixed(3)}`).join(' ');
+      setPrevPaths(paths);
+      setPaths(prev => [...prev, { id: uid(), d, color: '#000000', fill: 'none' }]);
+      setDrawing(null);
+    }
+    if (t === 'line' && lineStart) {
+      const d = `M ${lineStart.x.toFixed(3)} ${lineStart.y.toFixed(3)} L ${x.toFixed(3)} ${y.toFixed(3)}`;
+      setPrevPaths(paths);
+      setPaths(prev => [...prev, { id: uid(), d, color: '#000000', fill: 'none' }]);
+      setLineStart(null);
+    }
+  }, [isPanning, endPan, getSvgCoords, drawing, lineStart, paths]);
+
+  // ── Keyboard ────────────────────────────────────────────────────────────────
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (document.activeElement.tagName === 'INPUT') return;
+      if ((e.key === 'Delete' || e.key === 'Backspace') && selectedId) {
+        setPrevPaths(paths);
+        setPaths(prev => prev.filter(p => p.id !== selectedId));
+        setSelectedId(null);
+        return;
+      }
+      if (e.key === 'Escape') { setSelectedId(null); setDrawing(null); setLineStart(null); return; }
+      if (e.ctrlKey && e.key === 'z') { e.preventDefault(); if (prevPaths) { setPaths(prevPaths); setPrevPaths(null); } return; }
+      if (!e.ctrlKey && !e.altKey) {
+        if (e.key === 'v' || e.key === 'V') setTool('select');
+        if (e.key === 'p' || e.key === 'P') setTool('pen');
+        if (e.key === 'l' || e.key === 'L') setTool('line');
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [selectedId, prevPaths, paths]);
 
-    // Apply the initial tool after canvas is ready
-    setTool(activeToolRef.current);
+  // ── Operations ──────────────────────────────────────────────────────────────
 
-    // Fit canvas to its container, preserving bed aspect ratio with padding.
-    const PADDING = 32;
-    const fitCanvas = () => {
-      const wrap = canvasWrapRef.current;
-      if (!wrap || !fabricRef.current) return;
-      const maxW = wrap.clientWidth  - PADDING * 2;
-      const maxH = wrap.clientHeight - PADDING * 2;
-      if (maxW <= 0 || maxH <= 0) return;
-      const scale = Math.min(maxW / bedW, maxH / bedH);
-      canvas.setWidth(Math.round(bedW * scale));
-      canvas.setHeight(Math.round(bedH * scale));
-      canvas.setZoom(scale);
-      canvas.requestRenderAll();
-    };
-    const ro = new ResizeObserver(fitCanvas);
-    if (canvasWrapRef.current) ro.observe(canvasWrapRef.current);
-    fitCanvas();
+  const handleSimplify = useCallback(() => {
+    setPrevPaths(paths);
+    setPaths(prev => prev.map(p => ({ ...p, d: simplifyPath(p.d, simplifyTol) })));
+  }, [paths, simplifyTol]);
 
-    return () => {
-      ro.disconnect();
-      window.removeEventListener('keydown', handleKeyDown);
-      canvas.dispose();
-    };
-  }, [bedW, bedH, softLimitMargin]);
+  const handleSmooth = useCallback(() => {
+    setPrevPaths(paths);
+    setPaths(prev => prev.map(p => ({ ...p, d: smoothPath(p.d) })));
+  }, [paths]);
 
-  // Hard safety floor near the limit switches (machine origin corner) —
-  // mirrors GCodePreview's homeFloor overlay so the drawer previews the same
-  // danger zone. Only meaningful (and only drawn) once homed; redrawn whenever
-  // homing state/floor changes without needing to recreate the whole canvas.
-  useEffect(() => {
-    const canvas = fabricRef.current;
-    if (!canvas) return;
-    canvas.getObjects().filter(o => o.isHomeFloorOverlay).forEach(o => canvas.remove(o));
-    if (homed && homeFloor) {
-      const floorStyle = {
-        fill: 'rgba(241, 76, 76, 0.12)',
-        stroke: 'rgba(241, 76, 76, 0.6)',
-        strokeWidth: 0.5,
-        strokeDashArray: [1, 1],
-        selectable: false,
-        evented: false,
-        excludeFromExport: true,
-        isHomeFloorOverlay: true,
-      };
-      // Machine (0, 0) is the bottom-left corner of the bed; canvas Y grows
-      // downward (the opposite of machine Y — the compiler flips it on
-      // export), so the danger bands hug the left edge (x < floorX) and the
-      // bottom edge (canvas top = bedH - floorY, for y < floorY).
-      canvas.add(
-        new fabric.Rect({ ...floorStyle, left: 0, top: 0, width: homeFloor.x, height: bedH }),
-        new fabric.Rect({ ...floorStyle, left: 0, top: bedH - homeFloor.y, width: bedW, height: homeFloor.y })
-      );
-    }
-    canvas.renderAll();
-  }, [homed, homeFloor, bedW, bedH]);
-
-  const setTool = useCallback((tool) => {
-    const canvas = fabricRef.current;
-    if (!canvas) return;
-    activeToolRef.current = tool;
-    setActiveTool(tool);
-
-    canvas.isDrawingMode = tool === 'pen';
-    canvas.selection = tool === 'select';
-    canvas.defaultCursor = tool === 'select' ? 'default' : 'crosshair';
-
-    if (tool === 'pen') {
-      canvas.freeDrawingBrush.width = lineWidth;
-      canvas.freeDrawingBrush.color = '#000000';
-    }
-
-    canvas.off('mouse:down');
-    canvas.off('mouse:move');
-    canvas.off('mouse:up');
-
-    if (tool === 'eraser') {
-      canvas.defaultCursor = 'cell';
-      canvas.on('mouse:down', (opt) => {
-        const p = canvas.getPointer(opt.e);
-        // Use bounding-box hit detection so transparent-fill shapes (circles,
-        // rects) are erasable even when clicking through their hollow interior.
-        const erasable = canvas.getObjects().filter(o => !o.excludeFromExport);
-        // Iterate in reverse so the topmost (last-drawn) object is removed first.
-        for (let i = erasable.length - 1; i >= 0; i--) {
-          const obj = erasable[i];
-          const br = obj.getBoundingRect(true);
-          if (p.x >= br.left && p.x <= br.left + br.width &&
-              p.y >= br.top  && p.y <= br.top  + br.height) {
-            canvas.remove(obj);
-            canvas.renderAll();
-            break;
-          }
-        }
-      });
-    }
-
-    if (tool === 'rect' || tool === 'circle' || tool === 'line') {
-      canvas.on('mouse:down', (opt) => {
-        if (isDrawingRef.current) return;
-        isDrawingRef.current = true;
-        const p = canvas.getPointer(opt.e);
-        originRef.current = { x: p.x, y: p.y };
-
-        let shape;
-        if (tool === 'rect') {
-          shape = new fabric.Rect({
-            left: p.x, top: p.y, width: 0, height: 0,
-            fill: 'transparent', stroke: '#000', strokeWidth: lineWidth,
-          });
-        } else if (tool === 'circle') {
-          shape = new fabric.Ellipse({
-            left: p.x, top: p.y, rx: 0, ry: 0,
-            fill: 'transparent', stroke: '#000', strokeWidth: lineWidth,
-          });
-        } else {
-          shape = new fabric.Line([p.x, p.y, p.x, p.y], {
-            stroke: '#000', strokeWidth: lineWidth,
-          });
-        }
-        activeObjectRef.current = shape;
-        canvas.add(shape);
-      });
-
-      canvas.on('mouse:move', (opt) => {
-        if (!isDrawingRef.current || !activeObjectRef.current) return;
-        const p = canvas.getPointer(opt.e);
-        const o = originRef.current;
-        const shape = activeObjectRef.current;
-
-        if (tool === 'rect') {
-          shape.set({
-            left: Math.min(p.x, o.x), top: Math.min(p.y, o.y),
-            width: Math.abs(p.x - o.x), height: Math.abs(p.y - o.y),
-          });
-        } else if (tool === 'circle') {
-          shape.set({
-            left: Math.min(p.x, o.x), top: Math.min(p.y, o.y),
-            rx: Math.abs(p.x - o.x) / 2, ry: Math.abs(p.y - o.y) / 2,
-          });
-        } else {
-          shape.set({ x2: p.x, y2: p.y });
-        }
-        // Keep hit-detection bounding coords in sync with the updated geometry.
-        shape.setCoords();
-        canvas.renderAll();
-      });
-
-      canvas.on('mouse:up', () => {
-        const shape = activeObjectRef.current;
-        if (shape) {
-          // Remove shapes that were never dragged (zero/near-zero size) —
-          // these are invisible and pollute the canvas / G-code output.
-          const tooSmall =
-            (shape.type === 'ellipse' && shape.rx < 1 && shape.ry < 1) ||
-            (shape.type === 'rect'    && shape.width < 1 && shape.height < 1) ||
-            (shape.type === 'line'    && Math.abs(shape.x2 - shape.x1) < 1 &&
-                                         Math.abs(shape.y2 - shape.y1) < 1);
-          if (tooSmall) canvas.remove(shape);
-        }
-        isDrawingRef.current = false;
-        activeObjectRef.current = null;
-        canvas.renderAll();
-      });
-    }
-
-    if (tool === 'text') {
-      canvas.once('mouse:down', (opt) => {
-        const p = canvas.getPointer(opt.e);
-        const text = new fabric.IText('Text', {
-          left: p.x, top: p.y,
-          fontSize: 14, fill: '#000',
-          fontFamily: 'Arial',
-        });
-        canvas.add(text);
-        canvas.setActiveObject(text);
-        text.enterEditing();
-        canvas.renderAll();
-        setTool('select');
-      });
-    }
-  }, [lineWidth, bedW, bedH]);
-
-  useEffect(() => {
-    if (fabricRef.current) {
-      setTool(activeToolRef.current);
-    }
-  }, [lineWidth, setTool]);
-
-  const deleteSelected = useCallback(() => {
-    const canvas = fabricRef.current;
-    if (!canvas) return;
-    const active = canvas.getActiveObjects();
-    canvas.discardActiveObject();
-    active.forEach((obj) => {
-      if (!obj.excludeFromExport) canvas.remove(obj);
-    });
-    canvas.renderAll();
-  }, []);
-
-  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
-
-  const deleteAll = useCallback(() => {
-    if (!fabricRef.current) return;
-    setConfirmDeleteOpen(true);
-  }, []);
+  const handleUndo = useCallback(() => {
+    if (prevPaths) { setPaths(prevPaths); setPrevPaths(null); }
+  }, [prevPaths]);
 
   const confirmDeleteAll = useCallback(() => {
-    const canvas = fabricRef.current;
-    setConfirmDeleteOpen(false);
-    if (!canvas) return;
-    canvas.discardActiveObject();
-    canvas.getObjects().forEach((obj) => {
-      if (!obj.excludeFromExport) canvas.remove(obj);
-    });
-    canvas.renderAll();
-  }, []);
+    setPrevPaths(paths);
+    setPaths([]);
+    setSelectedId(null);
+    setConfirmOpen(false);
+  }, [paths]);
+
+  // ── Preview of in-progress draw ─────────────────────────────────────────────
+
+  const previewD = drawing && drawing.points.length > 1
+    ? `M ${drawing.points[0].x.toFixed(3)} ${drawing.points[0].y.toFixed(3)} ` +
+      drawing.points.slice(1).map(p => `L ${p.x.toFixed(3)} ${p.y.toFixed(3)}`).join(' ')
+    : null;
+
+  const cursor = isPanning ? 'grabbing'
+    : tool === 'select' ? 'default'
+    : 'crosshair';
+
+  const selectedPath = paths.find(p => p.id === selectedId);
 
   return (
     <div className="vector-editor">
-      <ToolPalette
-        activeTool={activeTool}
-        onToolChange={setTool}
-        onDeleteSelected={deleteSelected}
-        onDeleteAll={deleteAll}
-      />
-      <div className="canvas-wrap" ref={canvasWrapRef}>
-        <canvas ref={canvasElRef} />
+      <ToolPalette activeTool={tool} onToolChange={setTool} />
+
+      <div
+        className="svg-canvas-wrap"
+        ref={wrapRef}
+        style={{ cursor }}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onWheel={onWheel}
+      >
+        <svg
+          ref={svgRef}
+          width={bedW * fitScale}
+          height={bedH * fitScale}
+          viewBox={`0 0 ${bedW} ${bedH}`}
+          style={{ display: 'block', background: '#ffffff' }}
+        >
+          {/* Bed boundary */}
+          <rect x={0} y={0} width={bedW} height={bedH}
+            fill="none" stroke="#555" strokeWidth={0.5} strokeDasharray="4,4" />
+
+          {/* Soft limit margin */}
+          <rect
+            x={softLimitMargin} y={softLimitMargin}
+            width={Math.max(0, bedW - 2*softLimitMargin)}
+            height={Math.max(0, bedH - 2*softLimitMargin)}
+            fill="none" stroke="rgba(255,200,0,0.35)"
+            strokeWidth={0.5} strokeDasharray="2,2" />
+
+          {/* Home floor danger zone */}
+          {homed && homeFloor && (
+            <>
+              <rect x={0} y={0} width={homeFloor.x} height={bedH}
+                fill="rgba(241,76,76,0.12)" stroke="rgba(241,76,76,0.6)"
+                strokeWidth={0.5} strokeDasharray="1,1" />
+              <rect x={0} y={bedH - homeFloor.y} width={bedW} height={homeFloor.y}
+                fill="rgba(241,76,76,0.12)" stroke="rgba(241,76,76,0.6)"
+                strokeWidth={0.5} strokeDasharray="1,1" />
+            </>
+          )}
+
+          <PathLayer paths={paths} selectedId={selectedId} onSelect={setSelectedId} />
+
+          {selectedPath && (
+            <NodeEditor
+              ref={nodeEditorRef}
+              path={selectedPath}
+              onUpdateD={updateSelectedPath}
+              scale={fitScale}
+            />
+          )}
+
+          {previewD && (
+            <path d={previewD} stroke="#007ACC" fill="none"
+              strokeWidth={1} strokeDasharray="3,2" vectorEffect="non-scaling-stroke" />
+          )}
+        </svg>
       </div>
+
+      <OperationsPanel
+        simplifyTolerance={simplifyTol}
+        onSimplifyToleranceChange={setSimplifyTol}
+        onSimplify={handleSimplify}
+        onSmooth={handleSmooth}
+        onUndo={handleUndo}
+        canUndo={!!prevPaths}
+        onDeleteAll={() => setConfirmOpen(true)}
+      />
+
       <Dialog
-        open={confirmDeleteOpen}
+        open={confirmOpen}
         mode="confirm"
         title="Delete Everything"
-        message="Are you sure you want to delete everything?"
+        message="Are you sure you want to delete all paths?"
         confirmLabel="Delete"
         cancelLabel="Cancel"
         onConfirm={confirmDeleteAll}
-        onCancel={() => setConfirmDeleteOpen(false)}
+        onCancel={() => setConfirmOpen(false)}
       />
     </div>
   );
