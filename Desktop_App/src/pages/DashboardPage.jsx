@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSerial } from '../contexts/SerialContext';
 import { useSettings } from '../contexts/SettingsContext';
+import { useMode } from '../contexts/ModeContext';
 import { useNavigate } from 'react-router-dom';
 import { RefreshCw, Crosshair, ChevronUp, ChevronDown, XCircle, Move, FileBarChart2, Settings, Terminal } from 'lucide-react';
+import ModeSelector from '../components/ModeSelector';
 import './DashboardPage.css';
 
 export default function DashboardPage() {
@@ -26,8 +28,10 @@ export default function DashboardPage() {
     sendCommand,
     logConsole,
     stopStreaming,
+    arduinoState,
   } = useSerial();
   const { settings } = useSettings();
+  const { modeConfig } = useMode();
   const navigate = useNavigate();
 
   const { selectedPort, setSelectedPort } = useSerial();
@@ -61,8 +65,11 @@ export default function DashboardPage() {
   return (
     <div className="page">
       <div className="page-header">
-        <h1 className="page-title">Dashboard</h1>
-        <p className="page-subtitle">Machine overview and quick controls</p>
+        <div>
+          <h1 className="page-title">Dashboard</h1>
+          <p className="page-subtitle">Machine overview and quick controls</p>
+        </div>
+        <ModeSelector />
       </div>
 
       <div className="dashboard-grid">
@@ -155,6 +162,24 @@ export default function DashboardPage() {
                 {machineState}
               </span>
             </div>
+            {modeConfig.hasServo && (
+              <div className="status-cell">
+                <span className="status-cell-label">Servo Angle</span>
+                <span className="status-cell-value">{arduinoState.servoAngle}°</span>
+              </div>
+            )}
+            {modeConfig.hasSpindleSpeed && (
+              <div className="status-cell">
+                <span className="status-cell-label">Spindle Speed</span>
+                <span className="status-cell-value">{arduinoState.spindleSpeed}</span>
+              </div>
+            )}
+            {modeConfig.hasLaserPower && (
+              <div className="status-cell">
+                <span className="status-cell-label">Laser Power</span>
+                <span className="status-cell-value">{arduinoState.laserPower}</span>
+              </div>
+            )}
           </div>
 
           {/* Job Progress (if streaming) */}
@@ -194,7 +219,7 @@ export default function DashboardPage() {
               disabled={!connected}
             >
               <ChevronUp size={18} />
-              Head Up
+              {modeConfig.toolOffLabel}
             </button>
             <button
               className="btn btn-secondary quick-action-btn"
@@ -202,7 +227,7 @@ export default function DashboardPage() {
               disabled={!connected}
             >
               <ChevronDown size={18} />
-              Head Down
+              {modeConfig.toolOnLabel}
             </button>
             <button
               className="btn btn-danger quick-action-btn"

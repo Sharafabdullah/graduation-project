@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useSerial } from '../contexts/SerialContext';
+import ModeSelector from '../components/ModeSelector';
 import './ConsolePage.css';
 
 const QUICK_COMMANDS = [
@@ -208,6 +209,7 @@ export default function ConsolePage() {
           <div className="console-toolbar">
             <button className="btn btn-sm btn-ghost" onClick={clearConsole}>Clear Terminal</button>
             <button className="btn btn-sm btn-ghost" onClick={handleExport}>Export</button>
+            <ModeSelector />
           </div>
         </div>
       </div>

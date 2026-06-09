@@ -12,6 +12,7 @@ import Dialog from '../components/Dialog';
 import { compileSVGToGCode } from '../lib/gcodeCompiler';
 import { scanGCodeBounds } from '../lib/softLimits';
 import { Play, Save, Zap } from 'lucide-react';
+import ModeSelector from '../components/ModeSelector';
 import './Image2GCodePage.css';
 
 export default function Image2GCodePage() {
@@ -130,8 +131,11 @@ export default function Image2GCodePage() {
   return (
     <div className="page i2g-page">
       <div className="page-header">
-        <h1 className="page-title">Image to G-Code</h1>
-        <p className="page-subtitle">Trace images or draw vectors, then compile and run</p>
+        <div>
+          <h1 className="page-title">Image to G-Code</h1>
+          <p className="page-subtitle">Trace images or draw vectors, then compile and run</p>
+        </div>
+        <ModeSelector />
       </div>
 
       {mode === 'drill' ? (

@@ -2,8 +2,10 @@ import React, { useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSerial } from '../contexts/SerialContext';
 import { useJobs } from '../contexts/JobsContext';
-import { BUILTIN_GCODES, builtinToFile } from '../data/builtinGcodes';
-import { FileUp } from 'lucide-react';
+import { getBuiltinsForMode, builtinToFile } from '../data/builtinGcodes';
+import { useMode } from '../contexts/ModeContext';
+import { FileUp, FolderOpen } from 'lucide-react';
+import ModeSelector from '../components/ModeSelector';
 import './GCodeJobsPage.css';
 import { useSettings } from '../contexts/SettingsContext';
 import { scanGCodeBounds } from '../lib/softLimits';
@@ -39,6 +41,7 @@ export default function GCodeJobsPage() {
   } = useSerial();
 
   const { loadedFiles, addLoadedFile, removeLoadedFile } = useJobs();
+  const { mode } = useMode();
 
   const [tab, setTab] = useState('builtin');
   const [selectedFile, setSelectedFile] = useState(null);
@@ -122,7 +125,9 @@ export default function GCodeJobsPage() {
     startStreaming(previewLines, selectedFile?.name || 'Job');
   };
 
-  const builtinByCategory = BUILTIN_GCODES.reduce((acc, f) => {
+  const modeBuiltins = getBuiltinsForMode(mode);
+
+  const builtinByCategory = modeBuiltins.reduce((acc, f) => {
     (acc[f.category] = acc[f.category] || []).push(f);
     return acc;
   }, {});
@@ -130,8 +135,11 @@ export default function GCodeJobsPage() {
   return (
     <div className="page">
       <div className="page-header">
-        <h1 className="page-title">G-Code Jobs</h1>
-        <p className="page-subtitle">Load, preview, and stream G-code files to the machine</p>
+        <div>
+          <h1 className="page-title">G-Code Jobs</h1>
+          <p className="page-subtitle">Load, preview, and stream G-code files to the machine</p>
+        </div>
+        <ModeSelector />
       </div>
 
       <div className="gcode-grid">
@@ -143,7 +151,7 @@ export default function GCodeJobsPage() {
               onClick={() => { setTab('builtin'); setBoundsWarning(null); }}
             >
               Built-in
-              <span className="tab-count">{BUILTIN_GCODES.length}</span>
+              <span className="tab-count">{modeBuiltins.length}</span>
             </button>
             <button
               className={`gcode-tab ${tab === 'loaded' ? 'active' : ''}`}
@@ -159,10 +167,19 @@ export default function GCodeJobsPage() {
               History
               <span className="tab-count">{jobHistory.length}</span>
             </button>
-            <button className="btn btn-primary btn-sm" onClick={loadExternalFile} style={{ marginLeft: 'auto' }}>
-              <FileUp size={14} />
-              Load
-            </button>
+            <div style={{ marginLeft: 'auto', display: 'flex', gap: '8px' }}>
+              <button 
+                className="btn btn-secondary btn-sm" 
+                onClick={() => window.platform.openJobsFolder()} 
+                title="Open Jobs Folder"
+              >
+                <FolderOpen size={14} />
+              </button>
+              <button className="btn btn-primary btn-sm" onClick={loadExternalFile}>
+                <FileUp size={14} />
+                Load
+              </button>
+            </div>
           </div>
 
           {tab === 'builtin' && (

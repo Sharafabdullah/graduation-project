@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import { useSerial } from '../contexts/SerialContext';
+import { useMode } from '../contexts/ModeContext';
 import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Crosshair } from 'lucide-react';
+import ModeSelector from '../components/ModeSelector';
 import './ManualControlPage.css';
 
 export default function ManualControlPage() {
   const {
     connected, position, feedRate, jogWithIncrement, goToPosition, goToOrigin, homeStage, setZero,
-    penUp, penDown, setServoAngle,
+    penUp, penDown, setServoAngle, sendCommand
   } = useSerial();
+  const { modeConfig } = useMode();
 
   const [jogIncrement, setJogIncrement] = useState(1);
   const [goX, setGoX] = useState(0);
   const [goY, setGoY] = useState(0);
   const [servoAngle, setLocalServoAngle] = useState(75);
+  const [toolPower, setToolPower] = useState(200);
 
   const handleJog = (axis, direction) => {
     jogWithIncrement(axis, direction, jogIncrement);
@@ -25,8 +29,11 @@ export default function ManualControlPage() {
   return (
     <div className="page">
       <div className="page-header">
-        <h1 className="page-title">Manual Control</h1>
-        <p className="page-subtitle">Jog the machine, set positions, and control the head</p>
+        <div>
+          <h1 className="page-title">Manual Control</h1>
+          <p className="page-subtitle">Jog the machine, set positions, and control the head</p>
+        </div>
+        <ModeSelector />
       </div>
 
       <div className="manual-grid">
@@ -116,33 +123,53 @@ export default function ManualControlPage() {
           </div>
         </div>
 
-        {/* Pen Control */}
+        {/* Tool Control */}
         <div className="card">
-          <h2 className="section-header">Head Control</h2>
+          <h2 className="section-header">{modeConfig.label} Control</h2>
           <div className="button-group" style={{ flexDirection: 'column' }}>
             <button className="btn btn-primary full-width" onClick={penUp} disabled={!connected}>
               <ChevronUp size={16} />
-              Head Up (M5)
+              {modeConfig.toolOffLabel} ({modeConfig.toolOffCmd})
             </button>
             <button className="btn btn-primary full-width" onClick={penDown} disabled={!connected}>
               <ChevronDown size={16} />
-              Head Down (M3)
+              {modeConfig.toolOnLabel} ({modeConfig.toolOnCmd})
             </button>
           </div>
-          <div className="form-row" style={{ marginTop: '8px' }}>
-            <label>Custom Servo Angle: {servoAngle}°</label>
-            <input
-              type="range"
-              min="0"
-              max="180"
-              value={servoAngle}
-              onChange={e => setLocalServoAngle(parseInt(e.target.value))}
-              style={{ height: 'auto', padding: 0 }}
-            />
-            <button className="btn btn-secondary btn-sm" onClick={() => setServoAngle(servoAngle)} disabled={!connected}>
-              Set Angle (M280 S{servoAngle})
-            </button>
-          </div>
+
+          {(modeConfig.hasSpindleSpeed || modeConfig.hasLaserPower) && (
+            <div className="form-row" style={{ marginTop: '16px' }}>
+              <label>{modeConfig.hasLaserPower ? 'Laser Power' : 'Spindle Speed'} (0-255): {toolPower}</label>
+              <input
+                type="range"
+                min="0"
+                max="255"
+                value={toolPower}
+                onChange={e => setToolPower(parseInt(e.target.value))}
+                style={{ height: 'auto', padding: 0 }}
+              />
+              <button className="btn btn-secondary btn-sm" onClick={() => sendCommand(`M3 S${toolPower}`)} disabled={!connected}>
+                Turn On at {toolPower}
+              </button>
+            </div>
+          )}
+
+          {modeConfig.hasServo && (
+            <div className="form-row" style={{ marginTop: '16px' }}>
+              <label>Custom Servo Angle: {servoAngle}°</label>
+              <input
+                type="range"
+                min="0"
+                max="180"
+                value={servoAngle}
+                onChange={e => setLocalServoAngle(parseInt(e.target.value))}
+                style={{ height: 'auto', padding: 0 }}
+              />
+              <button className="btn btn-secondary btn-sm" onClick={() => setServoAngle(servoAngle)} disabled={!connected}>
+                Set Angle (M280 S{servoAngle})
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

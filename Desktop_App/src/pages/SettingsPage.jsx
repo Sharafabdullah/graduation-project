@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSettings } from '../contexts/SettingsContext';
 import { useSerial } from '../contexts/SerialContext';
+import { useMode } from '../contexts/ModeContext';
+import ModeSelector from '../components/ModeSelector';
 import './SettingsPage.css';
 
 export default function SettingsPage() {
   const { settings, stepsPerMm, updateSetting, saveSettings, applyToArduino } = useSettings();
-  const { connected, sendCommand, logConsole } = useSerial();
+  const { connected, sendCommand, logConsole, portPath, streaming } = useSerial();
+  const { mode, modeConfig, firmwareUploaded, markFirmwareUploaded } = useMode();
+  const [uploading, setUploading] = useState(false);
 
   const handleSave = async () => {
     const result = await saveSettings();
@@ -22,7 +26,7 @@ export default function SettingsPage() {
       return;
     }
     logConsole('Applying settings to Arduino...', 'info');
-    await applyToArduino(sendCommand);
+    await applyToArduino(sendCommand, modeConfig.id);
     logConsole('All settings sent to Arduino.', 'info');
   };
 
@@ -33,11 +37,47 @@ export default function SettingsPage() {
     }
   };
 
+  const handleUploadFirmware = async () => {
+    if (!connected || uploading) return;
+    if (streaming) {
+      logConsole('Cannot upload firmware while streaming a job.', 'error');
+      return;
+    }
+
+    setUploading(true);
+    logConsole(`[FIRMWARE] Starting upload for ${modeConfig.label} mode from Settings...`, 'info');
+
+    try {
+      const unsub = typeof window.platform !== 'undefined'
+        ? window.platform.onUploadProgress((line) => {
+            if (line) logConsole(line, 'info');
+          })
+        : () => {};
+
+      const result = await window.platform.uploadFirmware(portPath, mode);
+      unsub();
+
+      if (result.success) {
+        markFirmwareUploaded(true);
+        logConsole('[FIRMWARE] Upload successful! Machine is now in ' + modeConfig.label + ' mode.', 'info');
+      } else {
+        logConsole('[FIRMWARE] Upload FAILED: ' + (result.error || `exit code ${result.exitCode}`), 'error');
+      }
+    } catch (err) {
+      logConsole('[FIRMWARE] Upload error: ' + err.message, 'error');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <div className="page">
       <div className="page-header">
-        <h1 className="page-title">Machine Settings</h1>
-        <p className="page-subtitle">Configure hardware parameters — applied to Arduino on save</p>
+        <div>
+          <h1 className="page-title">Machine Settings</h1>
+          <p className="page-subtitle">Configure hardware parameters — applied to Arduino on save</p>
+        </div>
+        <ModeSelector />
       </div>
 
       <div className="settings-grid">
@@ -116,44 +156,96 @@ export default function SettingsPage() {
         </div>
 
         {/* Servo Configuration */}
-        <div className="card">
-          <h2 className="section-header">Servo Configuration</h2>
-          <div className="form-row">
-            <label>Head Up Angle (°)</label>
-            <input
-              type="number"
-              value={settings.servoPenUp}
-              min="0" max="180"
-              onChange={e => updateSetting('servoPenUp', parseInt(e.target.value) || 0)}
-            />
+        {modeConfig.hasServo && (
+          <div className="card">
+            <h2 className="section-header">Servo Configuration</h2>
+            <div className="form-row">
+              <label>Head Up Angle (°)</label>
+              <input
+                type="number"
+                value={settings.servoPenUp}
+                min="0" max="180"
+                onChange={e => updateSetting('servoPenUp', parseInt(e.target.value) || 0)}
+              />
+            </div>
+            <div className="form-row">
+              <label>Head Down Angle (°)</label>
+              <input
+                type="number"
+                value={settings.servoPenDown}
+                min="0" max="180"
+                onChange={e => updateSetting('servoPenDown', parseInt(e.target.value) || 0)}
+              />
+            </div>
+            <div className="form-row">
+              <label>Home Angle (°)</label>
+              <input
+                type="number"
+                value={settings.servoHome}
+                min="0" max="180"
+                onChange={e => updateSetting('servoHome', parseInt(e.target.value) || 0)}
+              />
+            </div>
+            <div className="form-row">
+              <label>Settle Time (ms)</label>
+              <input
+                type="number"
+                value={settings.servoSettleMs}
+                onChange={e => updateSetting('servoSettleMs', parseInt(e.target.value) || 50)}
+              />
+            </div>
           </div>
-          <div className="form-row">
-            <label>Head Down Angle (°)</label>
-            <input
-              type="number"
-              value={settings.servoPenDown}
-              min="0" max="180"
-              onChange={e => updateSetting('servoPenDown', parseInt(e.target.value) || 0)}
-            />
+        )}
+
+        {/* Drill Configuration */}
+        {modeConfig.id === 'drill' && (
+          <div className="card">
+            <h2 className="section-header">Drill Configuration</h2>
+            <div className="form-row">
+              <label>Default Spindle Speed (0-255)</label>
+              <input
+                type="number"
+                value={settings.defaultSpindleSpeed}
+                min="0" max="255"
+                onChange={e => updateSetting('defaultSpindleSpeed', parseInt(e.target.value) || 0)}
+              />
+            </div>
+            <div className="form-row">
+              <label>Plunge Dwell (ms)</label>
+              <input
+                type="number"
+                value={settings.plungeDwellMs}
+                min="0"
+                onChange={e => updateSetting('plungeDwellMs', parseInt(e.target.value) || 0)}
+              />
+            </div>
           </div>
-          <div className="form-row">
-            <label>Home Angle (°)</label>
-            <input
-              type="number"
-              value={settings.servoHome}
-              min="0" max="180"
-              onChange={e => updateSetting('servoHome', parseInt(e.target.value) || 0)}
-            />
+        )}
+
+        {/* Laser Configuration */}
+        {modeConfig.id === 'laser' && (
+          <div className="card">
+            <h2 className="section-header">Laser Configuration</h2>
+            <div className="form-row">
+              <label>Laser Max Power (0-255)</label>
+              <input
+                type="number"
+                value={settings.laserMaxPower}
+                min="0" max="255"
+                onChange={e => updateSetting('laserMaxPower', parseInt(e.target.value) || 0)}
+              />
+            </div>
+            <div className="checkbox-row">
+              <input
+                type="checkbox"
+                checked={settings.laserDynamicMode}
+                onChange={e => updateSetting('laserDynamicMode', e.target.checked)}
+                id="laserDynamicMode"
+              />
+              <label htmlFor="laserDynamicMode">Dynamic Power Mode (M4)</label>
+            </div>
           </div>
-          <div className="form-row">
-            <label>Settle Time (ms)</label>
-            <input
-              type="number"
-              value={settings.servoSettleMs}
-              onChange={e => updateSetting('servoSettleMs', parseInt(e.target.value) || 50)}
-            />
-          </div>
-        </div>
+        )}
 
         {/* Advanced Timing */}
         <div className="card">
@@ -231,6 +323,24 @@ export default function SettingsPage() {
               onChange={e => updateSetting('softLimitMargin', parseFloat(e.target.value) || 0)}
             />
           </div>
+        </div>
+        {/* Firmware Configuration */}
+        <div className="card">
+          <h2 className="section-header">Firmware</h2>
+          <div style={{ marginBottom: '12px' }}>
+            <strong>Active Mode:</strong> {modeConfig.label}
+          </div>
+          <div style={{ marginBottom: '16px', color: firmwareUploaded ? 'var(--text-primary)' : 'var(--danger-color)' }}>
+            <strong>Status:</strong> {firmwareUploaded ? 'Uploaded / Up-to-date' : 'Upload Required'}
+          </div>
+          <button
+            className={`btn btn-primary ${uploading ? 'uploading' : ''}`}
+            onClick={handleUploadFirmware}
+            disabled={uploading || streaming || !connected}
+          >
+            {uploading ? 'Uploading...' : `Upload ${modeConfig.label} Firmware`}
+          </button>
+          {!connected && <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '8px' }}>Connect to machine to upload firmware.</div>}
         </div>
       </div>
 
