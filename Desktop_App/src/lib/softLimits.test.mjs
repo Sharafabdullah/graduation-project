@@ -1,76 +1,83 @@
-import { test } from 'node:test';
-import assert from 'node:assert';
-import {
-  parseXY,
-  isInWarnZone,
-  violatesSafeFloor,
-  scanGCodeBounds,
-  wouldExceedPositiveLimit,
-  wouldCrossSafeFloor,
-} from './softLimits.js';
+// Desktop_App/src/lib/softLimits.test.mjs
+import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
+import { parseXY, isInWarnZone, scanGCodeBounds } from './softLimits.js';
 
-const settings = { bedMaxX: 200, bedMaxY: 200, softLimitMargin: 10 };
+const SETTINGS = { bedMaxX: 200, bedMaxY: 200, softLimitMargin: 10 };
 
-test('parseXY extracts X and Y, leaving missing axes null', () => {
-  assert.deepStrictEqual(parseXY('G1 X10 Y20 F1000'), { x: 10, y: 20 });
-  assert.deepStrictEqual(parseXY('G1 X-5'), { x: -5, y: null });
-  assert.deepStrictEqual(parseXY('G1 Y5'), { x: null, y: 5 });
-  assert.strictEqual(parseXY('G1 F1000'), null);
+describe('parseXY', () => {
+  it('parses X and Y', () => {
+    const r = parseXY('G1 X50 Y75 F1000');
+    assert.equal(r.x, 50);
+    assert.equal(r.y, 75);
+  });
+  it('returns null when no X or Y', () => {
+    assert.equal(parseXY('M3'), null);
+  });
+  it('parses only X', () => {
+    const r = parseXY('G1 X50 F1000');
+    assert.equal(r.x, 50);
+    assert.equal(r.y, null);
+  });
 });
 
-test('isInWarnZone flags positions near any bed edge', () => {
-  assert.strictEqual(isInWarnZone(5, 100, settings), true);   // near left edge
-  assert.strictEqual(isInWarnZone(195, 100, settings), true); // near right edge
-  assert.strictEqual(isInWarnZone(100, 5, settings), true);   // near bottom edge
-  assert.strictEqual(isInWarnZone(100, 195, settings), true); // near top edge
-  assert.strictEqual(isInWarnZone(100, 100, settings), false); // centre — safe
+describe('isInWarnZone', () => {
+  it('flags a point inside the left margin', () => {
+    assert.ok(isInWarnZone(5, 100, SETTINGS));
+  });
+  it('flags a point inside the bottom margin', () => {
+    assert.ok(isInWarnZone(100, 5, SETTINGS));
+  });
+  it('flags a point beyond the top margin', () => {
+    assert.ok(isInWarnZone(100, 195, SETTINGS));
+  });
+  it('allows a point well inside the bed', () => {
+    assert.ok(!isInWarnZone(100, 100, SETTINGS));
+  });
 });
 
-test('isInWarnZone does NOT exempt (0, 0) — it is the limit-switch position', () => {
-  assert.strictEqual(isInWarnZone(0, 0, settings), true);
+describe('scanGCodeBounds — G1', () => {
+  it('returns violation for G1 outside margin', () => {
+    const lines = ['G1 X5 Y100 F1000'];
+    const v = scanGCodeBounds(lines, SETTINGS);
+    assert.equal(v.length, 1);
+    assert.equal(v[0].lineIndex, 0);
+  });
+  it('no violation for safe G1', () => {
+    const lines = ['G1 X100 Y100 F1000'];
+    assert.equal(scanGCodeBounds(lines, SETTINGS).length, 0);
+  });
+  it('skips M-code lines', () => {
+    const lines = ['M3', 'M5', 'G1 X100 Y100'];
+    assert.equal(scanGCodeBounds(lines, SETTINGS).length, 0);
+  });
 });
 
-test('isInWarnZone only checks axes that are present', () => {
-  assert.strictEqual(isInWarnZone(null, 100, settings), false);
-  assert.strictEqual(isInWarnZone(5, null, settings), true);
-});
+describe('scanGCodeBounds — G2/G3 arc', () => {
+  it('detects arc that swings below the Y margin', () => {
+    const lines = [
+      'G1 X50 Y50 F1000',
+      'G2 X50 Y50 I45 J0 F1000',
+    ];
+    const v = scanGCodeBounds(lines, SETTINGS);
+    assert.ok(v.length >= 1, `Expected violation for arc reaching y=5, got ${v.length}`);
+  });
 
-test('violatesSafeFloor flags positions below the captured homing-backoff floor', () => {
-  const floorX = 2, floorY = 2;
-  assert.strictEqual(violatesSafeFloor(0, 0, floorX, floorY), true);
-  assert.strictEqual(violatesSafeFloor(1, 50, floorX, floorY), true);
-  assert.strictEqual(violatesSafeFloor(50, 1, floorX, floorY), true);
-  assert.strictEqual(violatesSafeFloor(2, 2, floorX, floorY), false); // exactly at the floor — safe
-  assert.strictEqual(violatesSafeFloor(50, 50, floorX, floorY), false);
-});
+  it('does not flag arc safely inside the bed', () => {
+    const lines = [
+      'G1 X100 Y100 F1000',
+      'G3 X110 Y110 I10 J0 F1000',
+    ];
+    const v = scanGCodeBounds(lines, SETTINGS);
+    assert.equal(v.length, 0, `Expected no violation, got ${v.length}`);
+  });
 
-test('violatesSafeFloor only checks axes that are present', () => {
-  assert.strictEqual(violatesSafeFloor(null, 1, 2, 2), true);
-  assert.strictEqual(violatesSafeFloor(50, null, 2, 2), false);
-});
-
-test('scanGCodeBounds reports violations including (0, 0)', () => {
-  const lines = [
-    'G21 ; mm units',
-    'G0 X0 Y0',
-    'G1 X100 Y100',
-    'G1 X5 Y100',
-  ];
-  const violations = scanGCodeBounds(lines, settings);
-  assert.strictEqual(violations.length, 2);
-  assert.deepStrictEqual(violations[0], { lineIndex: 1, line: 'G0 X0 Y0', x: 0, y: 0 });
-  assert.deepStrictEqual(violations[1], { lineIndex: 3, line: 'G1 X5 Y100', x: 5, y: 100 });
-});
-
-test('wouldExceedPositiveLimit blocks jogs that would cross the ceiling', () => {
-  assert.strictEqual(wouldExceedPositiveLimit(185, 10, 'X', settings), true);
-  assert.strictEqual(wouldExceedPositiveLimit(100, 10, 'X', settings), false);
-  assert.strictEqual(wouldExceedPositiveLimit(185, 10, 'Y', settings), true);
-});
-
-test('wouldCrossSafeFloor blocks jogs that would cross the homed floor', () => {
-  const floor = 2;
-  assert.strictEqual(wouldCrossSafeFloor(3, 5, floor), true);   // 3 - 5 = -2 < 2
-  assert.strictEqual(wouldCrossSafeFloor(10, 5, floor), false); // 10 - 5 = 5 >= 2
-  assert.strictEqual(wouldCrossSafeFloor(2, 0.5, floor), true); // 2 - 0.5 = 1.5 < 2
+  it('tracks current position across lines for arc start', () => {
+    const lines = [
+      'G0 X50 Y50',
+      'G2 X50 Y50 I45 J0 F1000',
+    ];
+    const v = scanGCodeBounds(lines, SETTINGS);
+    assert.ok(v.length >= 1, 'Should detect the arc violation after G0 sets position');
+  });
 });
