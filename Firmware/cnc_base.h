@@ -9,7 +9,7 @@
  *    - Motion config variables
  *    - AccelStepper / MultiStepper objects
  *    - Serial parsing, telemetry, homing, soft-limit logic
- *    - G0/G1/G4/G90/G91/G92/G28 processing
+ *    - G0/G1/G2/G3/G4/G90/G91/G92/G28 processing
  *    - $KEY=VALUE runtime config
  *
  *  Each mode firmware supplies its own:
@@ -87,6 +87,7 @@ void processBaseCfgCommand(String cmd);
 void reportPosition();
 void reportTelemetry();
 void moveLinear(float targetXMm, float targetYMm, float feedRate);
+void moveArc(float targetXMm, float targetYMm, float iMm, float jMm, bool clockwise, float feedRate);
 bool checkEStop();
 
 // These must be defined by the mode firmware:
@@ -334,6 +335,60 @@ void moveLinear(float targetXMm, float targetYMm, float feedRate) {
 }
 
 // ---------------------------------------------------------------------------
+//  ARC INTERPOLATION (G2 / G3)
+// ---------------------------------------------------------------------------
+// AccelStepper has no native arc support, so we tessellate the arc into small
+// linear chord segments and call moveLinear() for each one.
+//
+// Parameters (all in machine mm, absolute coordinates):
+//   targetXMm / targetYMm : arc endpoint
+//   iMm / jMm             : offset from arc START to arc CENTER
+//   clockwise             : true = G2 (CW), false = G3 (CCW)
+// ---------------------------------------------------------------------------
+void moveArc(float targetXMm, float targetYMm, float iMm, float jMm, bool clockwise, float feedRate) {
+  float startX = (float)stepperX.currentPosition()  / stepsPerMmX;
+  float startY = (float)stepperY1.currentPosition() / stepsPerMmY;
+
+  float cx = startX + iMm;   // absolute center X
+  float cy = startY + jMm;   // absolute center Y
+
+  float r = sqrt(iMm * iMm + jMm * jMm);
+  if (r < 0.001) {
+    // Degenerate arc — fall back to straight line
+    moveLinear(targetXMm, targetYMm, feedRate);
+    return;
+  }
+
+  float startAngle = atan2(startY  - cy, startX  - cx);
+  float endAngle   = atan2(targetYMm - cy, targetXMm - cx);
+
+  // Compute the signed angular sweep
+  float sweep;
+  if (clockwise) {
+    sweep = endAngle - startAngle;
+    if (sweep >= 0.0) sweep -= 2.0 * M_PI;   // ensure CW (negative)
+  } else {
+    sweep = endAngle - startAngle;
+    if (sweep <= 0.0) sweep += 2.0 * M_PI;   // ensure CCW (positive)
+  }
+
+  // Segment size: chord length ~0.5 mm for smooth curves
+  // Number of steps = |sweep| * r / chord_length, minimum 1
+  const float CHORD_MM = 0.5;
+  int steps = max(1, (int)(fabs(sweep) * r / CHORD_MM));
+
+  for (int k = 1; k <= steps; k++) {
+    if (checkEStop()) return;
+    float angle = startAngle + sweep * ((float)k / (float)steps);
+    float sx = cx + r * cos(angle);
+    float sy = cy + r * sin(angle);
+    // Snap the last step to the exact commanded endpoint to avoid accumulation error
+    if (k == steps) { sx = targetXMm; sy = targetYMm; }
+    moveLinear(sx, sy, feedRate);
+  }
+}
+
+// ---------------------------------------------------------------------------
 //  G-CODE PROCESSING
 // ---------------------------------------------------------------------------
 void processParsedGCode() {
@@ -364,6 +419,29 @@ void processParsedGCode() {
         if (gCommand == 0) beforeG0();
         moveLinear(targetX, targetY, currentFeedRate);
         if (gCommand == 0) afterG0();
+        Serial.println("ok");
+        break;
+      }
+      case 2:
+      case 3: {
+        // G2 = clockwise arc, G3 = counter-clockwise arc
+        // I/J = offset from current position to arc center
+        if (GCode.HasWord('F')) {
+          float f = GCode.GetWordValue('F');
+          if (f > 0.0) currentFeedRate = constrain(f, minFeedrate, maxFeedrate);
+        }
+        float targetX = (float)stepperX.currentPosition()  / stepsPerMmX;
+        float targetY = (float)stepperY1.currentPosition() / stepsPerMmY;
+        if (isAbsoluteMode) {
+          if (GCode.HasWord('X')) targetX = GCode.GetWordValue('X');
+          if (GCode.HasWord('Y')) targetY = GCode.GetWordValue('Y');
+        } else {
+          if (GCode.HasWord('X')) targetX += GCode.GetWordValue('X');
+          if (GCode.HasWord('Y')) targetY += GCode.GetWordValue('Y');
+        }
+        float iOff = GCode.HasWord('I') ? GCode.GetWordValue('I') : 0.0;
+        float jOff = GCode.HasWord('J') ? GCode.GetWordValue('J') : 0.0;
+        moveArc(targetX, targetY, iOff, jOff, gCommand == 2, currentFeedRate);
         Serial.println("ok");
         break;
       }

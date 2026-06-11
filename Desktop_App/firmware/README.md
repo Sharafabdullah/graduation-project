@@ -4,12 +4,14 @@ This directory contains pre-compiled firmware `.hex` files for each operating mo
 These are uploaded directly to the Arduino Mega 2560 from the Platform Control app
 when the user switches modes.
 
+It is currently empty, and the source arduin code in the project root folder.
+
 ## Files
 
-| File | Mode | Description |
-|------|------|-------------|
-| `pen.hex` | Pen Plotter | SG90 servo Z-axis, M3/M5 pen up/down |
-| `drill.hex` | Drill/Spindle | Servo carriage + PWM spindle (pin 10) |
+| File        | Mode           | Description                           |
+| ----------- | -------------- | ------------------------------------- |
+| `pen.hex`   | Pen Plotter    | SG90 servo Z-axis, M3/M5 pen up/down  |
+| `drill.hex` | Drill/Spindle  | Servo carriage + PWM spindle (pin 10) |
 | `laser.hex` | Laser Engraver | PWM laser (pin 11), G0 laser-off gate |
 
 ## avrdude
@@ -24,6 +26,7 @@ to flash these files. The app resolves them from the following locations (in ord
 ## Compiling from Source
 
 Source for all modes lives in a single folder: `Arduino Codes/CNC_Firmware/`.
+
 - `CNC_Firmware.ino` — Entry point sketch
 - `Pen_Firmware.ino` — Pen mode source
 - `Drill_Firmware.ino` — Drill mode source
@@ -31,6 +34,7 @@ Source for all modes lives in a single folder: `Arduino Codes/CNC_Firmware/`.
 - `cnc_base.h` — Shared motion core (no duplication)
 
 To compile a specific mode:
+
 1. Open `Arduino Codes/CNC_Firmware/CNC_Firmware.ino` in the Arduino IDE.
 2. In `CNC_Firmware.ino`, uncomment the line for the mode you want to compile and comment out the other modes:
    ```cpp

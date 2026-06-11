@@ -111,8 +111,11 @@ export default function GCodePreview({ lines = [], bedW = 200, bedH = 200, softL
           ctx.beginPath();
           ctx.strokeStyle = '#00bfff';
           ctx.lineWidth = 1;
-          // G2 (machine CW) → anticlockwise=true in canvas (Y-flipped)
-          ctx.arc(ccx, ccy, rPx, -sa, -ea, cw);
+          // sa/ea are machine-frame angles; negated because canvas Y is flipped.
+          // Under that flip a machine-CW (G2) sweep is the increasing-angle /
+          // canvas-clockwise direction, i.e. anticlockwise=false. Pass !cw so the
+          // preview matches the firmware's standard G2=CW / G3=CCW sweep.
+          ctx.arc(ccx, ccy, rPx, -sa, -ea, !cw);
           ctx.stroke();
         }
       }

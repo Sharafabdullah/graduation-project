@@ -84,11 +84,33 @@
   gap: 0.25rem;
 }
 
-.preview-panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
+/* Floating label overlay inside each preview box */
+.preview-box-label {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  z-index: 10;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  background: rgba(30, 30, 30, 0.72);
+  backdrop-filter: blur(4px);
+  padding: 2px 7px;
+  border-radius: 4px;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Floating Reset View button anchored to the top-right of the preview panel */
+.preview-reset-btn {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  z-index: 20;
+  font-size: 11px;
+  padding: 2px 8px;
 }
 
 .preview-box {

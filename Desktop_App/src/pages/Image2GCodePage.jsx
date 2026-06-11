@@ -71,7 +71,7 @@ export default function Image2GCodePage() {
         lineWidth,
         fillWideStrokes,
       });
-      if (!lines.some(l => l.startsWith('G1'))) {
+      if (!lines.some(l => l.startsWith('G1') || l.startsWith('G2') || l.startsWith('G3'))) {
         setCompileError('No drawable paths found. Add shapes or trace an image first.');
         return;
       }

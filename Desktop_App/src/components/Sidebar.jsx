@@ -54,7 +54,7 @@ export default function Sidebar() {
     <aside className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
       {/* Logo */}
       <div className="sidebar-header">
-        <Settings className="sidebar-logo" size={28} color="#007ACC" />
+        <Settings className="sidebar-logo" size={28} />
         {!collapsed && <span className="sidebar-title">Platform Control</span>}
       </div>
 

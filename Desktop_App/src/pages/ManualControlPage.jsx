@@ -59,13 +59,13 @@ export default function ManualControlPage() {
               <div className="jog-spacer" />
             </div>
             <div className="jog-row">
-              <button className="btn btn-primary jog-btn" onClick={() => handleJog('X', -1)} disabled={!connected} title="X-">
+              <button className="btn btn-primary jog-btn" onClick={() => handleJog('X', 1)} disabled={!connected} title="X-">
                 <ChevronLeft size={20} />
               </button>
               <button className="btn btn-secondary jog-btn jog-center" onClick={goToOrigin} disabled={!connected} title="Go to Origin">
                 <Crosshair size={18} />
               </button>
-              <button className="btn btn-primary jog-btn" onClick={() => handleJog('X', 1)} disabled={!connected} title="X+">
+              <button className="btn btn-primary jog-btn" onClick={() => handleJog('X', -1)} disabled={!connected} title="X+">
                 <ChevronRight size={20} />
               </button>
             </div>

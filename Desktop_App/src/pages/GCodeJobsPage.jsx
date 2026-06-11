@@ -6,6 +6,7 @@ import { getBuiltinsForMode, builtinToFile } from '../data/builtinGcodes';
 import { useMode } from '../contexts/ModeContext';
 import { FileUp, FolderOpen } from 'lucide-react';
 import ModeSelector from '../components/ModeSelector';
+import GCodePreview from '../components/GCodePreview';
 import './GCodeJobsPage.css';
 import { useSettings } from '../contexts/SettingsContext';
 import { scanGCodeBounds } from '../lib/softLimits';
@@ -37,7 +38,7 @@ export default function GCodeJobsPage() {
   const {
     connected, streaming, paused, currentLine, totalLines,
     startStreaming, pauseStreaming, resumeStreaming, stopStreaming, logConsole,
-    commandLog, jobHistory,
+    commandLog, jobHistory, homed, homeFloor,
   } = useSerial();
 
   const { loadedFiles, addLoadedFile, removeLoadedFile } = useJobs();
@@ -365,6 +366,17 @@ export default function GCodeJobsPage() {
               ⚠ {boundsWarning.count} line{boundsWarning.count !== 1 ? 's' : ''} outside safe working margin — out-of-bounds moves will be skipped at runtime
             </div>
           )}
+
+          <div className="gcode-preview-canvas-wrapper">
+            <GCodePreview 
+              lines={previewLines} 
+              bedW={settings.bedMaxX ?? 200} 
+              bedH={settings.bedMaxY ?? 200} 
+              softLimitMargin={settings.softLimitMargin ?? 10} 
+              homeFloor={homed ? homeFloor : null} 
+            />
+          </div>
+
           <div className="gcode-preview" ref={previewRef}>
             {previewLines.length === 0 ? (
               <div className="preview-placeholder">Select a file to preview its G-code content</div>

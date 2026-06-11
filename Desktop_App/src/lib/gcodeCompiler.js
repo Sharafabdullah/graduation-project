@@ -397,8 +397,12 @@ export function compileSVGToGCode(svgString, settings = {}) {
         penDown = false;
       } else if (pt.type === 'A') {
         if (!penDown) { lines.push(`M3 ; tool on`); penDown = true; }
-        // SVG CW in Y-down → machine CCW after Y-flip → G3; SVG CCW → G2
-        const gNum = pt.clockwise ? 3 : 2;
+        // Standard G-code: G2=CW, G3=CCW in machine (post-Y-flip) space. pt.clockwise
+        // is the curve's turn in SVG (Y-down) space; the Y-flip on the emitted coords
+        // reverses the turn, so an SVG-CW curve must be emitted as G2 and an SVG-CCW
+        // one as G3. (Inverting this drew the complementary major arc on the machine
+        // while the preview showed the minor arc.)
+        const gNum = pt.clockwise ? 2 : 3;
         const iMm  = pt.i.toFixed(3);
         const jMm  = (-pt.j).toFixed(3); // negate J: SVG Y-down → machine Y-up
         lines.push(`G${gNum} X${x} Y${y} I${iMm} J${jMm} F${maxFeedrate}`);

@@ -286,21 +286,19 @@ export default function ImageToGCodeTab({ onAddToCanvas }) {
         className="image-tab-preview card"
         ref={previewPanelRef}
         onMouseDown={handleMouseDown}
+        style={{ position: 'relative' }}
       >
-        <div className="preview-panel-header">
-          <h3 className="section-header" style={{ margin: 0 }}>Previews</h3>
-          <button
-            className="btn btn-ghost btn-sm"
-            onClick={resetView}
-            title="Reset zoom and pan (double-click any preview)"
-            style={{ fontSize: '11px', padding: '2px 8px' }}
-          >
-            Reset View
-          </button>
-        </div>
+        {/* Floating Reset View button in top-right corner of the panel */}
+        <button
+          className="btn btn-ghost btn-sm preview-reset-btn"
+          onClick={resetView}
+          title="Reset zoom and pan (double-click any preview)"
+        >
+          Reset View
+        </button>
 
-        <h3 className="section-header">Original</h3>
         <div className="preview-box" onDoubleClick={resetView}>
+          <span className="preview-box-label">Original</span>
           {previewSrc ? (
             <div style={transformWrap}>
               <img src={previewSrc} alt="Original" className="preview-img" draggable={false} />
@@ -311,22 +309,20 @@ export default function ImageToGCodeTab({ onAddToCanvas }) {
         </div>
 
         {tracerMode === 'outline' && (
-          <>
-            <h3 className="section-header">Threshold Preview</h3>
-            <div className="preview-box" onDoubleClick={resetView}>
-              {previewSrc ? (
-                <div style={transformWrap}>
-                  <canvas ref={binarizedCanvasRef} className="preview-canvas" />
-                </div>
-              ) : (
-                <span className="placeholder-text">Load an image to preview the B/W mask</span>
-              )}
-            </div>
-          </>
+          <div className="preview-box" onDoubleClick={resetView}>
+            <span className="preview-box-label">Threshold</span>
+            {previewSrc ? (
+              <div style={transformWrap}>
+                <canvas ref={binarizedCanvasRef} className="preview-canvas" />
+              </div>
+            ) : (
+              <span className="placeholder-text">Load an image to preview the B/W mask</span>
+            )}
+          </div>
         )}
 
-        <h3 className="section-header">Traced Vector</h3>
         <div className="preview-box" onDoubleClick={resetView}>
+          <span className="preview-box-label">Traced Vector</span>
           {loading && <span className="placeholder-text">Tracing in background…</span>}
           {!loading && tracedSVG && (
             <div style={transformWrap}>

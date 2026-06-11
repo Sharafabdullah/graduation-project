@@ -77,8 +77,27 @@
   font-size: 12px;
 }
 
-.gcode-preview {
+.gcode-preview-canvas-wrapper {
   flex: 1;
+  min-height: 0;
+  margin-bottom: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.gcode-preview-canvas-wrapper .preview-placeholder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gcode-preview {
+  flex: 0 0 35%;
   overflow-y: auto;
   background: var(--bg-input);
   border: 1px solid var(--border);
