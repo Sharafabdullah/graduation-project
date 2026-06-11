@@ -1,31 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './GCodePreview.css';
 
 export default function GCodePreview({ lines = [], bedW = 200, bedH = 200, softLimitMargin = 10, homeFloor = null }) {
   const canvasRef = useRef(null);
-  const wrapRef   = useRef(null);
-  const [canvasSize, setCanvasSize] = useState({ w: 400, h: 400 });
 
-  // Fill the wrapper while preserving the bed aspect ratio
-  useEffect(() => {
-    const wrap = wrapRef.current;
-    if (!wrap) return;
-    const compute = () => {
-      const { width, height } = wrap.getBoundingClientRect();
-      const pad = 16;
-      const maxW = Math.max(width  - pad, 10);
-      const maxH = Math.max(height - pad, 10);
-      const aspect = bedW / bedH;
-      let w, h;
-      if (maxW / maxH > aspect) { h = maxH; w = h * aspect; }
-      else                       { w = maxW; h = w / aspect; }
-      setCanvasSize({ w: Math.round(w), h: Math.round(h) });
-    };
-    compute();
-    const ro = new ResizeObserver(compute);
-    ro.observe(wrap);
-    return () => ro.disconnect();
-  }, [bedW, bedH]);
+  // Maintain bed aspect ratio within a 400px bounding box
+  const PREVIEW_MAX = 560;
+  const aspect = bedW / bedH;
+  const canvasW = aspect >= 1 ? PREVIEW_MAX : Math.round(PREVIEW_MAX * aspect);
+  const canvasH = aspect <= 1 ? PREVIEW_MAX : Math.round(PREVIEW_MAX / aspect);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -94,27 +77,6 @@ export default function GCodePreview({ lines = [], bedW = 200, bedH = 200, softL
         ctx.moveTo(...toCanvas(cx, cy));
         ctx.lineTo(...toCanvas(nx, ny));
         ctx.stroke();
-      } else if ((trimmed.startsWith('G2') || trimmed.startsWith('G3')) && penDown) {
-        const iMatch = trimmed.match(/I([-\d.]+)/);
-        const jMatch = trimmed.match(/J([-\d.]+)/);
-        const oI = iMatch ? parseFloat(iMatch[1]) : 0;
-        const oJ = jMatch ? parseFloat(jMatch[1]) : 0;
-        const acx = cx + oI, acy = cy + oJ;
-        const ar  = Math.sqrt(oI*oI + oJ*oJ);
-        if (ar > 0.01) {
-          // sa/ea are angles in machine coords (Y-up). Canvas Y is flipped, so negate.
-          const sa = Math.atan2(cy - acy, cx - acx);
-          const ea = Math.atan2(ny - acy, nx - acx);
-          const cw = trimmed.startsWith('G2');
-          const [ccx, ccy] = toCanvas(acx, acy);
-          const rPx = ar * Math.min(scaleX, scaleY);
-          ctx.beginPath();
-          ctx.strokeStyle = '#00bfff';
-          ctx.lineWidth = 1;
-          // G2 (machine CW) → anticlockwise=true in canvas (Y-flipped)
-          ctx.arc(ccx, ccy, rPx, -sa, -ea, cw);
-          ctx.stroke();
-        }
       }
 
       cx = nx;
@@ -157,7 +119,7 @@ export default function GCodePreview({ lines = [], bedW = 200, bedH = 200, softL
     let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
     lines.forEach(line => {
       const upper = line.trim().toUpperCase();
-      if (!upper.startsWith('G1') && !upper.startsWith('G2') && !upper.startsWith('G3')) return;
+      if (!upper.startsWith('G1')) return;  // only drawing moves
       const xM = upper.match(/X([-\d.]+)/);
       const yM = upper.match(/Y([-\d.]+)/);
       const x = xM ? parseFloat(xM[1]) : null;
@@ -212,15 +174,15 @@ export default function GCodePreview({ lines = [], bedW = 200, bedH = 200, softL
     ctx.fillText('X→', W - 24, H - 4);
     ctx.fillText('↑Y', 2, 14);
     ctx.restore();
-  }, [lines, bedW, bedH, softLimitMargin, homeFloor, canvasSize]);
+  }, [lines, bedW, bedH, softLimitMargin, homeFloor]);
 
   return (
-    <div ref={wrapRef} className="gcode-preview-wrap">
+    <div className="gcode-preview-wrap">
       <canvas
         ref={canvasRef}
         className="gcode-preview-canvas"
-        width={canvasSize.w}
-        height={canvasSize.h}
+        width={canvasW}
+        height={canvasH}
       />
     </div>
   );

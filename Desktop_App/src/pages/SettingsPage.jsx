@@ -153,15 +153,6 @@ export default function SettingsPage() {
               onChange={e => updateSetting('homingBackoff', parseFloat(e.target.value) || 0.5)}
             />
           </div>
-          <div className="form-row">
-            <label>Arc Chord Error ($CE, mm)</label>
-            <input
-              type="number"
-              value={settings.chordError ?? 0.2}
-              min="0.01" max="2" step="0.01"
-              onChange={e => updateSetting('chordError', parseFloat(e.target.value) || 0.2)}
-            />
-          </div>
         </div>
 
         {/* Servo Configuration */}

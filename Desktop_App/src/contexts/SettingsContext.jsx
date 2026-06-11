@@ -49,9 +49,6 @@ const DEFAULT_SETTINGS = {
   bedMaxY: 200,
   softLimitMargin: 10,
 
-  // Arc interpolation
-  chordError: 0.2,
-
   // Drill
   defaultSpindleSpeed: 180,
   plungeDwellMs: 500,
@@ -101,7 +98,6 @@ export function SettingsProvider({ children }) {
         `$MF=${settings.maxFeedrate}`,
         `$HF=${settings.homingFeedrate}`,
         `$HB=${settings.homingBackoff}`,
-        `$CE=${settings.chordError}`,
       ];
 
       if (mode === 'pen' || mode === 'drill') {
