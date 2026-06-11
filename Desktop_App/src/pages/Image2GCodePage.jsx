@@ -54,14 +54,9 @@ export default function Image2GCodePage() {
 
   const handleCompile = useCallback(() => {
     setCompileWarning(null);
-    let svgSource = '';
-    if (activeTab === 'canvas' && editorRef.current) {
-      svgSource = editorRef.current.toSVG();
-    } else if (tracedSVG) {
-      svgSource = tracedSVG;
-    }
+    const svgSource = editorRef.current ? editorRef.current.toSVG() : '';
     if (!svgSource) {
-      setCompileError('Nothing to compile. Trace an image or draw on the canvas first.');
+      setCompileError('Nothing to compile. Add shapes to the canvas first.');
       return;
     }
     setCompileError('');
@@ -91,7 +86,7 @@ export default function Image2GCodePage() {
     } catch (err) {
       setCompileError(`Compile error: ${err.message}`);
     }
-  }, [activeTab, tracedSVG, settings, bedH, multicolorMode, backgroundColor, lineWidth, fillWideStrokes, setCompiledGCode]);
+  }, [settings, bedH, multicolorMode, backgroundColor, lineWidth, fillWideStrokes, setCompiledGCode]);
 
   const [dialog, setDialog] = React.useState({ open: false });
   const closeDialog = useCallback(() => setDialog({ open: false }), []);
@@ -126,7 +121,7 @@ export default function Image2GCodePage() {
     if (compiledGCode.length > 0) startStreaming(compiledGCode, 'Image Job');
   }, [compiledGCode, startStreaming]);
 
-  const canCompile = activeTab === 'canvas' || !!tracedSVG;
+  const canCompile = true;
 
   return (
     <div className="page i2g-page">

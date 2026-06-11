@@ -73,10 +73,10 @@ export function useImageTracer() {
       if (multicolorMode) {
         setBackgroundColor(sampleCornerColor(imageData));
         pixelData = imageData;
-        traceOptions = { numberofcolors, ltres, qtres, pathomit, blurradius };
+        traceOptions = { numberofcolors, ltres, qtres, pathomit, blurradius, viewbox: true };
       } else {
         pixelData = binarizeImageData(imageData, threshold);
-        traceOptions = { numberofcolors: 2, ltres, qtres, pathomit, blurradius };
+        traceOptions = { numberofcolors: 2, ltres, qtres, pathomit, blurradius, viewbox: true };
       }
 
       const buffer = pixelData.data.buffer.slice(0);

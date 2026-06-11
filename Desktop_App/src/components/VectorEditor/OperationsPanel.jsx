@@ -1,9 +1,9 @@
 import React from 'react';
-import { Sliders, Spline, Undo2, Trash2 } from 'lucide-react';
+import { Sliders, Spline, Undo2, Redo2, Trash2 } from 'lucide-react';
 
 export function OperationsPanel({
   simplifyTolerance, onSimplifyToleranceChange, onSimplify,
-  onSmooth, onUndo, canUndo,
+  onSmooth, onUndo, canUndo, onRedo, canRedo,
   onDeleteAll,
 }) {
   return (
@@ -43,6 +43,15 @@ export function OperationsPanel({
         title="Undo last operation (Ctrl+Z)"
       >
         <Undo2 size={13} /> Undo
+      </button>
+
+      <button
+        className="btn btn-secondary ops-btn"
+        onClick={onRedo}
+        disabled={!canRedo}
+        title="Redo last undone operation (Ctrl+Y / Ctrl+Shift+Z)"
+      >
+        <Redo2 size={13} /> Redo
       </button>
 
       <button className="btn btn-danger ops-btn" onClick={onDeleteAll} title="Delete all paths">

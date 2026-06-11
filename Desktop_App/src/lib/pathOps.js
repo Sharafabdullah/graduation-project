@@ -72,6 +72,35 @@ export function fitPathsToBed(paths, svgW, svgH, bedW, bedH) {
   return paths.map(p => ({ ...p, d: applyMatrixToPath(p.d, m) }));
 }
 
+// ── Bounding box (used by VectorEditor's shape selection/transform) ──────────
+
+export function getPathBBox(d) {
+  const cmds = parsePath(d);
+  const pts = flattenCmdsToPoints(cmds);
+  if (pts.length === 0) return null;
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (const p of pts) {
+    minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x);
+    minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y);
+  }
+  return { minX, minY, maxX, maxY };
+}
+
+// ── Shape primitives (used by VectorEditor's drag-to-draw tools) ─────────────
+
+export function rectPath(x, y, w, h) {
+  return `M ${n(x)} ${n(y)} L ${n(x+w)} ${n(y)} L ${n(x+w)} ${n(y+h)} L ${n(x)} ${n(y+h)} Z`;
+}
+
+export function ellipsePath(cx, cy, rx, ry, steps = 64) {
+  const pts = Array.from({ length: steps + 1 }, (_, i) => {
+    const a = (i / steps) * 2 * Math.PI;
+    return { x: cx + rx * Math.cos(a), y: cy + ry * Math.sin(a) };
+  });
+  return `M ${n(pts[0].x)} ${n(pts[0].y)} ` +
+    pts.slice(1).map(p => `L ${n(p.x)} ${n(p.y)}`).join(' ') + ' Z';
+}
+
 // ── Path simplification (Ramer-Douglas-Peucker) ───────────────────────────────
 
 function flattenCmdsToPoints(cmds) {
